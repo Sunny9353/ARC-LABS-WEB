@@ -1,0 +1,16 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    // Invoices — only Cloud Functions (Admin SDK) can write
+    // Signed URLs are used for customer downloads
+    match /invoices/{fileName} {
+      allow read: if false;   // Use signed URLs from Cloud Function
+      allow write: if false;  // Admin SDK bypasses rules
+    }
+
+    // Default: deny all
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}

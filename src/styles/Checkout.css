@@ -1,0 +1,232 @@
+/* ═══════════════════════════════════════════════════════════════════
+   CHECKOUT PAGE — Uses global design tokens from global.css
+═══════════════════════════════════════════════════════════════════ */
+
+.co-page {
+  min-height: 92vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 5vw;
+}
+
+.co-card {
+  display: flex;
+  gap: 40px;
+  background: var(--surface);
+  border: 1px solid var(--border-1);
+  border-radius: 16px;
+  padding: 30px;
+  max-width: 900px;
+  width: 100%;
+  backdrop-filter: blur(12px);
+}
+
+/* LEFT SIDE — Product */
+.co-left {
+  flex: 1;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.co-product-img {
+  width: 100%;
+  max-width: 350px;
+  height: auto;
+  display: block;
+  margin: 0 auto 20px;
+  object-fit: contain;
+}
+
+.co-left h2 {
+  margin-top: 15px;
+  color: var(--text-1);
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 1.3rem;
+  letter-spacing: -0.02em;
+}
+
+.co-price {
+  color: var(--accent);
+  font-size: 1.4rem;
+  font-weight: 700;
+  font-family: var(--font-mono);
+  margin-top: 5px;
+}
+
+.co-secure {
+  font-size: 0.8rem;
+  color: var(--text-4);
+  margin-top: 10px;
+}
+
+/* RIGHT SIDE — Form */
+.co-right {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.co-right h3 {
+  color: var(--accent);
+  margin-bottom: 15px;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 1.1rem;
+  letter-spacing: -0.02em;
+}
+
+.co-right input {
+  margin-bottom: 12px;
+  padding: 11px 13px;
+  border-radius: 8px;
+  border: 1px solid var(--border-2);
+  background: var(--surface-2);
+  color: var(--text-1);
+  font-family: var(--font-body);
+  font-size: 0.87rem;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.co-right input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(0, 212, 170, 0.07);
+}
+
+.co-right input::placeholder {
+  color: var(--text-4);
+}
+
+.co-right input:disabled {
+  opacity: 0.5;
+}
+
+/* Payment methods */
+.co-methods-section {
+  margin-top: 8px;
+  margin-bottom: 15px;
+}
+
+.co-methods-label {
+  display: block;
+  margin-bottom: 12px;
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: var(--text-3);
+}
+
+.co-method-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+  gap: 10px;
+}
+
+.co-method-btn {
+  padding: 12px 8px;
+  border: 1px solid var(--border-2);
+  border-radius: 8px;
+  background: var(--surface-2);
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 0.8rem;
+  font-family: var(--font-body);
+  color: var(--text-4);
+  transition: all 0.2s;
+}
+
+.co-method-btn:hover {
+  border-color: rgba(255, 255, 255, 0.18);
+  color: var(--text-3);
+}
+
+.co-method-btn.active {
+  border-color: var(--accent);
+  background: rgba(0, 212, 170, 0.08);
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.co-method-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.co-upi-input {
+  margin-bottom: 15px;
+}
+
+/* Pay button */
+.co-pay-btn {
+  width: 100%;
+  justify-content: center;
+  margin-top: 4px;
+  padding: 14px;
+  font-size: 0.95rem;
+}
+
+.co-pay-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.co-note {
+  font-size: 0.75rem;
+  color: var(--text-4);
+  margin-top: 10px;
+  text-align: center;
+}
+
+/* MOBILE RESPONSIVE */
+@media (max-width: 768px) {
+  .co-page {
+    padding: 60px 20px;
+    min-height: auto;
+  }
+
+  .co-card {
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px;
+  }
+
+  .co-left {
+    order: 2;
+  }
+
+  .co-product-img {
+    max-width: 150px;
+  }
+
+  .co-left h2 {
+    font-size: 1.1rem;
+  }
+
+  .co-price {
+    font-size: 1.1rem;
+  }
+
+  .co-right {
+    order: 1;
+  }
+
+  .co-right h3 {
+    font-size: 1rem;
+  }
+
+  .co-right input {
+    padding: 12px;
+    font-size: 16px;
+    margin-bottom: 10px;
+  }
+
+  .co-pay-btn {
+    padding: 14px;
+    font-size: 16px;
+  }
+}

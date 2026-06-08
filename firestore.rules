@@ -1,0 +1,55 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isAdmin() {
+      return request.auth != null
+        && (
+          request.auth.token.admin == true
+          || request.auth.token.email == "techarclab@gmail.com"
+        );
+    }
+
+    // Certificates — public read (for verification), write only from authenticated clients
+    match /certificates/{certId} {
+      allow read: if true;
+      allow create: if true;  // TODO: restrict to authenticated users or server-side
+      allow update, delete: if false;
+    }
+
+    // Legacy paid-student records keyed only by roll/registration number.
+    match /certificateEligibleStudents/{rollKey} {
+      allow get: if true;
+      allow list: if false;
+      allow create, update, delete: if isAdmin();
+    }
+
+    // Paid workshop/training records keyed by roll + workshop/session code.
+    // Example: 23KA109D1_CMRTC-IOT-JUN2026
+    match /certificateEligibleRegistrations/{eligibilityId} {
+      allow get: if true;
+      allow list, create, delete: if isAdmin();
+      allow update: if isAdmin()
+        || (
+          request.resource.data.diff(resource.data).affectedKeys()
+            .hasOnly(["certificateId", "certificateRegisteredAt"])
+          && !("certificateId" in resource.data)
+        );
+    }
+
+    // Orders — server-side only (Cloud Functions write via Admin SDK)
+    match /orders/{orderId} {
+      allow read, write: if false;
+    }
+
+    // Invoices — server-side only
+    match /invoices/{invoiceId} {
+      allow read, write: if false;
+    }
+
+    // Counters — server-side only
+    match /counters/{counterId} {
+      allow read, write: if false;
+    }
+  }
+}

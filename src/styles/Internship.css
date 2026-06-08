@@ -1,0 +1,31 @@
+/* ─── Internship hero (the curriculum list below reuses Programs page styles) ─── */
+.internship-hero {
+  width: min(1080px, 92vw);
+  margin: 0 auto;
+  padding: 104px 0 10px;
+}
+
+.internship-kicker {
+  font-family: var(--font-mono);
+  color: var(--accent);
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+
+.internship-hero h1 {
+  font-family: var(--font-heading);
+  font-size: clamp(2.2rem, 6vw, 4rem);
+  line-height: 1.04;
+  letter-spacing: -0.04em;
+  max-width: 880px;
+  color: var(--text-1);
+}
+
+.internship-hero p {
+  color: var(--text-3);
+  line-height: 1.8;
+  max-width: 660px;
+  margin: 20px 0 0;
+}
