@@ -24,7 +24,7 @@ export const pageStyles = `
     transform: translateX(-50%);
     width: 900px;
     height: 500px;
-    background: radial-gradient(ellipse, rgba(0,212,170,0.05) 0%, rgba(59,130,246,0.03) 40%, transparent 70%);
+    background: radial-gradient(ellipse, var(--tag-bg) 0%, var(--tag-bg) 40%, transparent 70%);
     pointer-events: none;
     z-index: 1;
   }
@@ -163,7 +163,7 @@ export const pageStyles = `
   }
   .prog-stat { text-align: center; }
   .prog-stat-n {
-    font-family: 'Syne', sans-serif;
+    font-family: var(--font-heading);
     font-size: 1.6rem;
     font-weight: 800;
     color: var(--accent);
@@ -238,13 +238,13 @@ export const pageStyles = `
     align-items: center;
     justify-content: center;
     font-size: 0.75rem;
-    font-family: 'JetBrains Mono', monospace;
+    font-family: var(--font-body);
     font-weight: 700;
     letter-spacing: 0.04em;
     flex-shrink: 0;
   }
   .tc-level {
-    font-family: 'JetBrains Mono', monospace;
+    font-family: var(--font-body);
     font-size: 0.62rem;
     letter-spacing: 0.08em;
     padding: 3px 9px;
@@ -252,7 +252,7 @@ export const pageStyles = `
     font-weight: 600;
   }
   .tech-card h3 {
-    font-family: 'Syne', sans-serif;
+    font-family: var(--font-heading);
     font-size: 1rem;
     font-weight: 700;
     letter-spacing: -0.01em;
@@ -272,7 +272,7 @@ export const pageStyles = `
     margin-top: 1rem;
   }
   .tc-tool {
-    font-family: 'JetBrains Mono', monospace;
+    font-family: var(--font-body);
     font-size: 0.62rem;
     padding: 3px 8px;
     border-radius: 4px;
@@ -317,7 +317,7 @@ export const pageStyles = `
   }
   .dp-header-left { flex: 1; min-width: 260px; }
   .dp-tag {
-    font-family: 'JetBrains Mono', monospace;
+    font-family: var(--font-body);
     font-size: 0.65rem;
     letter-spacing: 0.1em;
     text-transform: uppercase;
@@ -361,7 +361,7 @@ export const pageStyles = `
     border: 1px solid var(--border-2);
     background: transparent;
     color: var(--text-3);
-    font-family: 'Inter', sans-serif;
+    font-family: var(--font-body);
     font-size: 0.8rem;
     font-weight: 500;
     padding: 8px 18px;
@@ -374,7 +374,7 @@ export const pageStyles = `
     gap: 2px;
   }
   .dur-tab span.dt-days {
-    font-family: 'Syne', sans-serif;
+    font-family: var(--font-heading);
     font-size: 1.1rem;
     font-weight: 800;
     line-height: 1;
@@ -402,7 +402,7 @@ export const pageStyles = `
     gap: 1rem;
   }
   .curriculum-header h3 {
-    font-family: 'Syne', sans-serif;
+    font-family: var(--font-heading);
     font-size: 1.1rem;
     font-weight: 700;
     color: var(--text);
@@ -413,7 +413,7 @@ export const pageStyles = `
     flex-wrap: wrap;
   }
   .curr-badge {
-    font-family: 'JetBrains Mono', monospace;
+    font-family: var(--font-body);
     font-size: 0.68rem;
     padding: 4px 12px;
     border-radius: 5px;
@@ -444,14 +444,14 @@ export const pageStyles = `
     background: var(--mc-color, var(--accent));
   }
   .mod-num {
-    font-family: 'JetBrains Mono', monospace;
+    font-family: var(--font-body);
     font-size: 0.6rem;
     color: var(--text-3);
     letter-spacing: 0.1em;
     margin-bottom: 0.5rem;
   }
   .mod-title {
-    font-family: 'Syne', sans-serif;
+    font-family: var(--font-heading);
     font-size: 0.92rem;
     font-weight: 700;
     margin-bottom: 0.5rem;
@@ -476,7 +476,7 @@ export const pageStyles = `
   .mod-topics li:last-child { border-bottom: none; }
   .mod-topics li::before {
     content: '>';
-    font-family: 'JetBrains Mono', monospace;
+    font-family: var(--font-body);
     color: var(--mc-color, var(--accent));
     font-size: 0.8rem;
     flex-shrink: 0;
@@ -487,7 +487,7 @@ export const pageStyles = `
     align-items: center;
     gap: 5px;
     margin-top: 0.8rem;
-    font-family: 'JetBrains Mono', monospace;
+    font-family: var(--font-body);
     font-size: 0.62rem;
     color: var(--text-4);
     letter-spacing: 0.05em;
@@ -506,7 +506,7 @@ export const pageStyles = `
     align-items: center;
   }
   .outcomes-strip h4 {
-    font-family: 'Syne', sans-serif;
+    font-family: var(--font-heading);
     font-size: 0.82rem;
     font-weight: 700;
     white-space: nowrap;
@@ -614,7 +614,7 @@ export const pageStyles = `
     border-bottom: 1px solid var(--border);
   }
   .modal-header h3 {
-    font-family: 'Syne', sans-serif;
+    font-family: var(--font-heading);
     font-size: 1.3rem;
     font-weight: 800;
     margin-bottom: 0.3rem;
@@ -633,13 +633,13 @@ export const pageStyles = `
     margin-top: 0.8rem;
   }
   .modal-sel-tag {
-    font-family: 'JetBrains Mono', monospace;
+    font-family: var(--font-body);
     font-size: 0.65rem;
     padding: 4px 10px;
     border-radius: 5px;
     font-weight: 500;
     background: var(--accent-dim);
-    border: 1px solid rgba(0,212,170,0.2);
+    border: 1px solid var(--tag-bg);
     color: var(--accent);
   }
   .modal-body { padding: 24px 32px 32px; }
@@ -660,7 +660,7 @@ export const pageStyles = `
     border: 1px solid var(--border-2);
     border-radius: var(--radius);
     color: var(--text);
-    font-family: 'Inter', sans-serif;
+    font-family: var(--font-body);
     font-size: 0.88rem;
     padding: 11px 14px;
     outline: none;
@@ -715,7 +715,7 @@ export const pageStyles = `
     color: var(--accent);
   }
   .modal-success h3 {
-    font-family: 'Syne', sans-serif;
+    font-family: var(--font-heading);
     font-size: 1.4rem;
     font-weight: 800;
     margin-bottom: 0.6rem;
@@ -742,7 +742,7 @@ export const pageStyles = `
     top: 50%; left: 50%;
     transform: translate(-50%,-50%);
     width: 700px; height: 500px;
-    background: radial-gradient(ellipse, rgba(0,212,170,0.05) 0%, transparent 65%);
+    background: radial-gradient(ellipse, var(--tag-bg) 0%, transparent 65%);
     pointer-events: none;
   }
   .prog-bottom-cta h2 {
@@ -776,7 +776,7 @@ export const pageStyles = `
     border-radius: 6px;
     font-size: 0.78rem;
     cursor: pointer;
-    font-family: 'Inter', sans-serif;
+    font-family: var(--font-body);
     transition: all 0.2s;
   }
   .btn-close-panel:hover {
@@ -802,12 +802,12 @@ export const TECHNOLOGIES = [
     id: "iot",
     name: "Internet of Things",
     abbr: "IoT",
-    color: "#00d4aa",
+    color: "var(--accent)",
     iconLabel: "IoT",
-    iconBg: "rgba(0,212,170,0.1)",
+    iconBg: "var(--tag-bg)",
     level: "FOUNDATIONAL",
-    levelBg: "rgba(0,212,170,0.1)",
-    levelColor: "#00d4aa",
+    levelBg: "var(--tag-bg)",
+    levelColor: "var(--accent)",
     desc: "Connect physical devices to the internet. Build smart systems that sense, communicate, and respond in real-time.",
     tools: ["ESP32", "Arduino", "MQTT", "Node-RED", "AWS IoT", "Thingspeak"],
     tagline: "The gateway to smart, connected systems.",
@@ -1001,12 +1001,12 @@ export const TECHNOLOGIES = [
     id: "embedded",
     name: "Embedded Systems",
     abbr: "Embedded",
-    color: "#3b82f6",
+    color: "var(--tag-text)",
     iconLabel: "EMB",
-    iconBg: "rgba(59,130,246,0.1)",
+    iconBg: "var(--tag-bg)",
     level: "FOUNDATIONAL",
-    levelBg: "rgba(59,130,246,0.1)",
-    levelColor: "#3b82f6",
+    levelBg: "var(--tag-bg)",
+    levelColor: "var(--tag-text)",
     desc: "Program microcontrollers at the hardware level. Build firmware, control peripherals, and design real-time systems.",
     tools: ["STM32", "Arduino", "FreeRTOS", "C/C++", "Keil", "CubeMX"],
     tagline: "The foundation of every smart device.",
@@ -1199,12 +1199,12 @@ export const TECHNOLOGIES = [
     id: "iiot",
     name: "Industrial IoT",
     abbr: "IIoT",
-    color: "#f59e0b",
+    color: "var(--tag-text)",
     iconLabel: "IIoT",
-    iconBg: "rgba(245,158,11,0.1)",
+    iconBg: "var(--tag-bg)",
     level: "INTERMEDIATE",
-    levelBg: "rgba(245,158,11,0.1)",
-    levelColor: "#f59e0b",
+    levelBg: "var(--tag-bg)",
+    levelColor: "var(--tag-text)",
     desc: "IoT for factory floors and industrial environments. PLCs, SCADA, OPC-UA, and predictive maintenance at scale.",
     tools: ["PLCs", "SCADA", "OPC-UA", "Modbus", "Siemens", "InfluxDB"],
     tagline: "Where IoT meets the factory floor.",
@@ -1396,12 +1396,12 @@ export const TECHNOLOGIES = [
     id: "robotics",
     name: "Robotics",
     abbr: "Robotics",
-    color: "#8b5cf6",
+    color: "var(--tag-text)",
     iconLabel: "ROB",
-    iconBg: "rgba(139,92,246,0.1)",
+    iconBg: "var(--tag-bg)",
     level: "FOUNDATIONAL",
-    levelBg: "rgba(139,92,246,0.1)",
-    levelColor: "#8b5cf6",
+    levelBg: "var(--tag-bg)",
+    levelColor: "var(--tag-text)",
     desc: "Build robots that move, sense, and act. Kinematics, motor control, path planning, and autonomous behavior.",
     tools: ["Arduino", "ROS", "Servo Motors", "L298N", "Ultrasonic", "OpenCV"],
     tagline: "Build machines that move and think.",
@@ -1595,12 +1595,12 @@ export const TECHNOLOGIES = [
     id: "iort",
     name: "IoT & Robotics (IoRT)",
     abbr: "IoRT",
-    color: "#00d4aa",
+    color: "var(--accent)",
     iconLabel: "IoT+R",
-    iconBg: "rgba(0,212,170,0.1)",
+    iconBg: "var(--tag-bg)",
     level: "ADVANCED",
-    levelBg: "rgba(0,212,170,0.1)",
-    levelColor: "#00d4aa",
+    levelBg: "var(--tag-bg)",
+    levelColor: "var(--accent)",
     desc: "Robots connected to the internet. Remote monitoring, cloud-controlled autonomy, and swarm communication.",
     tools: ["ROS", "MQTT", "AWS IoT", "ESP32", "OpenCV", "Raspberry Pi"],
     tagline: "Where robots meet the cloud.",
@@ -1793,12 +1793,12 @@ export const TECHNOLOGIES = [
     id: "aiot",
     name: "Artificial Intelligence of Things",
     abbr: "AIoT",
-    color: "#f43f5e",
+    color: "var(--tag-text)",
     iconLabel: "AIoT",
-    iconBg: "rgba(244,63,94,0.1)",
+    iconBg: "var(--tag-bg)",
     level: "ADVANCED",
-    levelBg: "rgba(244,63,94,0.1)",
-    levelColor: "#f43f5e",
+    levelBg: "var(--tag-bg)",
+    levelColor: "var(--tag-text)",
     desc: "AI models running on IoT hardware. TinyML, edge inference, anomaly detection, and intelligent sensing.",
     tools: [
       "TensorFlow Lite",
@@ -1998,12 +1998,12 @@ export const TECHNOLOGIES = [
     id: "aiort",
     name: "AI + IoT & Robotics (AIoRT)",
     abbr: "AIoRT",
-    color: "#f59e0b",
+    color: "var(--tag-text)",
     iconLabel: "AI+R",
-    iconBg: "rgba(245,158,11,0.1)",
+    iconBg: "var(--tag-bg)",
     level: "EXPERT",
-    levelBg: "rgba(245,158,11,0.1)",
-    levelColor: "#f59e0b",
+    levelBg: "var(--tag-bg)",
+    levelColor: "var(--tag-text)",
     desc: "AI-powered connected robots. Autonomous decision-making, cloud intelligence, vision-guided manipulation at scale.",
     tools: [
       "ROS2",
@@ -2203,12 +2203,12 @@ export const TECHNOLOGIES = [
     id: "advanced-iot",
     name: "Advanced IoT",
     abbr: "Adv. IoT",
-    color: "#f43f5e",
+    color: "var(--tag-text)",
     iconLabel: "A-IoT",
-    iconBg: "rgba(244,63,94,0.1)",
+    iconBg: "var(--tag-bg)",
     level: "EXPERT",
-    levelBg: "rgba(244,63,94,0.1)",
-    levelColor: "#f43f5e",
+    levelBg: "var(--tag-bg)",
+    levelColor: "var(--tag-text)",
     desc: "Production IoT engineering. Large-scale deployments, mesh networks, digital twins, and cloud-native architectures.",
     tools: ["AWS IoT", "Azure IoT", "InfluxDB", "Kafka", "Terraform", "Docker"],
     tagline: "IoT at scale — production grade.",
@@ -2401,12 +2401,12 @@ export const TECHNOLOGIES = [
     id: "drone",
     name: "Drone Technology",
     abbr: "UAV",
-    color: "#3b82f6",
+    color: "var(--tag-text)",
     iconLabel: "UAV",
-    iconBg: "rgba(59,130,246,0.1)",
+    iconBg: "var(--tag-bg)",
     level: "INTERMEDIATE",
-    levelBg: "rgba(59,130,246,0.1)",
-    levelColor: "#3b82f6",
+    levelBg: "var(--tag-bg)",
+    levelColor: "var(--tag-text)",
     desc: "Design and build drones with flight control, GPS navigation, and real-time aerial applications.",
     tools: ["PX4", "ArduPilot", "GPS", "Telemetry", "Mission Planner", "Python"],
     tagline: "Take your skills to the skies.",
@@ -2592,12 +2592,12 @@ export const TECHNOLOGIES = [
     id: "ai",
     name: "Artificial Intelligence",
     abbr: "AI",
-    color: "#8b5cf6",
+    color: "var(--tag-text)",
     iconLabel: "AI",
-    iconBg: "rgba(139,92,246,0.1)",
+    iconBg: "var(--tag-bg)",
     level: "FOUNDATIONAL",
-    levelBg: "rgba(139,92,246,0.1)",
-    levelColor: "#8b5cf6",
+    levelBg: "var(--tag-bg)",
+    levelColor: "var(--tag-text)",
     desc: "Build intelligent systems using machine learning, deep learning, and real-world AI applications.",
     tools: ["Python", "TensorFlow", "PyTorch", "Scikit-learn", "OpenCV", "NLP"],
     tagline: "Teach machines to think.",
@@ -2757,9 +2757,9 @@ export const TECHNOLOGIES = [
   abbr: "CPT",
   color: "#1ba0d7",
   iconLabel: "CPT",
-  iconBg: "rgba(27,160,215,0.1)",
+  iconBg: "var(--tag-bg)",
   level: "ADVANCED",
-  levelBg: "rgba(27,160,215,0.1)",
+  levelBg: "var(--tag-bg)",
   levelColor: "#1ba0d7",
 
   desc: "Design, configure, and troubleshoot computer networks using Cisco Packet Tracer.",
@@ -2975,13 +2975,13 @@ export const TECHNOLOGIES = [
   id: "appdev",
   name: "Mobile App Development",
   abbr: "APP",
-  color: "#10b981",
+  color: "var(--tag-text)",
   iconLabel: "APP",
-  iconBg: "rgba(16,185,129,0.1)",
+  iconBg: "var(--tag-bg)",
 
   level: "FOUNDATIONAL",
-  levelBg: "rgba(16,185,129,0.1)",
-  levelColor: "#10b981",
+  levelBg: "var(--tag-bg)",
+  levelColor: "var(--tag-text)",
 
   desc: "Build Android applications using MIT App Inventor, Firebase, APIs, sensors, and real-world project development.",
 
@@ -3196,9 +3196,9 @@ export const TECHNOLOGIES = [
 ];
 
 export const DURATION_OPTIONS = [
-  { days: 2, label: "Workshop", color: "#00d4aa" },
-  { days: 3, label: "Intensive", color: "#3b82f6" },
-  { days: 5, label: "Bootcamp", color: "#f59e0b" },
+  { days: 2, label: "Workshop", color: "var(--accent)" },
+  { days: 3, label: "Intensive", color: "var(--tag-text)" },
+  { days: 5, label: "Bootcamp", color: "var(--tag-text)" },
 ];
 
 const LEAD_EMAIL = "hello@arclabs.in";
@@ -3420,7 +3420,7 @@ function LeadModal({ tech, duration, onClose }) {
               <br />
               WhatsApp us directly for faster response:
               <br />
-              <strong style={{ color: "#25D366" }}>{WHATSAPP_DISPLAY}</strong>
+              <strong style={{ color: "var(--accent)" }}>{WHATSAPP_DISPLAY}</strong>
             </p>
           </div>
         ) : (
@@ -3528,7 +3528,7 @@ function LeadModal({ tech, duration, onClose }) {
                   {loading ? "Saving Details..." : "Submit & Download PDF"}
                 </button>
                 {error && (
-                  <p className="form-note" style={{ color: "#ef4444" }}>
+                  <p className="form-note" style={{ color: "var(--tag-text)" }}>
                     {error}
                   </p>
                 )}

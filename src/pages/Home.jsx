@@ -151,10 +151,62 @@ const HOME_HERO_IMAGES = [
 ];
 
 function Hero() {
+  const [splineLoaded, setSplineLoaded] = useState(false);
+  const [heroReady, setHeroReady] = useState(false);
+  const handleSplineReady = () => setSplineLoaded(true);
+
+  useEffect(() => {
+    if (!splineLoaded) return undefined;
+
+    const revealTimer = window.setTimeout(() => {
+      setHeroReady(true);
+    }, 4000);
+
+    return () => window.clearTimeout(revealTimer);
+  }, [splineLoaded]);
+
+  useEffect(() => {
+    document.body.classList.toggle("home-hero-loading", !heroReady);
+    document.body.classList.toggle("home-hero-ready", heroReady);
+
+    return () => {
+      document.body.classList.remove("home-hero-loading", "home-hero-ready");
+    };
+  }, [heroReady]);
+
   return (
-    <section className="hero">
+    <section
+      className={`hero ${splineLoaded ? "hero-scene-loaded" : "hero-scene-loading"} ${heroReady ? "hero-ready" : "hero-waiting"}`}
+    >
+      {!heroReady && (
+        <div className={`hero-boot-loader${splineLoaded ? " is-settling" : ""}`} aria-live="polite">
+          <div className="hero-loader-core" aria-hidden="true">
+            <span className="hero-loader-ring hero-loader-ring-outer" />
+            <span className="hero-loader-ring hero-loader-ring-inner" />
+            <span className="hero-loader-orbit" />
+            <span className="hero-loader-pulse" />
+          </div>
+          <div className="hero-loader-copy">
+            <span>{splineLoaded ? "Robot scene locked" : "Initializing ARC lab system"}</span>
+            <strong>{splineLoaded ? "Running cinematic intro" : "Loading Spline robotics layer"}</strong>
+          </div>
+          <div className="hero-loader-progress" aria-hidden="true">
+            <span />
+          </div>
+        </div>
+      )}
       <div className="hero-glow" />
       <div className="hero-inner">
+        <div className="hero-bg-tech-text" aria-hidden="true">
+          <div className="hero-bg-line hero-bg-line-split hero-bg-line-primary">
+            <span>India's Practical</span>
+            <span>AI + IoRT Lab</span>
+          </div>
+          <div className="hero-bg-line hero-bg-line-split">
+            <span>System for</span>
+            <span>Institutions</span>
+          </div>
+        </div>
 
         {/* LEFT */}
         <div className="hero-left">
@@ -166,15 +218,6 @@ function Hero() {
           <div className="hero-badge">
             <span className="hero-badge-dot" />
             MSME Registered &middot; Made in India &middot; Hyderabad
-          </div>
-
-          {/* Title */}
-          <div className="hero-title-row">
-            <h1>
-              India's Practical<br />
-              <span className="accent">AI + IoRT</span> Lab<br />
-              System for <span className="blue">Institutions</span>
-            </h1>
           </div>
 
           <p className="hero-sub">
@@ -191,8 +234,10 @@ function Hero() {
 
         <div className="hero-lab-preview" aria-hidden="true">
           <SplineScene
-            scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
+            scene="https://prod.spline.design/qJ53MrE6jmG9KYUu/scene.splinecode"
             className="hero-lab-scene"
+            onLoad={handleSplineReady}
+            onError={handleSplineReady}
           />
         </div>
 
@@ -237,11 +282,15 @@ function TrustBar() {
     "Made-in-India Hardware","25,000+ Students","CSR-Ready Labs",
     "IoRT + AI Systems","ATL Compatible Kits","Teacher Certification",
   ];
-  const doubled = [...ITEMS, ...ITEMS];
   return (
     <div className="trust-bar">
       <div className="trust-track">
-        {doubled.map((item, i) => <span className="trust-item" key={i}>{item}</span>)}
+        <div className="trust-set">
+          {ITEMS.map((item) => <span className="trust-item" key={item}>{item}</span>)}
+        </div>
+        <div className="trust-set" aria-hidden="true">
+          {ITEMS.map((item) => <span className="trust-item" key={`copy-${item}`}>{item}</span>)}
+        </div>
       </div>
     </div>
   );
@@ -286,9 +335,9 @@ function Services() {
     {
       id: "school",
       icon: "🏫",
-      color: "#00d4aa",
-      colorDim: "rgba(0,212,170,0.12)",
-      colorBorder: "rgba(0,212,170,0.30)",
+      color: "var(--accent)",
+      colorDim: "var(--tag-bg)",
+      colorBorder: "var(--tag-bg)",
       title: "School Lab Setup & STEM",
       desc: "End-to-end IoRT + AI lab installation for Classes 3–10. Hardware, curriculum, installation, and ongoing support — bundled.",
       points: [
@@ -303,9 +352,9 @@ function Services() {
     {
       id: "college",
       icon: "🎓",
-      color: "#3b82f6",
-      colorDim: "rgba(59,130,246,0.12)",
-      colorBorder: "rgba(59,130,246,0.30)",
+      color: "var(--tag-text)",
+      colorDim: "var(--tag-bg)",
+      colorBorder: "var(--tag-bg)",
       title: "College Training Programs",
       desc: "Industry-driven curriculum in IoT, AI, Cloud, and Embedded Systems. Real projects, live hardware, certification.",
       points: [
@@ -337,9 +386,9 @@ function Services() {
     {
       id: "csr",
       icon: "🤝",
-      color: "#f59e0b",
-      colorDim: "rgba(245,158,11,0.12)",
-      colorBorder: "rgba(245,158,11,0.30)",
+      color: "var(--tag-text)",
+      colorDim: "var(--tag-bg)",
+      colorBorder: "var(--tag-bg)",
       title: "CSR Lab Implementation",
       desc: "Complete CSR-funded lab setup with impact reporting, cost-per-beneficiary data, and measurable learning outcomes.",
       points: [
@@ -354,9 +403,9 @@ function Services() {
     {
       id: "teacher",
       icon: "👩‍🏫",
-      color: "#f43f5e",
-      colorDim: "rgba(244,63,94,0.12)",
-      colorBorder: "rgba(244,63,94,0.30)",
+      color: "var(--tag-text)",
+      colorDim: "var(--tag-bg)",
+      colorBorder: "var(--tag-bg)",
       title: "Teacher Training",
       desc: "Two-level certification program that makes teachers independently capable of delivering IoT and Robotics education.",
       points: [
@@ -654,7 +703,7 @@ function CSR() {
             </div>
           ))}
           <div className="csr-metric csr-wide">
-            <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "0.68rem", color: "var(--accent)", marginBottom: "6px", letterSpacing: "0.06em" }}>LISTED ON</div>
+            <div style={{ fontFamily: "var(--font-body)", fontSize: "0.68rem", color: "var(--accent)", marginBottom: "6px", letterSpacing: "0.06em" }}>LISTED ON</div>
             <div style={{ fontSize: "0.85rem", color: "var(--text-3)", lineHeight: 1.7 }}>
               CSR Box &middot; GiveIndia Corporate &middot; Sattva Platform<br />
               <span style={{ color: "var(--text)", fontWeight: 600 }}>ARC LABS is listed on all major CSR platforms.</span>

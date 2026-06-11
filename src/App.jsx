@@ -46,8 +46,11 @@ const WaIcon = () => (
 );
 
 function Layout({ children }) {
+  const { pathname } = useLocation();
+  const isHome = pathname === "/";
+
   return (
-    <>
+    <div className={`app-shell${isHome ? " home-intro-shell" : ""}`}>
       <Navbar />
       <main style={{ position: "relative", zIndex: 1 }}>{children}</main>
       <Footer />
@@ -62,7 +65,7 @@ function Layout({ children }) {
       >
         <WaIcon />
       </a>
-    </>
+    </div>
   );
 }
 

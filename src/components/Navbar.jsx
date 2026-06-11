@@ -23,6 +23,7 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const location = useLocation();
+  const isHome = location.pathname === "/";
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
@@ -34,7 +35,7 @@ export default function Navbar() {
 
   return (
     <>
-      <nav className={`navbar${scrolled ? " scrolled" : ""}`}>
+      <nav className={`navbar${scrolled ? " scrolled" : ""}${isHome ? " home-intro" : ""}`}>
         <Link to="/" className="navbar-logo">
           <span className="logo-dot" />
           ARC LABS

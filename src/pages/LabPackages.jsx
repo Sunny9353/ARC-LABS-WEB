@@ -13,8 +13,8 @@ const pageStyles = `
 .lp-hero-bg {
   position: absolute; inset: 0; pointer-events: none;
   background:
-    radial-gradient(ellipse 70% 50% at 50% 0%, rgba(0,212,170,0.06) 0%, transparent 65%),
-    radial-gradient(ellipse 40% 40% at 20% 80%, rgba(59,130,246,0.04) 0%, transparent 60%);
+    radial-gradient(ellipse 70% 50% at 50% 0%, var(--tag-bg) 0%, transparent 65%),
+    radial-gradient(ellipse 40% 40% at 20% 80%, var(--tag-bg) 0%, transparent 60%);
 }
 .lp-hero-inner {
   position: relative; z-index: 1;
@@ -24,7 +24,7 @@ const pageStyles = `
 @media(max-width:900px) { .lp-hero-inner { grid-template-columns: 1fr; gap: 2.5rem; } }
 
 .lp-hero h1 {
-  font-family: 'Syne', sans-serif; font-weight: 800;
+  font-family: var(--font-heading); font-weight: 800;
   font-size: clamp(2.2rem, 5vw, 3.6rem);
   line-height: 1.06; letter-spacing: -.035em; margin-bottom: 1.2rem;
   color: var(--text-1);
@@ -49,11 +49,11 @@ const pageStyles = `
 }
 .lp-stat-row { display: flex; align-items: center; justify-content: space-between; }
 .lp-stat-num {
-  font-family: 'Syne', sans-serif; font-weight: 800;
+  font-family: var(--font-heading); font-weight: 800;
   font-size: 1.7rem; line-height: 1; color: var(--stat-color, var(--accent));
 }
 .lp-stat-badge {
-  font-size: .65rem; font-family: 'JetBrains Mono', monospace;
+  font-size: .65rem; font-family: var(--font-body);
   padding: 3px 8px; border-radius: 4px; letter-spacing: .06em;
   background: rgba(255,255,255,0.06); color: var(--stat-color, var(--accent));
 }
@@ -72,7 +72,7 @@ const pageStyles = `
   cursor: pointer; transition: all .25s; font-family: inherit;
 }
 .lp-aud-btn.active {
-  background: rgba(0,212,170,0.09); border-color: var(--accent); color: var(--accent);
+  background: var(--tag-bg); border-color: var(--accent); color: var(--accent);
 }
 
 /* Packages grid */
@@ -90,23 +90,23 @@ const pageStyles = `
 .lp-card:hover { transform: translateY(-6px); box-shadow: 0 28px 70px rgba(0,0,0,.5); }
 .lp-card.featured {
   border-color: var(--accent);
-  background: linear-gradient(160deg, rgba(0,212,170,0.05) 0%, var(--surface-2) 50%);
-  box-shadow: 0 0 0 1px var(--accent), 0 20px 60px rgba(0,212,170,0.1);
+  background: linear-gradient(160deg, var(--tag-bg) 0%, var(--surface-2) 50%);
+  box-shadow: 0 0 0 1px var(--accent), 0 20px 60px var(--tag-bg);
 }
 .lp-card-bar { height: 4px; }
 .lp-popular {
   position: absolute; top: 20px; right: 16px;
   background: var(--accent); color: var(--bg);
-  font-family: 'JetBrains Mono', monospace; font-size: .58rem; font-weight: 700;
+  font-family: var(--font-body); font-size: .58rem; font-weight: 700;
   padding: 4px 10px; border-radius: 5px; letter-spacing: .07em;
 }
 .lp-card-head { padding: 26px 26px 0; }
 .lp-card-tier {
-  font-family: 'JetBrains Mono', monospace; font-size: .62rem;
+  font-family: var(--font-body); font-size: .62rem;
   letter-spacing: .1em; text-transform: uppercase; margin-bottom: .5rem;
 }
 .lp-card-name {
-  font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.35rem;
+  font-family: var(--font-heading); font-weight: 800; font-size: 1.35rem;
   letter-spacing: -.025em; margin-bottom: .3rem; color: var(--text-1);
 }
 .lp-card-tagline { font-size: .8rem; color: var(--text-3); line-height: 1.55; margin-bottom: 1.2rem; }
@@ -117,22 +117,22 @@ const pageStyles = `
   margin: 0 0 1.4rem; border: 1px solid var(--border-1);
 }
 .lp-price {
-  font-family: 'Syne', sans-serif; font-weight: 800; font-size: 2.2rem;
+  font-family: var(--font-heading); font-weight: 800; font-size: 2.2rem;
   letter-spacing: -.03em; line-height: 1;
 }
 .lp-price span { font-size: .9rem; font-weight: 400; color: var(--text-3); }
 .lp-price-sub { font-size: .72rem; color: var(--text-3); margin-top: 5px; }
 .lp-price-note {
   display: inline-flex; align-items: center; gap: 5px; margin-top: 8px;
-  font-family: 'JetBrains Mono', monospace; font-size: .6rem;
-  color: var(--accent); background: rgba(0,212,170,0.08);
+  font-family: var(--font-body); font-size: .6rem;
+  color: var(--accent); background: var(--tag-bg);
   padding: 3px 10px; border-radius: 4px;
 }
 
 /* Features list */
 .lp-includes { padding: 0 26px; flex: 1; }
 .lp-includes h4 {
-  font-family: 'JetBrains Mono', monospace; font-size: .62rem;
+  font-family: var(--font-body); font-size: .62rem;
   color: var(--text-3); letter-spacing: .1em; text-transform: uppercase; margin-bottom: .9rem;
 }
 .lp-feat-list { list-style: none; margin-bottom: 1.2rem; padding: 0; }
@@ -144,7 +144,7 @@ const pageStyles = `
 .lp-feat-list li::before {
   content: '+'; position: absolute; left: 0;
   color: var(--accent); font-weight: 700; font-size: .85rem;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: var(--font-body);
 }
 .lp-feat-list li:last-child { border-bottom: none; }
 .lp-feat-list b { color: var(--text-1); font-weight: 600; display: block; margin-bottom: 1px; }
@@ -189,13 +189,13 @@ const pageStyles = `
 .lp-ins-icon {
   width: 38px; height: 38px; border-radius: 10px; flex-shrink: 0;
   display: flex; align-items: center; justify-content: center;
-  font-size: .7rem; font-weight: 700; font-family: 'JetBrains Mono', monospace;
+  font-size: .7rem; font-weight: 700; font-family: var(--font-body);
 }
-.lp-ins-name { font-family: 'Syne', sans-serif; font-size: .85rem; font-weight: 700; margin-bottom: 3px; color: var(--text-1); }
+.lp-ins-name { font-family: var(--font-heading); font-size: .85rem; font-weight: 700; margin-bottom: 3px; color: var(--text-1); }
 .lp-ins-desc { font-size: .75rem; color: var(--text-3); line-height: 1.55; }
 .lp-ins-tag {
   display: inline-block; margin-top: 6px;
-  font-family: 'JetBrains Mono', monospace; font-size: .58rem;
+  font-family: var(--font-body); font-size: .58rem;
   padding: 2px 8px; border-radius: 3px; letter-spacing: .05em;
 }
 
@@ -220,18 +220,18 @@ const pageStyles = `
 .lp-proc-num {
   width: 56px; height: 56px; border-radius: 50%;
   display: flex; align-items: center; justify-content: center;
-  font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.1rem;
+  font-family: var(--font-heading); font-weight: 800; font-size: 1.1rem;
   margin-bottom: 1rem; position: relative; z-index: 1;
   border: 2px solid var(--ps-color, var(--accent));
   background: var(--bg); color: var(--ps-color, var(--accent));
 }
-.lp-proc-title { font-family: 'Syne', sans-serif; font-size: .9rem; font-weight: 700; margin-bottom: .3rem; color: var(--text-1); }
+.lp-proc-title { font-family: var(--font-heading); font-size: .9rem; font-weight: 700; margin-bottom: .3rem; color: var(--text-1); }
 .lp-proc-desc { font-size: .77rem; color: var(--text-3); line-height: 1.6; max-width: 160px; }
 .lp-proc-time {
   margin-top: .6rem;
-  font-family: 'JetBrains Mono', monospace; font-size: .6rem;
+  font-family: var(--font-body); font-size: .6rem;
   color: var(--ps-color, var(--accent)); letter-spacing: .08em;
-  background: rgba(0,212,170,0.07); padding: 3px 10px; border-radius: 4px;
+  background: var(--tag-bg); padding: 3px 10px; border-radius: 4px;
 }
 
 /* ROI Calculator */
@@ -242,7 +242,7 @@ const pageStyles = `
   background: var(--surface-2); border: 1px solid var(--border-2); border-radius: 20px; padding: 32px;
 }
 .lp-roi-form h3 {
-  font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.2rem;
+  font-family: var(--font-heading); font-weight: 800; font-size: 1.2rem;
   letter-spacing: -.02em; margin-bottom: 1.5rem; color: var(--text-1);
 }
 .lp-roi-row { margin-bottom: 1.2rem; }
@@ -251,8 +251,8 @@ const pageStyles = `
   font-size: .78rem; font-weight: 600; color: var(--text-2); margin-bottom: 7px;
 }
 .lp-roi-row label span {
-  font-family: 'JetBrains Mono', monospace; font-size: .72rem;
-  color: var(--accent); background: rgba(0,212,170,0.1);
+  font-family: var(--font-body); font-size: .72rem;
+  color: var(--accent); background: var(--tag-bg);
   padding: 2px 9px; border-radius: 4px;
 }
 .lp-slider {
@@ -263,7 +263,7 @@ const pageStyles = `
 .lp-slider::-webkit-slider-thumb {
   -webkit-appearance: none; width: 18px; height: 18px;
   background: var(--accent); border-radius: 50%; cursor: pointer;
-  box-shadow: 0 0 10px rgba(0,212,170,0.4);
+  box-shadow: 0 0 10px var(--accent-glow);
 }
 .lp-roi-metric {
   background: var(--surface-2); border: 1px solid var(--border-1); border-radius: 14px;
@@ -275,10 +275,10 @@ const pageStyles = `
 }
 .lp-roi-metric-label {
   font-size: .72rem; color: var(--text-3); text-transform: uppercase;
-  letter-spacing: .07em; margin-bottom: 6px; font-family: 'JetBrains Mono', monospace;
+  letter-spacing: .07em; margin-bottom: 6px; font-family: var(--font-body);
 }
 .lp-roi-metric-val {
-  font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.8rem;
+  font-family: var(--font-heading); font-weight: 800; font-size: 1.8rem;
   letter-spacing: -.025em; color: var(--rm-color, var(--accent));
 }
 .lp-roi-metric-sub { font-size: .75rem; color: var(--text-3); margin-top: 3px; }
@@ -287,13 +287,13 @@ const pageStyles = `
 /* CSR callout */
 .lp-csr-callout {
   margin: 0 5vw 80px; padding: 40px;
-  background: linear-gradient(135deg, rgba(0,212,170,0.05), rgba(59,130,246,0.05));
-  border: 1px solid rgba(0,212,170,0.2); border-radius: 20px;
+  background: linear-gradient(135deg, var(--tag-bg), var(--tag-bg));
+  border: 1px solid var(--tag-bg); border-radius: 20px;
   position: relative; overflow: hidden;
 }
 .lp-csr-callout::before {
   content: 'CSR'; position: absolute; right: -10px; top: -20px;
-  font-family: 'Syne', sans-serif; font-weight: 800; font-size: 8rem;
+  font-family: var(--font-heading); font-weight: 800; font-size: 8rem;
   opacity: .03; letter-spacing: -.05em; color: var(--accent); pointer-events: none;
 }
 .lp-csr-inner { display: grid; grid-template-columns: 1fr auto; gap: 2rem; align-items: center; }
@@ -308,7 +308,7 @@ const pageStyles = `
   overflow: hidden; cursor: pointer; transition: border-color .2s;
 }
 .lp-faq-item:hover { border-color: var(--border-2); }
-.lp-faq-item.open { border-color: rgba(0,212,170,0.25); }
+.lp-faq-item.open { border-color: var(--tag-bg); }
 .lp-faq-q {
   padding: 18px 20px; display: flex; justify-content: space-between;
   align-items: center; gap: 1rem;
@@ -319,7 +319,7 @@ const pageStyles = `
   background: var(--surface-3); display: flex; align-items: center; justify-content: center;
   font-size: .75rem; color: var(--text-3); transition: all .2s;
 }
-.lp-faq-item.open .lp-faq-toggle { background: rgba(0,212,170,0.1); color: var(--accent); }
+.lp-faq-item.open .lp-faq-toggle { background: var(--tag-bg); color: var(--accent); }
 .lp-faq-a {
   padding: 0 20px 18px; font-size: .83rem; color: var(--text-3); line-height: 1.7;
   border-top: 1px solid var(--border-1); animation: lpFadeIn .25s ease;
@@ -334,11 +334,11 @@ const pageStyles = `
 .lp-bottom-cta::before {
   content: ''; position: absolute; top: 50%; left: 50%;
   transform: translate(-50%,-50%); width: 700px; height: 500px;
-  background: radial-gradient(ellipse, rgba(0,212,170,0.06) 0%, transparent 65%);
+  background: radial-gradient(ellipse, var(--tag-bg) 0%, transparent 65%);
   pointer-events: none;
 }
 .lp-bottom-cta h2 {
-  font-family: 'Syne', sans-serif; font-weight: 800;
+  font-family: var(--font-heading); font-weight: 800;
   font-size: clamp(2rem, 4.5vw, 3.2rem); letter-spacing: -.03em; line-height: 1.08;
   margin-bottom: .8rem; position: relative; color: var(--text-1);
 }
@@ -369,7 +369,7 @@ const pageStyles = `
 .lp-modal-close:hover { background: rgba(255,255,255,.13); color: var(--text-1); }
 .lp-modal-head { padding: 30px 30px 20px; border-bottom: 1px solid var(--border-1); }
 .lp-modal-head h3 {
-  font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.25rem;
+  font-family: var(--font-heading); font-weight: 800; font-size: 1.25rem;
   margin-bottom: .3rem; letter-spacing: -.02em; color: var(--text-1);
 }
 .lp-modal-head p { font-size: .82rem; color: var(--text-3); line-height: 1.6; }
@@ -390,7 +390,7 @@ const pageStyles = `
   font-size: .86rem; padding: 10px 13px; outline: none; transition: border-color .2s;
 }
 .lp-form-row input:focus, .lp-form-row select:focus, .lp-form-row textarea:focus {
-  border-color: var(--accent); box-shadow: 0 0 0 3px rgba(0,212,170,.07);
+  border-color: var(--accent); box-shadow: 0 0 0 3px var(--tag-bg);
 }
 .lp-form-row select option { background: var(--surface-3); }
 .lp-form-row textarea { resize: vertical; min-height: 74px; }
@@ -399,7 +399,7 @@ const pageStyles = `
 .lp-form-note { font-size: .7rem; color: var(--text-3); text-align: center; margin-top: .8rem; }
 .lp-modal-success { padding: 48px 30px; text-align: center; }
 .lp-modal-success h3 {
-  font-family: 'Syne', sans-serif; font-size: 1.4rem; font-weight: 800;
+  font-family: var(--font-heading); font-size: 1.4rem; font-weight: 800;
   color: var(--accent); margin-bottom: .5rem;
 }
 .lp-modal-success p { color: var(--text-3); font-size: .86rem; line-height: 1.75; }
@@ -414,7 +414,7 @@ const PACKAGES = {
       id: "school-starter", tier: "PACKAGE 01", name: "Starter Lab",
       tagline: "Launch a functional IoT classroom with minimal investment. Perfect for schools beginning their STEM journey.",
       price: "₹2.5L", priceNum: 250000, priceNote: "CSR funding eligible",
-      color: "var(--amber)", colorHex: "#f59e0b", featured: false, badge: "SCH",
+      color: "var(--amber)", colorHex: "var(--tag-text)", featured: false, badge: "SCH",
       audience: ["Primary & Middle School", "Classes 6–9", "50–100 Students/Year"],
       features: [
         { title: "ARC Lab's IoT Lite Kit x 10 units", detail: "Arduino + ESP32, sensors, relay — all essentials" },
@@ -433,7 +433,7 @@ const PACKAGES = {
       id: "school-standard", tier: "PACKAGE 02", name: "Standard Lab",
       tagline: "The complete school IoT + Robotics lab. Most popular package for CBSE schools seeking full STEM capability.",
       price: "₹5L", priceNum: 500000, priceNote: "ATL-compatible · CSR eligible",
-      color: "var(--accent)", colorHex: "#00d4aa", featured: true, badge: "STD",
+      color: "var(--accent)", colorHex: "var(--accent)", featured: true, badge: "STD",
       audience: ["High School", "Classes 8–12", "100–200 Students/Year"],
       features: [
         { title: "ARC Lab's IoT Pro Kit x 15 units", detail: "Raspberry Pi + ESP32, full sensor suite" },
@@ -452,7 +452,7 @@ const PACKAGES = {
       id: "school-premier", tier: "PACKAGE 03", name: "Premier IoT & Robotics Lab",
       tagline: "ARC LABS' flagship school lab. Full IoT, Robotics + AI stack — the most advanced school STEM lab in India.",
       price: "₹10L+", priceNum: 1000000, priceNote: "Custom quote · CSR/Govt eligible",
-      color: "var(--blue)", colorHex: "#3b82f6", featured: false, badge: "PRO",
+      color: "var(--blue)", colorHex: "var(--tag-text)", featured: false, badge: "PRO",
       audience: ["Senior Secondary", "Classes 9–12", "200+ Students/Year"],
       features: [
         { title: "Full IoT, Robotics + AI Lab — Custom Design", detail: "IoT Pro + Experience kits, AI modules" },
@@ -473,7 +473,7 @@ const PACKAGES = {
       id: "college-essential", tier: "PACKAGE 01", name: "Essential IoT Lab",
       tagline: "Department-level IoT lab for Diploma and B.Tech Year 1–2. Get students building from day one.",
       price: "₹4L", priceNum: 400000, priceNote: "Institutional pricing available",
-      color: "var(--amber)", colorHex: "#f59e0b", featured: false, badge: "ESS",
+      color: "var(--amber)", colorHex: "var(--tag-text)", featured: false, badge: "ESS",
       audience: ["Diploma Programs", "B.Tech Year 1–2", "30–40 Students/Batch"],
       features: [
         { title: "ARC Lab's IoT Experience Kit x 20 units", detail: "5 MCU platforms, full sensor suite" },
@@ -488,7 +488,7 @@ const PACKAGES = {
       id: "college-advanced", tier: "PACKAGE 02", name: "Advanced IoT & Embedded Lab",
       tagline: "Complete lab for ECE/EEE departments. IoT, Embedded Systems, and IIoT under one roof.",
       price: "₹8L", priceNum: 800000, priceNote: "NBA/NAAC accreditation ready",
-      color: "var(--accent)", colorHex: "#00d4aa", featured: true, badge: "ADV",
+      color: "var(--accent)", colorHex: "var(--accent)", featured: true, badge: "ADV",
       audience: ["B.Tech ECE/EEE/CSE", "Year 2–4", "60–80 Students/Batch"],
       features: [
         { title: "IoT Pro Kit x 20 + Experience Kit x 20", detail: "Dual kit setup for parallel experiment tracks" },
@@ -505,7 +505,7 @@ const PACKAGES = {
       id: "college-research", tier: "PACKAGE 03", name: "R&D Innovation Lab",
       tagline: "For departments with active research, startup incubation, or Centre of Excellence ambitions.",
       price: "₹15L+", priceNum: 1500000, priceNote: "RUSA / DST / AICTE funding eligible",
-      color: "var(--violet)", colorHex: "#8b5cf6", featured: false, badge: "R&D",
+      color: "var(--violet)", colorHex: "var(--tag-text)", featured: false, badge: "R&D",
       audience: ["M.Tech / Ph.D.", "Research Centers", "CoE / Incubation Labs"],
       features: [
         { title: "Complete Hardware Stack — All 3 Kits", detail: "IoT Lite + Experience + Pro, custom quantities" },
@@ -532,32 +532,32 @@ const INSIDE_TABS = [
 
 const INSIDE_ITEMS = {
   hardware: [
-    { abbr: "MCU", bg: "rgba(0,212,170,0.12)", color: "#00d4aa", name: "ARC Lab's Development Boards", desc: "Made-in-India boards supporting Arduino, ESP32, STM32, Raspberry Pi — depending on package tier.", tag: "MADE IN INDIA", tagBg: "rgba(0,212,170,0.1)", tagColor: "#00d4aa" },
-    { abbr: "SNS", bg: "rgba(59,130,246,0.1)", color: "#3b82f6", name: "Sensor & Module Set", desc: "DHT11, BMP180, Ultrasonic, IR, LDR, Touch, MQ gas, potentiometer — all onboard.", tag: "PRE-INSTALLED", tagBg: "rgba(59,130,246,0.1)", tagColor: "#3b82f6" },
-    { abbr: "DSP", bg: "rgba(245,158,11,0.1)", color: "#f59e0b", name: "Display & Output Devices", desc: "TFT/OLED displays, RGB LEDs, buzzers, 7-segment display — visual feedback for all projects.", tag: "PLUG & PLAY", tagBg: "rgba(245,158,11,0.1)", tagColor: "#f59e0b" },
-    { abbr: "RLY", bg: "rgba(139,92,246,0.1)", color: "#8b5cf6", name: "Relay & Actuator Modules", desc: "Dual relay for AC/DC load switching, servo ports, digital output headers for external devices.", tag: "INDUSTRIAL GRADE", tagBg: "rgba(139,92,246,0.1)", tagColor: "#8b5cf6" },
-    { abbr: "COM", bg: "rgba(244,63,94,0.1)", color: "#f43f5e", name: "Communication Interfaces", desc: "LoRa, GSM/4G (SIMCOM), RS485, Wi-Fi, BLE — available depending on package tier.", tag: "MULTI-PROTOCOL", tagBg: "rgba(244,63,94,0.1)", tagColor: "#f43f5e" },
-    { abbr: "BOT", bg: "rgba(0,212,170,0.12)", color: "#00d4aa", name: "Robotics Kit (Standard+)", desc: "Wheeled robot chassis, motor driver, sensors — for autonomous bot experiments.", tag: "STANDARD & ABOVE", tagBg: "rgba(0,212,170,0.08)", tagColor: "#00d4aa" },
+    { abbr: "MCU", bg: "var(--tag-bg)", color: "var(--accent)", name: "ARC Lab's Development Boards", desc: "Made-in-India boards supporting Arduino, ESP32, STM32, Raspberry Pi — depending on package tier.", tag: "MADE IN INDIA", tagBg: "var(--tag-bg)", tagColor: "var(--accent)" },
+    { abbr: "SNS", bg: "var(--tag-bg)", color: "var(--tag-text)", name: "Sensor & Module Set", desc: "DHT11, BMP180, Ultrasonic, IR, LDR, Touch, MQ gas, potentiometer — all onboard.", tag: "PRE-INSTALLED", tagBg: "var(--tag-bg)", tagColor: "var(--tag-text)" },
+    { abbr: "DSP", bg: "var(--tag-bg)", color: "var(--tag-text)", name: "Display & Output Devices", desc: "TFT/OLED displays, RGB LEDs, buzzers, 7-segment display — visual feedback for all projects.", tag: "PLUG & PLAY", tagBg: "var(--tag-bg)", tagColor: "var(--tag-text)" },
+    { abbr: "RLY", bg: "var(--tag-bg)", color: "var(--tag-text)", name: "Relay & Actuator Modules", desc: "Dual relay for AC/DC load switching, servo ports, digital output headers for external devices.", tag: "INDUSTRIAL GRADE", tagBg: "var(--tag-bg)", tagColor: "var(--tag-text)" },
+    { abbr: "COM", bg: "var(--tag-bg)", color: "var(--tag-text)", name: "Communication Interfaces", desc: "LoRa, GSM/4G (SIMCOM), RS485, Wi-Fi, BLE — available depending on package tier.", tag: "MULTI-PROTOCOL", tagBg: "var(--tag-bg)", tagColor: "var(--tag-text)" },
+    { abbr: "BOT", bg: "var(--tag-bg)", color: "var(--accent)", name: "Robotics Kit (Standard+)", desc: "Wheeled robot chassis, motor driver, sensors — for autonomous bot experiments.", tag: "STANDARD & ABOVE", tagBg: "var(--tag-bg)", tagColor: "var(--accent)" },
   ],
   curriculum: [
-    { abbr: "NEP", bg: "rgba(59,130,246,0.1)", color: "#3b82f6", name: "NEP 2020 Aligned Content", desc: "All school curriculum mapped to National Education Policy 2020 skill subject requirements.", tag: "NEP ALIGNED", tagBg: "rgba(59,130,246,0.1)", tagColor: "#3b82f6" },
-    { abbr: "PRJ", bg: "rgba(245,158,11,0.1)", color: "#f59e0b", name: "Project-Based Sessions", desc: "Every session is built around a working project — not theory slides. Students build, test, debug.", tag: "HANDS-ON", tagBg: "rgba(245,158,11,0.1)", tagColor: "#f59e0b" },
-    { abbr: "DIG", bg: "rgba(0,212,170,0.12)", color: "#00d4aa", name: "Digital Student Workbooks", desc: "Interactive PDFs with circuit diagrams, code templates, and experiment sheets per session.", tag: "DIGITAL + PRINT", tagBg: "rgba(0,212,170,0.1)", tagColor: "#00d4aa" },
-    { abbr: "ASM", bg: "rgba(139,92,246,0.1)", color: "#8b5cf6", name: "Assessment Framework", desc: "Rubric-based evaluation for each session. Student progress tracked across the year.", tag: "OUTCOME BASED", tagBg: "rgba(139,92,246,0.1)", tagColor: "#8b5cf6" },
-    { abbr: "UPD", bg: "rgba(244,63,94,0.1)", color: "#f43f5e", name: "Quarterly Curriculum Updates", desc: "New projects and content added every quarter. Standard and Premier packages get auto-updates.", tag: "ALWAYS CURRENT", tagBg: "rgba(244,63,94,0.1)", tagColor: "#f43f5e" },
-    { abbr: "MAP", bg: "rgba(59,130,246,0.1)", color: "#3b82f6", name: "Syllabus Mapping (College)", desc: "College packages include CO-PO mapping and experiment lists aligned to your university syllabus.", tag: "COLLEGE ONLY", tagBg: "rgba(59,130,246,0.1)", tagColor: "#3b82f6" },
+    { abbr: "NEP", bg: "var(--tag-bg)", color: "var(--tag-text)", name: "NEP 2020 Aligned Content", desc: "All school curriculum mapped to National Education Policy 2020 skill subject requirements.", tag: "NEP ALIGNED", tagBg: "var(--tag-bg)", tagColor: "var(--tag-text)" },
+    { abbr: "PRJ", bg: "var(--tag-bg)", color: "var(--tag-text)", name: "Project-Based Sessions", desc: "Every session is built around a working project — not theory slides. Students build, test, debug.", tag: "HANDS-ON", tagBg: "var(--tag-bg)", tagColor: "var(--tag-text)" },
+    { abbr: "DIG", bg: "var(--tag-bg)", color: "var(--accent)", name: "Digital Student Workbooks", desc: "Interactive PDFs with circuit diagrams, code templates, and experiment sheets per session.", tag: "DIGITAL + PRINT", tagBg: "var(--tag-bg)", tagColor: "var(--accent)" },
+    { abbr: "ASM", bg: "var(--tag-bg)", color: "var(--tag-text)", name: "Assessment Framework", desc: "Rubric-based evaluation for each session. Student progress tracked across the year.", tag: "OUTCOME BASED", tagBg: "var(--tag-bg)", tagColor: "var(--tag-text)" },
+    { abbr: "UPD", bg: "var(--tag-bg)", color: "var(--tag-text)", name: "Quarterly Curriculum Updates", desc: "New projects and content added every quarter. Standard and Premier packages get auto-updates.", tag: "ALWAYS CURRENT", tagBg: "var(--tag-bg)", tagColor: "var(--tag-text)" },
+    { abbr: "MAP", bg: "var(--tag-bg)", color: "var(--tag-text)", name: "Syllabus Mapping (College)", desc: "College packages include CO-PO mapping and experiment lists aligned to your university syllabus.", tag: "COLLEGE ONLY", tagBg: "var(--tag-bg)", tagColor: "var(--tag-text)" },
   ],
   training: [
-    { abbr: "FTR", bg: "rgba(245,158,11,0.1)", color: "#f59e0b", name: "Onsite Faculty Training", desc: "ARC LABS certified trainer comes to your campus. Hands-on, not classroom slides.", tag: "ONSITE", tagBg: "rgba(245,158,11,0.1)", tagColor: "#f59e0b" },
-    { abbr: "CRT", bg: "rgba(0,212,170,0.12)", color: "#00d4aa", name: "ARC LABS Certification", desc: "Teachers receive Level 1 or Level 2 certification. Nationally recognized, shareable credential.", tag: "CERTIFIED", tagBg: "rgba(0,212,170,0.1)", tagColor: "#00d4aa" },
-    { abbr: "LIB", bg: "rgba(59,130,246,0.1)", color: "#3b82f6", name: "Online Resource Library", desc: "Recorded sessions, how-to videos, project demos — accessible on Arc Lab Learning Portal.", tag: "LIFETIME ACCESS", tagBg: "rgba(59,130,246,0.1)", tagColor: "#3b82f6" },
-    { abbr: "NET", bg: "rgba(139,92,246,0.1)", color: "#8b5cf6", name: "Faculty Community Access", desc: "Join ARC LABS' network of 1,000+ certified teachers. Exchange projects, get help, share resources.", tag: "COMMUNITY", tagBg: "rgba(139,92,246,0.1)", tagColor: "#8b5cf6" },
+    { abbr: "FTR", bg: "var(--tag-bg)", color: "var(--tag-text)", name: "Onsite Faculty Training", desc: "ARC LABS certified trainer comes to your campus. Hands-on, not classroom slides.", tag: "ONSITE", tagBg: "var(--tag-bg)", tagColor: "var(--tag-text)" },
+    { abbr: "CRT", bg: "var(--tag-bg)", color: "var(--accent)", name: "ARC LABS Certification", desc: "Teachers receive Level 1 or Level 2 certification. Nationally recognized, shareable credential.", tag: "CERTIFIED", tagBg: "var(--tag-bg)", tagColor: "var(--accent)" },
+    { abbr: "LIB", bg: "var(--tag-bg)", color: "var(--tag-text)", name: "Online Resource Library", desc: "Recorded sessions, how-to videos, project demos — accessible on Arc Lab Learning Portal.", tag: "LIFETIME ACCESS", tagBg: "var(--tag-bg)", tagColor: "var(--tag-text)" },
+    { abbr: "NET", bg: "var(--tag-bg)", color: "var(--tag-text)", name: "Faculty Community Access", desc: "Join ARC LABS' network of 1,000+ certified teachers. Exchange projects, get help, share resources.", tag: "COMMUNITY", tagBg: "var(--tag-bg)", tagColor: "var(--tag-text)" },
   ],
   support: [
-    { abbr: "SUP", bg: "rgba(0,212,170,0.12)", color: "#00d4aa", name: "Dedicated Support Line", desc: "Direct access to ARC LABS' technical team via WhatsApp, phone, and email.", tag: "PRIORITY SUPPORT", tagBg: "rgba(0,212,170,0.1)", tagColor: "#00d4aa" },
-    { abbr: "VIS", bg: "rgba(245,158,11,0.1)", color: "#f59e0b", name: "Onsite Visit Program", desc: "Scheduled physical visits by our team for maintenance, refresher training, and hardware checks.", tag: "PHYSICAL VISITS", tagBg: "rgba(245,158,11,0.1)", tagColor: "#f59e0b" },
-    { abbr: "WAR", bg: "rgba(59,130,246,0.1)", color: "#3b82f6", name: "Hardware Replacement Warranty", desc: "Faulty components replaced without questions within warranty period. Zero downtime labs.", tag: "WARRANTY BACKED", tagBg: "rgba(59,130,246,0.1)", tagColor: "#3b82f6" },
-    { abbr: "RPT", bg: "rgba(139,92,246,0.1)", color: "#8b5cf6", name: "Annual Impact Report", desc: "Students trained, sessions completed, certification rates — delivered annually for admin and CSR reporting.", tag: "DOCUMENTATION", tagBg: "rgba(139,92,246,0.1)", tagColor: "#8b5cf6" },
+    { abbr: "SUP", bg: "var(--tag-bg)", color: "var(--accent)", name: "Dedicated Support Line", desc: "Direct access to ARC LABS' technical team via WhatsApp, phone, and email.", tag: "PRIORITY SUPPORT", tagBg: "var(--tag-bg)", tagColor: "var(--accent)" },
+    { abbr: "VIS", bg: "var(--tag-bg)", color: "var(--tag-text)", name: "Onsite Visit Program", desc: "Scheduled physical visits by our team for maintenance, refresher training, and hardware checks.", tag: "PHYSICAL VISITS", tagBg: "var(--tag-bg)", tagColor: "var(--tag-text)" },
+    { abbr: "WAR", bg: "var(--tag-bg)", color: "var(--tag-text)", name: "Hardware Replacement Warranty", desc: "Faulty components replaced without questions within warranty period. Zero downtime labs.", tag: "WARRANTY BACKED", tagBg: "var(--tag-bg)", tagColor: "var(--tag-text)" },
+    { abbr: "RPT", bg: "var(--tag-bg)", color: "var(--tag-text)", name: "Annual Impact Report", desc: "Students trained, sessions completed, certification rates — delivered annually for admin and CSR reporting.", tag: "DOCUMENTATION", tagBg: "var(--tag-bg)", tagColor: "var(--tag-text)" },
   ],
 };
 
@@ -621,7 +621,7 @@ function ROICalculator({ onOpenModal }) {
           </div>
         </div>
         <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-          <h3 style={{ fontFamily: "'Syne', sans-serif", fontWeight: 800, fontSize: "1.2rem", letterSpacing: "-.02em", color: "var(--text-1)" }}>Your Impact Metrics</h3>
+          <h3 style={{ fontFamily: "var(--font-heading)", fontWeight: 800, fontSize: "1.2rem", letterSpacing: "-.02em", color: "var(--text-1)" }}>Your Impact Metrics</h3>
           <div className="lp-metric-grid">
             <div className="lp-roi-metric" style={{ "--rm-color": "var(--accent)" }}>
               <div className="lp-roi-metric-label">Cost Per Student</div>
@@ -644,7 +644,7 @@ function ROICalculator({ onOpenModal }) {
               <div className="lp-roi-metric-sub">vs lab investment cost</div>
             </div>
           </div>
-          <div style={{ padding: "16px", background: "var(--surface-2)", border: "1px solid rgba(0,212,170,0.2)", borderRadius: "12px", fontSize: ".8rem", color: "var(--text-3)", lineHeight: 1.7 }}>
+          <div style={{ padding: "16px", background: "var(--surface-2)", border: "1px solid var(--tag-bg)", borderRadius: "12px", fontSize: ".8rem", color: "var(--text-3)", lineHeight: 1.7 }}>
             <strong style={{ color: "var(--accent)" }}>CSR perspective:</strong> At {"₹"}{costPerStudent.toLocaleString("en-IN")} per student, this qualifies as high-impact CSR spend — well below the {"₹"}5,000/student benchmark for education CSR programs in India.
           </div>
         </div>
@@ -737,7 +737,7 @@ const submit = async (e) => {
             <p>
               Our team will prepare a <strong style={{ color: "var(--text-1)" }}>customised proposal</strong> for your institution within <strong style={{ color: "var(--text-1)" }}>48 hours</strong>.<br /><br />
               For faster response, WhatsApp us directly:<br />
-              <strong style={{ color: "#25D366" }}>+91 78158 09412</strong><br /><br />
+              <strong style={{ color: "var(--accent)" }}>+91 78158 09412</strong><br /><br />
               <span style={{ fontSize: ".78rem" }}>Reference: {pkg?.name} · {audience === "school" ? "School" : "College"}</span>
             </p>
           </div>
@@ -748,10 +748,10 @@ const submit = async (e) => {
               <p>Fill in your institution's details. We'll send a tailored proposal with pricing, layout plan, and curriculum breakdown within 48 hours.</p>
               {pkg && (
                 <div className="lp-modal-pkg">
-                  <span className="lp-stat-badge" style={{ background: `${pkg.colorHex}22`, color: pkg.colorHex }}>{pkg.badge}</span>
+                  <span className="lp-stat-badge" style={{ background: "var(--tag-bg)", color: "var(--tag-text)" }}>{pkg.badge}</span>
                   <div>
-                    <div style={{ fontFamily: "'Syne', sans-serif", fontSize: ".9rem", fontWeight: 700, color: "var(--text-1)" }}>{pkg.name} — {audience === "school" ? "School" : "College"}</div>
-                    <div style={{ fontSize: ".72rem", color: "var(--text-3)", marginTop: "2px" }}>Starting at <strong style={{ color: pkg.colorHex }}>{pkg.price}</strong> · ARC LABS Lab Package</div>
+                    <div style={{ fontFamily: "var(--font-heading)", fontSize: ".9rem", fontWeight: 700, color: "var(--text-1)" }}>{pkg.name} — {audience === "school" ? "School" : "College"}</div>
+                    <div style={{ fontSize: ".72rem", color: "var(--text-3)", marginTop: "2px" }}>Starting at <strong style={{ color: "var(--text-1)" }}>{pkg.price}</strong> · ARC LABS Lab Package</div>
                   </div>
                 </div>
               )}
@@ -855,18 +855,18 @@ export default function LabPackagesPage() {
 
           <div className="lp-stats">
             {[
-              { num: "500+", label: "Labs installed across India", badge: "LABS", color: "var(--accent)", colorHex: "#00d4aa", fill: 85 },
-              { num: "₹800", label: "Min. cost per student / CSR", badge: "CSR", color: "var(--blue)", colorHex: "#3b82f6", fill: 60 },
-              { num: "4 Wks", label: "Avg. time from order to live lab", badge: "FAST", color: "var(--amber)", colorHex: "#f59e0b", fill: 70 },
-              { num: "98%", label: "School renewal rate on support contracts", badge: "RENEW", color: "var(--violet)", colorHex: "#8b5cf6", fill: 98 },
+              { num: "500+", label: "Labs installed across India", badge: "LABS", color: "var(--tag-text)", colorHex: "var(--tag-text)", fill: 85 },
+              { num: "₹800", label: "Min. cost per student / CSR", badge: "CSR", color: "var(--tag-text)", colorHex: "var(--tag-text)", fill: 60 },
+              { num: "4 Wks", label: "Avg. time from order to live lab", badge: "FAST", color: "var(--tag-text)", colorHex: "var(--tag-text)", fill: 70 },
+              { num: "98%", label: "School renewal rate on support contracts", badge: "RENEW", color: "var(--tag-text)", colorHex: "var(--tag-text)", fill: 98 },
             ].map((s) => (
               <div className="lp-stat" key={s.label} style={{ "--stat-color": s.color }}>
                 <div className="lp-stat-row">
                   <div className="lp-stat-num">{s.num}</div>
-                  <span className="lp-stat-badge" style={{ background: `${s.colorHex}1a`, color: s.colorHex }}>{s.badge}</span>
+                  <span className="lp-stat-badge" style={{ background: "var(--tag-bg)", color: "var(--tag-text)" }}>{s.badge}</span>
                 </div>
                 <div className="lp-stat-label">{s.label}</div>
-                <div className="lp-stat-bar"><div className="lp-stat-fill" style={{ width: `${s.fill}%`, background: s.color }} /></div>
+                <div className="lp-stat-bar"><div className="lp-stat-fill" style={{ width: `${s.fill}%`, background: "var(--accent)" }} /></div>
               </div>
             ))}
           </div>
@@ -899,14 +899,14 @@ export default function LabPackagesPage() {
         <div className="lp-pkg-grid">
           {pkgs.map((pkg) => (
             <div key={pkg.id} className={`lp-card${pkg.featured ? " featured" : ""}`}>
-              <div className="lp-card-bar" style={{ background: `linear-gradient(90deg, ${pkg.colorHex}, transparent)` }} />
+              <div className="lp-card-bar" style={{ background: "linear-gradient(90deg, var(--border), transparent)" }} />
               {pkg.featured && <div className="lp-popular">MOST POPULAR</div>}
               <div className="lp-card-head">
-                <div className="lp-card-tier" style={{ color: pkg.colorHex }}>{pkg.tier} · {pkg.badge}</div>
+                <div className="lp-card-tier" style={{ color: "var(--tag-text)" }}>{pkg.tier} · {pkg.badge}</div>
                 <div className="lp-card-name">{pkg.name}</div>
                 <div className="lp-card-tagline">{pkg.tagline}</div>
                 <div className="lp-price-block">
-                  <div className="lp-price" style={{ color: pkg.colorHex }}>{pkg.price} <span>/ lab setup</span></div>
+                  <div className="lp-price" style={{ color: "var(--text-1)" }}>{pkg.price} <span>/ lab setup</span></div>
                   <div className="lp-price-sub">One-time investment · Annual support contract separate</div>
                   <div className="lp-price-note">+ {pkg.priceNote}</div>
                 </div>
@@ -921,14 +921,14 @@ export default function LabPackagesPage() {
               </div>
               <div className="lp-specs">
                 {Object.entries(pkg.specs).map(([k, v]) => (
-                  <div key={k} className="lp-spec"><span>{k}: </span><strong style={{ color: pkg.colorHex }}>{v}</strong></div>
+                  <div key={k} className="lp-spec"><span>{k}: </span><strong style={{ color: "var(--text-1)" }}>{v}</strong></div>
                 ))}
               </div>
               <div className="lp-aud-tags">
                 {pkg.audience.map((a) => <span key={a} className="lp-aud-tag">{a}</span>)}
               </div>
               <div className="lp-card-foot">
-                <button className="btn btn-primary" style={{ width: "100%", background: pkg.colorHex, color: pkg.colorHex === "#00d4aa" ? "var(--bg)" : "#fff" }} onClick={() => setModal({ pkg })}>
+                <button className="btn btn-primary" style={{ width: "100%" }} onClick={() => setModal({ pkg })}>
                   Get This Package
                 </button>
                 <a href="https://wa.me/917815809412" className="btn btn-ghost" style={{ width: "100%", textAlign: "center", justifyContent: "center" }} target="_blank" rel="noreferrer">

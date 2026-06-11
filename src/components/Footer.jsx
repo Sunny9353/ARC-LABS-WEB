@@ -37,7 +37,7 @@ export default function Footer() {
               gap: "10px",
               textDecoration: "none",
               color: "var(--text)",
-              fontFamily: "'Syne', sans-serif",
+              fontFamily: "var(--font-heading)",
               fontWeight: 800,
               fontSize: "1.1rem",
             }}

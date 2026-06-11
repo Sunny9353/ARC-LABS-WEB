@@ -4,7 +4,7 @@
   align-items: center;
   padding: 96px 5vw 80px;
   background:
-    radial-gradient(ellipse 48% 42% at 80% 20%, rgba(0,212,170,0.10), transparent 62%),
+    radial-gradient(ellipse 48% 42% at 80% 20%, var(--tag-bg), transparent 62%),
     linear-gradient(180deg, var(--bg), var(--bg-alt));
   border-bottom: 1px solid var(--border);
   position: relative;
@@ -88,7 +88,7 @@
   display: none;
 }
 .about-team .about-section-head h2 {
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-body);
   font-size: clamp(1.15rem, 2vw, 1.55rem);
   font-weight: 600;
   letter-spacing: 0;
@@ -129,7 +129,7 @@
 }
 .about-team-role {
   color: #f4f4f4;
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-body);
   font-size: clamp(1rem, 1.35vw, 1.25rem);
   font-weight: 700;
   letter-spacing: 0;
@@ -137,7 +137,7 @@
   margin-bottom: 0.45rem;
 }
 .about-team-body h3 {
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-body);
   font-size: clamp(1.15rem, 1.5vw, 1.45rem);
   font-weight: 700;
   letter-spacing: 0;
@@ -173,7 +173,7 @@
 
   color:var(--text-2);
 
-  font-family:'Syne',sans-serif;
+  font-family:var(--font-heading);
 
   font-weight:600;
 }
@@ -314,7 +314,7 @@
   transform:translateY(-10px);
 
   box-shadow:
-    0 20px 40px rgba(0,212,170,.15);
+    0 20px 40px var(--tag-bg);
 }
 
 .about-client-logo:hover img{

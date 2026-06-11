@@ -11,24 +11,36 @@ const pageStyles = `
 /* ── CSR Hero ─────────────────────────────────────── */
 .csr-hero{
   min-height:92vh;display:grid;
-  grid-template-columns:1fr 1fr;
+  grid-template-columns:minmax(0,1.55fr) minmax(390px,.75fr);
   position:relative;overflow:hidden;
 }
+@media(max-width:1100px){.csr-hero{grid-template-columns:minmax(0,1.25fr) minmax(360px,.9fr)}}
 @media(max-width:900px){.csr-hero{grid-template-columns:1fr;min-height:auto}}
 
 .csr-hero-left{
-  padding:120px 5vw 80px;
+  min-width:0;
+  padding:120px clamp(40px,5vw,96px) 80px 5vw;
   display:flex;flex-direction:column;justify-content:center;
   position:relative;z-index:1;
   border-right:1px solid var(--border-1);
 }
 @media(max-width:900px){.csr-hero-left{padding:100px 5vw 60px;border-right:none;border-bottom:1px solid var(--border-1)}}
+@media(max-width:640px){.csr-hero-left{padding:84px 6vw 52px}}
 
 .csr-hero-left h1{
   font-family:var(--font-heading);font-weight:800;
-  font-size:clamp(2.8rem,5vw,4.8rem);
-  line-height:1;letter-spacing:-.04em;margin-bottom:1.5rem;
+  max-width:980px;
+  font-size:clamp(3rem,4.7vw,4.65rem);
+  line-height:1.03;letter-spacing:-.032em;margin-bottom:1.5rem;
   color:var(--text-1);
+  text-wrap:balance;
+  overflow-wrap:normal;
+}
+@media(max-width:640px){
+  .csr-hero-left h1{
+    font-size:clamp(2.25rem,12vw,3.2rem);
+    line-height:1.08;
+  }
 }
 .csr-hero-left h1 em{
   font-style:normal;
@@ -39,17 +51,18 @@ const pageStyles = `
 .csr-deck{
   font-size:1.05rem;color:var(--text-3);
   max-width:420px;line-height:1.8;margin-bottom:2rem;
+  text-wrap:pretty;
 }
 .csr-ctas{display:flex;gap:.8rem;flex-wrap:wrap}
 
 .csr-compliance{
   margin-top:2rem;display:inline-flex;align-items:center;gap:12px;
-  background:rgba(0,212,170,0.06);border:1px solid rgba(0,212,170,0.18);
+  background:var(--tag-bg);border:1px solid var(--tag-bg);
   border-radius:10px;padding:12px 16px;max-width:420px;
 }
 .csr-comp-icon{
   width:36px;height:36px;border-radius:8px;flex-shrink:0;
-  background:rgba(0,212,170,0.12);display:flex;align-items:center;justify-content:center;
+  background:var(--tag-bg);display:flex;align-items:center;justify-content:center;
   font-size:.7rem;font-weight:700;color:var(--accent);font-family:var(--font-mono);
 }
 .csr-comp-text{font-size:.78rem;color:var(--text-3);line-height:1.55}
@@ -57,27 +70,39 @@ const pageStyles = `
 
 /* Hero right — impact wall */
 .csr-hero-right{
+  min-width:0;
   display:flex;flex-direction:column;justify-content:center;
-  padding:80px 5vw 80px 4vw;
+  padding:80px 5vw 80px clamp(40px,4vw,72px);
   background:var(--surface);position:relative;
 }
+@media(max-width:900px){.csr-hero-right{padding:56px 5vw 64px}}
+@media(max-width:640px){.csr-hero-right{padding:44px 6vw 56px}}
 .csr-hero-right::before{
   content:'';position:absolute;inset:0;
-  background:radial-gradient(ellipse 80% 60% at 50% 30%,rgba(0,212,170,0.04),transparent 70%);
+  background:radial-gradient(ellipse 80% 60% at 50% 30%,var(--tag-bg),transparent 70%);
   pointer-events:none;
 }
 .csr-iw-label{
   font-family:var(--font-mono);font-size:.6rem;
   color:var(--accent);letter-spacing:.14em;text-transform:uppercase;
   margin-bottom:1.5rem;opacity:.7;
+  width:100%;
+  max-width:430px;
+  align-self:center;
 }
 .csr-iw{
   display:grid;grid-template-columns:1fr 1fr;
   gap:1px;background:var(--border-1);border:1px solid var(--border-1);
   border-radius:16px;overflow:hidden;
+  width:100%;
+  max-width:430px;
+  align-self:center;
 }
+@media(max-width:900px){.csr-iw{max-width:100%}}
+@media(max-width:460px){.csr-iw{grid-template-columns:1fr}}
 .csr-iw-cell{
-  background:var(--surface-2);padding:24px 22px;
+  min-width:0;
+  background:var(--surface-2);padding:22px 18px;
   position:relative;overflow:hidden;transition:background .2s;
 }
 .csr-iw-cell:hover{background:var(--surface-3)}
@@ -88,13 +113,15 @@ const pageStyles = `
 }
 .csr-iw-num{
   font-family:var(--font-heading);font-weight:800;
-  font-size:2.2rem;line-height:1;letter-spacing:-.04em;
+  font-size:clamp(1.65rem,2.4vw,2rem);line-height:1;letter-spacing:-.025em;
   color:var(--cell-color,var(--accent));margin-bottom:.3rem;
+  white-space:nowrap;
 }
-.csr-iw-lbl{font-size:.76rem;color:var(--text-3);line-height:1.5}
+.csr-iw-lbl{font-size:.76rem;color:var(--text-3);line-height:1.5;overflow-wrap:break-word}
 .csr-iw-sub{
   font-family:var(--font-mono);font-size:.58rem;
   color:var(--text-4);margin-top:.5rem;letter-spacing:.04em;
+  overflow-wrap:break-word;
 }
 
 /* ── Marquee ─────────────────────────────────────── */
@@ -150,7 +177,7 @@ const pageStyles = `
   margin-top:1rem;
   font-family:var(--font-mono);font-size:.65rem;
   color:var(--wc-color,var(--accent));letter-spacing:.05em;
-  background:rgba(0,212,170,0.06);border:1px solid rgba(0,212,170,0.15);
+  background:var(--tag-bg);border:1px solid var(--tag-bg);
   display:inline-block;padding:3px 10px;border-radius:4px;
 }
 
@@ -169,7 +196,7 @@ const pageStyles = `
 }
 .csr-doc-chip{
   font-family:var(--font-mono);font-size:.6rem;
-  background:rgba(0,212,170,0.1);border:1px solid rgba(0,212,170,0.25);
+  background:var(--tag-bg);border:1px solid var(--tag-bg);
   color:var(--accent);padding:3px 10px;border-radius:4px;letter-spacing:.06em;
 }
 .csr-sch7-doc-body{padding:24px}
@@ -186,13 +213,13 @@ const pageStyles = `
 .csr-clause-text strong{color:var(--accent);font-weight:600}
 .csr-sch7-eligible{
   margin-top:1rem;
-  background:rgba(0,212,170,0.06);border:1px solid rgba(0,212,170,0.2);
+  background:var(--tag-bg);border:1px solid var(--tag-bg);
   border-radius:10px;padding:14px 16px;
   display:flex;align-items:flex-start;gap:10px;
 }
 .csr-elig-icon{
   width:28px;height:28px;border-radius:6px;flex-shrink:0;
-  background:rgba(0,212,170,0.15);display:flex;align-items:center;justify-content:center;
+  background:var(--tag-bg);display:flex;align-items:center;justify-content:center;
   font-size:.6rem;font-weight:700;color:var(--accent);font-family:var(--font-mono);
 }
 .csr-elig-text{font-size:.8rem;color:var(--accent);line-height:1.6}
@@ -205,7 +232,7 @@ const pageStyles = `
 .csr-step:last-child{border-bottom:none}
 .csr-step-num{
   width:32px;height:32px;border-radius:50%;
-  background:rgba(0,212,170,0.1);border:1px solid rgba(0,212,170,0.3);
+  background:var(--tag-bg);border:1px solid var(--tag-bg);
   color:var(--accent);font-family:var(--font-heading);font-weight:700;font-size:.9rem;
   display:flex;align-items:center;justify-content:center;flex-shrink:0;
 }
@@ -391,7 +418,7 @@ const pageStyles = `
   background:var(--surface-2);border:1px solid var(--border-2);
   border-radius:10px;padding:14px 20px;transition:all .22s;cursor:default;
 }
-.csr-platform-badge:hover{border-color:rgba(0,212,170,.35);background:var(--surface-3)}
+.csr-platform-badge:hover{border-color:var(--tag-bg);background:var(--surface-3)}
 .csr-pb-icon{
   width:32px;height:32px;border-radius:6px;
   display:flex;align-items:center;justify-content:center;
@@ -412,8 +439,8 @@ const pageStyles = `
 }
 .csr-tier-card.csr-gold{
   border-color:var(--accent);
-  background:linear-gradient(155deg,rgba(0,212,170,0.06),var(--surface-2));
-  box-shadow:0 0 0 1px var(--accent),0 16px 48px rgba(0,212,170,0.1);
+  background:linear-gradient(155deg,var(--tag-bg),var(--surface-2));
+  box-shadow:0 0 0 1px var(--accent),0 16px 48px var(--tag-bg);
 }
 .csr-tier-card:hover{transform:translateY(-4px)}
 .csr-tier-icon{
@@ -470,7 +497,7 @@ const pageStyles = `
   border-radius:12px;margin-bottom:.8rem;overflow:hidden;
   cursor:pointer;transition:border-color .2s;
 }
-.csr-faq-item.csr-faq-open{border-color:rgba(0,212,170,0.3)}
+.csr-faq-item.csr-faq-open{border-color:var(--tag-bg)}
 .csr-faq-q{
   padding:18px 20px;display:flex;justify-content:space-between;
   align-items:center;gap:1rem;
@@ -497,7 +524,7 @@ const pageStyles = `
 .csr-bottom-cta::before{
   content:'';position:absolute;top:50%;left:50%;
   transform:translate(-50%,-50%);width:700px;height:500px;
-  background:radial-gradient(ellipse,rgba(0,212,170,0.06),transparent 65%);
+  background:radial-gradient(ellipse,var(--tag-bg),transparent 65%);
   pointer-events:none;
 }
 .csr-bottom-cta h2{
@@ -544,7 +571,7 @@ const pageStyles = `
 .csr-modal-badge{
   font-family:var(--font-mono);font-size:.62rem;
   padding:4px 11px;border-radius:5px;
-  background:rgba(0,212,170,0.08);border:1px solid rgba(0,212,170,0.22);
+  background:var(--tag-bg);border:1px solid var(--tag-bg);
   color:var(--accent);letter-spacing:.04em;
 }
 .csr-modal-body{padding:22px 32px 32px}
@@ -560,7 +587,7 @@ const pageStyles = `
   font-size:.86rem;padding:10px 13px;outline:none;transition:border-color .2s;
 }
 .csr-field input:focus,.csr-field select:focus,.csr-field textarea:focus{
-  border-color:var(--accent);box-shadow:0 0 0 3px rgba(0,212,170,.07);
+  border-color:var(--accent);box-shadow:0 0 0 3px var(--tag-bg);
 }
 .csr-field select option{background:var(--surface-3)}
 .csr-field textarea{resize:vertical;min-height:80px}
@@ -577,7 +604,7 @@ const pageStyles = `
 .csr-modal-success{padding:52px 32px;text-align:center}
 .csr-success-icon{
   width:56px;height:56px;border-radius:14px;margin:0 auto .9rem;
-  background:rgba(0,212,170,0.12);display:flex;align-items:center;justify-content:center;
+  background:var(--tag-bg);display:flex;align-items:center;justify-content:center;
   font-size:.9rem;font-weight:700;color:var(--accent);font-family:var(--font-mono);
 }
 .csr-modal-success h3{
@@ -660,12 +687,12 @@ const PARTNERSHIP_TIERS = [
 ];
 
 const REPORT_ITEMS = [
-  { abbr: "SUM", bg: "rgba(0,212,170,0.1)", color: "var(--accent)", name: "Executive Impact Summary", desc: "1-page board-ready summary of beneficiaries, outcomes, and spend.", badge: "BOARD READY", badgeBg: "rgba(0,212,170,0.1)", badgeColor: "var(--accent)" },
-  { abbr: "BEN", bg: "rgba(59,130,246,0.1)", color: "var(--blue)", name: "Student Beneficiary Data", desc: "Anonymized student count, demographics, attendance, and certification rates.", badge: "ANONYMIZED", badgeBg: "rgba(59,130,246,0.1)", badgeColor: "var(--blue)" },
-  { abbr: "FAC", bg: "rgba(0,212,170,0.1)", color: "var(--accent)", name: "Faculty Certification Records", desc: "Teacher certification numbers and training hours documented.", badge: "CERTIFIED RECORDS", badgeBg: "rgba(0,212,170,0.1)", badgeColor: "var(--accent)" },
-  { abbr: "VIS", bg: "rgba(244,63,94,0.1)", color: "var(--rose)", name: "Photo & Video Documentation", desc: "Timestamped installation photos, student activity images, and lab videos.", badge: "VISUAL PROOF", badgeBg: "rgba(244,63,94,0.1)", badgeColor: "var(--rose)" },
-  { abbr: "BSR", bg: "rgba(245,158,11,0.1)", color: "var(--amber)", name: "BRSR / Annual Report Content", desc: "Pre-formatted content blocks ready to paste into your BRSR or Annual Report.", badge: "BRSR READY", badgeBg: "rgba(245,158,11,0.1)", badgeColor: "var(--amber)" },
-  { abbr: "PKG", bg: "rgba(59,130,246,0.1)", color: "var(--blue)", name: "Audit Evidence Package", desc: "All documents in a single zip — ready for CA or third-party CSR auditor review.", badge: "AUDIT READY", badgeBg: "rgba(59,130,246,0.1)", badgeColor: "var(--blue)" },
+  { abbr: "SUM", bg: "var(--tag-bg)", color: "var(--accent)", name: "Executive Impact Summary", desc: "1-page board-ready summary of beneficiaries, outcomes, and spend.", badge: "BOARD READY", badgeBg: "var(--tag-bg)", badgeColor: "var(--accent)" },
+  { abbr: "BEN", bg: "var(--tag-bg)", color: "var(--blue)", name: "Student Beneficiary Data", desc: "Anonymized student count, demographics, attendance, and certification rates.", badge: "ANONYMIZED", badgeBg: "var(--tag-bg)", badgeColor: "var(--blue)" },
+  { abbr: "FAC", bg: "var(--tag-bg)", color: "var(--accent)", name: "Faculty Certification Records", desc: "Teacher certification numbers and training hours documented.", badge: "CERTIFIED RECORDS", badgeBg: "var(--tag-bg)", badgeColor: "var(--accent)" },
+  { abbr: "VIS", bg: "var(--tag-bg)", color: "var(--rose)", name: "Photo & Video Documentation", desc: "Timestamped installation photos, student activity images, and lab videos.", badge: "VISUAL PROOF", badgeBg: "var(--tag-bg)", badgeColor: "var(--rose)" },
+  { abbr: "BSR", bg: "var(--tag-bg)", color: "var(--amber)", name: "BRSR / Annual Report Content", desc: "Pre-formatted content blocks ready to paste into your BRSR or Annual Report.", badge: "BRSR READY", badgeBg: "var(--tag-bg)", badgeColor: "var(--amber)" },
+  { abbr: "PKG", bg: "var(--tag-bg)", color: "var(--blue)", name: "Audit Evidence Package", desc: "All documents in a single zip — ready for CA or third-party CSR auditor review.", badge: "AUDIT READY", badgeBg: "var(--tag-bg)", badgeColor: "var(--blue)" },
 ];
 
 const PLATFORMS = [
@@ -709,7 +736,7 @@ function CSRModal({ onClose }) {
               <br /><br />
               For immediate response:<br />
               <strong style={{ color: "var(--accent)" }}>hello@arclabs.in</strong><br />
-              <strong style={{ color: "#25D366" }}>+91 8699929532 (WhatsApp)</strong>
+              <strong style={{ color: "var(--accent)" }}>+91 8699929532 (WhatsApp)</strong>
             </p>
           </div>
         ) : (
@@ -1159,7 +1186,7 @@ export default function CSRPartnersPage() {
               <div className="csr-faq-q">
                 <span>{faq.q}</span>
                 <div className="csr-faq-toggle" style={{
-                  background: openFaq === i ? "rgba(0,212,170,0.12)" : "var(--surface-3)",
+                  background: openFaq === i ? "var(--tag-bg)" : "var(--surface-3)",
                   color: openFaq === i ? "var(--accent)" : "var(--text-4)",
                 }}>
                   {openFaq === i ? "−" : "+"}
@@ -1178,11 +1205,11 @@ export default function CSRPartnersPage() {
         <div className="csr-contact-layout" style={{ marginTop: "2.5rem" }}>
           <div>
             {[
-              { abbr: "TEL", bg: "rgba(0,212,170,0.1)", color: "var(--accent)", title: "Direct Line", val: <><a href="tel:+918699929532">+91 8699929532</a> · <a href="tel:+914035659806">+91 40 3565 9806</a></> },
-              { abbr: "EML", bg: "rgba(59,130,246,0.1)", color: "var(--blue)", title: "Email", val: <a href="mailto:hello@arclabs.in">hello@arclabs.in</a> },
-              { abbr: "WA", bg: "rgba(37,211,102,0.1)", color: "#25D366", title: "WhatsApp", val: <a href="https://wa.me/918699929532" target="_blank" rel="noreferrer">+91 8699929532 — preferred for quick response</a> },
-              { abbr: "LOC", bg: "rgba(245,158,11,0.1)", color: "var(--amber)", title: "Office", val: "4-7-138/1, Narendra Nagar, Habsiguda, Hyderabad – 500007" },
-              { abbr: "REG", bg: "rgba(0,212,170,0.1)", color: "var(--accent)", title: "Registration", val: "MSME Registered · PAN: Available on request · 80G Certificate: Available" },
+              { abbr: "TEL", bg: "var(--tag-bg)", color: "var(--accent)", title: "Direct Line", val: <><a href="tel:+918699929532">+91 8699929532</a> · <a href="tel:+914035659806">+91 40 3565 9806</a></> },
+              { abbr: "EML", bg: "var(--tag-bg)", color: "var(--blue)", title: "Email", val: <a href="mailto:hello@arclabs.in">hello@arclabs.in</a> },
+              { abbr: "WA", bg: "var(--accent-glow)", color: "var(--accent)", title: "WhatsApp", val: <a href="https://wa.me/918699929532" target="_blank" rel="noreferrer">+91 8699929532 — preferred for quick response</a> },
+              { abbr: "LOC", bg: "var(--tag-bg)", color: "var(--amber)", title: "Office", val: "4-7-138/1, Narendra Nagar, Habsiguda, Hyderabad – 500007" },
+              { abbr: "REG", bg: "var(--tag-bg)", color: "var(--accent)", title: "Registration", val: "MSME Registered · PAN: Available on request · 80G Certificate: Available" },
             ].map((c) => (
               <div className="csr-ci-item" key={c.title}>
                 <div className="csr-ci-icon" style={{ background: c.bg, color: c.color }}>{c.abbr}</div>
@@ -1194,7 +1221,7 @@ export default function CSRPartnersPage() {
             ))}
           </div>
           <div>
-            <div style={{ background: "var(--surface-2)", border: "1px solid rgba(0,212,170,0.2)", borderRadius: "16px", padding: "28px" }}>
+            <div style={{ background: "var(--surface-2)", border: "1px solid var(--tag-bg)", borderRadius: "16px", padding: "28px" }}>
               <div style={{ fontFamily: "var(--font-heading)", fontWeight: 700, fontSize: "1.1rem", marginBottom: ".5rem", letterSpacing: "-.02em" }}>Ready to start a conversation?</div>
               <p style={{ fontSize: ".85rem", color: "var(--text-3)", lineHeight: 1.7, marginBottom: "1.5rem" }}>
                 Submit your partnership enquiry and our team will prepare a tailored impact proposal — including projected beneficiaries, cost-per-student calculation, lab options, and implementation timeline — within 48 hours.

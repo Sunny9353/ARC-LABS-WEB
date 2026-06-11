@@ -7,18 +7,18 @@ import { DottedSurface } from "../components/ui/dotted-surface";
 const pageStyles = `
 /* Hero */
 .ph-hero{min-height:440px;padding:108px 5vw 72px;text-align:center;position:relative;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center}
-.ph-hero::before{content:'';position:absolute;top:-80px;left:50%;transform:translateX(-50%);width:900px;height:430px;pointer-events:none;background:radial-gradient(ellipse,rgba(0,212,170,0.10) 0%,rgba(59,130,246,0.06) 45%,transparent 70%);z-index:1}
+.ph-hero::before{content:'';position:absolute;top:-80px;left:50%;transform:translateX(-50%);width:900px;height:430px;pointer-events:none;background:radial-gradient(ellipse,var(--tag-bg) 0%,var(--tag-bg) 45%,transparent 70%);z-index:1}
 .product-dotted-surface{position:absolute;inset:-90px 0 -120px;pointer-events:none;z-index:0;opacity:.52}
 .product-dotted-surface canvas{width:100%!important;height:100%!important;display:block}
 .ph-hero > .badge,.ph-hero > h1,.ph-hero > p,.ph-hero-content{position:relative;z-index:2}
 .ph-hero-content{max-width:820px;margin:0 auto}
-.ph-hero h1{font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(2rem,5vw,3.4rem);letter-spacing:-.035em;line-height:1.08;margin-bottom:1rem;position:relative;text-shadow:0 18px 55px rgba(0,0,0,.55)}
+.ph-hero h1{font-family:var(--font-heading);font-weight:800;font-size:clamp(2rem,5vw,3.4rem);letter-spacing:-.035em;line-height:1.08;margin-bottom:1rem;position:relative;text-shadow:0 18px 55px rgba(0,0,0,.55)}
 .ph-hero h1 em{font-style:normal;color:var(--accent)}
 .ph-hero p{color:var(--text-3);font-size:1rem;font-weight:400;max-width:560px;margin:0 auto 0;line-height:1.75;position:relative}
 
 /* Filter bar */
 .filter-bar{display:flex;justify-content:center;gap:.5rem;flex-wrap:wrap;padding:0 5vw 52px;position:relative;z-index:1}
-.filter-btn{background:var(--surface);border:1px solid var(--border-2);color:var(--text-3);font-size:.8rem;font-weight:500;padding:8px 18px;border-radius:var(--radius);cursor:pointer;transition:all .2s;font-family:'Inter',sans-serif;display:flex;align-items:center;gap:6px}
+.filter-btn{background:var(--surface);border:1px solid var(--border-2);color:var(--text-3);font-size:.8rem;font-weight:500;padding:8px 18px;border-radius:var(--radius);cursor:pointer;transition:all .2s;font-family:var(--font-body);display:flex;align-items:center;gap:6px}
 .filter-btn.active,.filter-btn:hover{background:var(--accent-dim);border-color:var(--accent);color:var(--accent)}
 
 /* Product grid */
@@ -36,29 +36,29 @@ const pageStyles = `
 .pc-visual{height:220px;position:relative;overflow:hidden;background:linear-gradient(135deg,var(--bg),var(--surface-2));display:flex;align-items:center;justify-content:center}
 .pc-image{width:100%;height:100%;object-fit:contain;object-position:center;position:relative;z-index:1;padding:14px}
 .pc-badge-wrap{position:absolute;top:14px;left:14px;display:flex;gap:6px;z-index:2}
-.pc-badge{font-family:'JetBrains Mono',monospace;font-size:.62rem;font-weight:600;padding:4px 10px;border-radius:5px;letter-spacing:.06em}
-.pc-best{position:absolute;top:14px;right:14px;z-index:2;background:var(--amber);color:var(--bg);font-family:'JetBrains Mono',monospace;font-size:.6rem;font-weight:700;padding:4px 10px;border-radius:5px;letter-spacing:.06em}
+.pc-badge{font-family:var(--font-body);font-size:.62rem;font-weight:600;padding:4px 10px;border-radius:5px;letter-spacing:.06em}
+.pc-best{position:absolute;top:14px;right:14px;z-index:2;background:var(--amber);color:var(--bg);font-family:var(--font-body);font-size:.6rem;font-weight:700;padding:4px 10px;border-radius:5px;letter-spacing:.06em}
 .pc-fade{position:absolute;bottom:0;left:0;right:0;height:60px;background:linear-gradient(transparent,var(--surface));z-index:1}
 
 .pc-body{padding:22px 22px 0;display:flex;flex-direction:column;flex:1}
-.pc-tier{font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;margin-bottom:.4rem}
-.pc-name{font-family:'Syne',sans-serif;font-weight:800;font-size:1.12rem;letter-spacing:-.02em;margin-bottom:.4rem}
+.pc-tier{font-family:var(--font-body);font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;margin-bottom:.4rem}
+.pc-name{font-family:var(--font-heading);font-weight:800;font-size:1.12rem;letter-spacing:-.02em;margin-bottom:.4rem}
 .pc-tagline{font-size:.82rem;color:var(--text-3);line-height:1.55;margin-bottom:1rem}
 .pc-chips{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:1rem}
 
 .pc-price-row{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:14px 0;border-top:1px solid var(--border);margin-top:auto;min-height:108px}
 .pc-price-block{display:flex;flex-direction:column;align-items:flex-start;min-width:0}
-.pc-price{font-family:'Syne',sans-serif;font-weight:800;font-size:1.6rem;line-height:1;letter-spacing:-.02em}
-.pc-price span{display:block;margin-top:7px;font-family:'Inter',sans-serif;font-size:0;color:var(--text-3);font-weight:400;line-height:1.35;letter-spacing:0}
+.pc-price{font-family:var(--font-heading);font-weight:800;font-size:1.6rem;line-height:1;letter-spacing:-.02em}
+.pc-price span{display:block;margin-top:7px;font-family:var(--font-body);font-size:0;color:var(--text-3);font-weight:400;line-height:1.35;letter-spacing:0}
 .pc-price span::before{content:"(including GST / unit)";font-size:.78rem}
 .pc-tax-note{display:block;margin-top:7px;font-size:.78rem;color:var(--text-3);font-weight:400;line-height:1.35}
 .pc-old-price{font-size:.78rem;color:var(--text-4);text-decoration:line-through;margin-top:12px}
-.pc-save{font-family:'JetBrains Mono',monospace;font-size:.62rem;padding:4px 10px;border-radius:5px;text-align:center;flex:0 0 auto}
+.pc-save{font-family:var(--font-body);font-size:.62rem;padding:4px 10px;border-radius:5px;text-align:center;flex:0 0 auto}
 
 .pc-footer{display:grid;grid-template-columns:1fr 1fr;gap:.5rem;padding:14px 22px 18px}
-.pc-btn-detail{background:transparent;border:1px solid var(--border-2);color:var(--text-3);font-size:.78rem;font-weight:500;padding:9px;border-radius:var(--radius);cursor:pointer;font-family:'Inter',sans-serif;transition:all .2s}
+.pc-btn-detail{background:transparent;border:1px solid var(--border-2);color:var(--text-3);font-size:.78rem;font-weight:500;padding:9px;border-radius:var(--radius);cursor:pointer;font-family:var(--font-body);transition:all .2s}
 .pc-btn-detail:hover{color:var(--text);border-color:var(--border-3)}
-.pc-btn-buy{border:none;color:var(--bg);font-size:.78rem;font-weight:700;padding:9px;border-radius:var(--radius);cursor:pointer;font-family:'Inter',sans-serif;transition:all .2s}
+.pc-btn-buy{border:none;color:var(--bg);font-size:.78rem;font-weight:700;padding:9px;border-radius:var(--radius);cursor:pointer;font-family:var(--font-body);transition:all .2s}
 .pc-btn-buy:hover{filter:brightness(1.1);transform:translateY(-1px)}
 
 /* Detail drawer */
@@ -68,8 +68,8 @@ const pageStyles = `
 /* Kit assembly animation */
 .kit-stage{min-height:430px;padding:58px 36px 36px;border-bottom:1px solid var(--border);background:radial-gradient(circle at 50% 42%,rgba(var(--kit-glow),.18),transparent 43%),linear-gradient(180deg,rgba(255,255,255,.03),transparent);position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center}
 .kit-stage::before{content:'';position:absolute;left:12%;right:12%;bottom:40px;height:26px;background:radial-gradient(ellipse,rgba(0,0,0,.48),transparent 68%);filter:blur(4px);opacity:.65}
-.kit-caption{position:absolute;left:36px;top:28px;font-family:'Syne',sans-serif;font-weight:800;font-size:1rem;letter-spacing:-.01em;color:var(--text);z-index:3}
-.kit-caption span{display:block;margin-top:4px;font-family:'Inter',sans-serif;font-size:.72rem;font-weight:500;color:var(--text-3);letter-spacing:0}
+.kit-caption{position:absolute;left:36px;top:28px;font-family:var(--font-heading);font-weight:800;font-size:1rem;letter-spacing:-.01em;color:var(--text);z-index:3}
+.kit-caption span{display:block;margin-top:4px;font-family:var(--font-body);font-size:.72rem;font-weight:500;color:var(--text-3);letter-spacing:0}
 .kit-board{width:min(660px,88vw);min-height:330px;position:relative;display:flex;align-items:center;justify-content:center}
 .kit-photo-wrap{width:min(560px,82vw);aspect-ratio:3/2;border:1px solid rgba(255,255,255,.16);border-radius:18px;background:linear-gradient(135deg,rgba(var(--kit-glow),.18),rgba(255,255,255,.04)),var(--surface);box-shadow:0 28px 60px rgba(0,0,0,.36),inset 0 0 0 1px rgba(255,255,255,.06);position:relative;overflow:hidden;animation:kitDrop .72s cubic-bezier(.18,.89,.32,1.22) both;transform-origin:center}
 .kit-photo-wrap::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.14),transparent);transform:translateX(-120%);animation:kitShine 1.4s ease .65s both}
@@ -81,16 +81,16 @@ const pageStyles = `
 
 .dd-header{display:flex;align-items:flex-start;justify-content:space-between;padding:32px 36px 24px;border-bottom:1px solid var(--border);gap:2rem;flex-wrap:wrap}
 .dd-hl{flex:1;min-width:240px}
-.dd-eyebrow{font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;margin-bottom:.5rem}
-.dd-hl h2{font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(1.4rem,3vw,2rem);letter-spacing:-.025em;margin-bottom:.4rem}
+.dd-eyebrow{font-family:var(--font-body);font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;margin-bottom:.5rem}
+.dd-hl h2{font-family:var(--font-heading);font-weight:800;font-size:clamp(1.4rem,3vw,2rem);letter-spacing:-.025em;margin-bottom:.4rem}
 .dd-hl p{font-size:.87rem;color:var(--text-3);line-height:1.7;max-width:520px}
 .dd-hr{display:flex;flex-direction:column;align-items:flex-end;gap:.8rem;flex-shrink:0}
-.dd-price-big{font-family:'Syne',sans-serif;font-weight:800;font-size:2.4rem;letter-spacing:-.03em;text-align:right}
+.dd-price-big{font-family:var(--font-heading);font-weight:800;font-size:2.4rem;letter-spacing:-.03em;text-align:right}
 .dd-price-big span{font-size:1rem;font-weight:400;color:var(--text-3)}
 
 .dd-tabs{display:flex;border-bottom:1px solid var(--border);overflow-x:auto;scrollbar-width:none}
 .dd-tabs::-webkit-scrollbar{display:none}
-.dd-tab{flex-shrink:0;padding:14px 24px;font-size:.82rem;font-weight:500;cursor:pointer;border:none;background:none;color:var(--text-3);font-family:'Inter',sans-serif;border-bottom:2px solid transparent;transition:all .2s;white-space:nowrap}
+.dd-tab{flex-shrink:0;padding:14px 24px;font-size:.82rem;font-weight:500;cursor:pointer;border:none;background:none;color:var(--text-3);font-family:var(--font-body);border-bottom:2px solid transparent;transition:all .2s;white-space:nowrap}
 .dd-tab.active{color:var(--tab-c,var(--accent));border-bottom-color:var(--tab-c,var(--accent))}
 .dd-tab:hover:not(.active){color:var(--text-2)}
 
@@ -99,7 +99,7 @@ const pageStyles = `
 /* Specs */
 .spec-sections{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.2rem}
 .spec-section{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:18px 20px}
-.spec-section h4{font-family:'Syne',sans-serif;font-size:.82rem;font-weight:700;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.spec-section h4{font-family:var(--font-heading);font-size:.82rem;font-weight:700;margin-bottom:12px;display:flex;align-items:center;gap:8px}
 .spec-section h4::before{content:'';width:3px;height:14px;background:var(--ss-c,var(--accent));border-radius:2px}
 .spec-list{list-style:none}
 .spec-list li{font-size:.78rem;color:var(--text-2);padding:6px 0;border-bottom:1px dashed var(--border);display:flex;align-items:flex-start;gap:8px}
@@ -109,7 +109,7 @@ const pageStyles = `
 /* In-box */
 .inbox-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1rem}
 .inbox-item{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px;display:flex;align-items:flex-start;gap:10px}
-.inbox-icon{font-size:1.1rem;flex-shrink:0;width:32px;height:32px;background:var(--accent-dim);border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-weight:700;font-size:.7rem;color:var(--accent)}
+.inbox-icon{font-size:1.1rem;flex-shrink:0;width:32px;height:32px;background:var(--accent-dim);border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:var(--font-body);font-weight:700;font-size:.7rem;color:var(--accent)}
 .inbox-name{font-size:.82rem;font-weight:600;margin-bottom:2px}
 .inbox-desc{font-size:.74rem;color:var(--text-3);line-height:1.5}
 
@@ -117,13 +117,13 @@ const pageStyles = `
 .usecase-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:1rem}
 .usecase-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:18px;position:relative;overflow:hidden}
 .usecase-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--uc-c,var(--accent)),transparent)}
-.usecase-num{font-family:'JetBrains Mono',monospace;font-size:.58rem;color:var(--uc-c,var(--accent));margin-bottom:.4rem;letter-spacing:.08em}
-.usecase-title{font-family:'Syne',sans-serif;font-size:.9rem;font-weight:700;margin-bottom:.4rem}
+.usecase-num{font-family:var(--font-body);font-size:.58rem;color:var(--uc-c,var(--accent));margin-bottom:.4rem;letter-spacing:.08em}
+.usecase-title{font-family:var(--font-heading);font-size:.9rem;font-weight:700;margin-bottom:.4rem}
 .usecase-desc{font-size:.78rem;color:var(--text-3);line-height:1.6}
 
 /* Compare table */
 .compare-table{width:100%;border-collapse:collapse;font-size:.8rem}
-.compare-table th{text-align:left;padding:12px 16px;font-family:'Syne',sans-serif;font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;border-bottom:1px solid var(--border)}
+.compare-table th{text-align:left;padding:12px 16px;font-family:var(--font-heading);font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;border-bottom:1px solid var(--border)}
 .compare-table th:first-child{color:var(--text-3);font-size:.7rem;font-weight:500;text-transform:none;letter-spacing:0}
 .compare-table td{padding:11px 16px;border-bottom:1px solid var(--border);vertical-align:middle;color:var(--text-2)}
 .compare-table td:first-child{color:var(--text-3);font-size:.76rem}
@@ -141,7 +141,7 @@ const pageStyles = `
 /* Comparison section */
 .compare-section{padding:80px 5vw;background:var(--bg-alt);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
 .fct{width:100%;border-collapse:separate;border-spacing:0}
-.fct thead tr th{padding:14px 18px;font-family:'Syne',sans-serif;font-size:.78rem;font-weight:800;text-transform:uppercase;letter-spacing:.05em;border-bottom:2px solid var(--border-2);text-align:center}
+.fct thead tr th{padding:14px 18px;font-family:var(--font-heading);font-size:.78rem;font-weight:800;text-transform:uppercase;letter-spacing:.05em;border-bottom:2px solid var(--border-2);text-align:center}
 .fct thead tr th:first-child{text-align:left;color:var(--text-3);font-weight:500;font-size:.72rem;text-transform:none;letter-spacing:0}
 .fct thead .th-essential{
   color:#00ff9d;
@@ -152,20 +152,20 @@ const pageStyles = `
 .fct tbody tr:hover td{background:rgba(255,255,255,0.02)}
 .fct tbody td{padding:12px 18px;border-bottom:1px solid var(--border);font-size:.8rem;color:var(--text-2);text-align:center;vertical-align:middle}
 .fct tbody td:first-child{text-align:left;color:var(--text-3);font-size:.76rem}
-.fct-cat td{background:var(--surface)!important;font-family:'Syne',sans-serif;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--text-3)!important;text-align:left!important;padding:10px 18px!important}
+.fct-cat td{background:var(--surface)!important;font-family:var(--font-heading);font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--text-3)!important;text-align:left!important;padding:10px 18px!important}
 .fct-yes{color:var(--accent)!important;font-size:1rem}
 .fct-no{color:rgba(255,255,255,.12)!important;font-size:1rem}
 .fct-val{color:var(--text)!important;font-weight:600}
 .fct-best{color:var(--bg)!important;font-weight:700;font-size:.7rem;background:var(--amber);padding:3px 8px;border-radius:4px;display:inline-block}
-.price-row-fct td{font-family:'Syne',sans-serif!important;font-size:1.2rem!important;font-weight:800!important;padding:18px 18px!important}
+.price-row-fct td{font-family:var(--font-heading)!important;font-size:1.2rem!important;font-weight:800!important;padding:18px 18px!important}
 .price-row-fct td:nth-child(2){color:var(--amber)!important}
 .price-row-fct td:nth-child(3){color:var(--accent)!important}
 .price-row-fct td:nth-child(4){color:var(--blue)!important}
 
 /* Bottom CTA */
 .pcta-section{padding:90px 5vw;text-align:center;position:relative;overflow:hidden}
-.pcta-section::before{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:600px;height:400px;background:radial-gradient(ellipse,rgba(0,212,170,0.05),transparent 65%);pointer-events:none}
-.pcta-section h2{font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(1.8rem,4vw,3rem);letter-spacing:-.03em;margin-bottom:.8rem;position:relative}
+.pcta-section::before{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:600px;height:400px;background:radial-gradient(ellipse,var(--tag-bg),transparent 65%);pointer-events:none}
+.pcta-section h2{font-family:var(--font-heading);font-weight:800;font-size:clamp(1.8rem,4vw,3rem);letter-spacing:-.03em;margin-bottom:.8rem;position:relative}
 .pcta-section p{color:var(--text-3);font-size:.95rem;margin-bottom:2rem;position:relative}
 .pcta-btns{display:flex;gap:.7rem;justify-content:center;flex-wrap:wrap;position:relative}
 
@@ -195,12 +195,12 @@ const PRODUCTS = [
     tagline: "Dual-controller trainer with Raspberry Pi Pico, ESP32, sensors, relays, and display modules.",
     price: 12000,
     oldPrice: 15000,
-    color: "#22c55e",
-    glow: "34,197,94",
+    color: "var(--tag-text)",
+    glow: "63,63,70",
     image: "/images/products/essential-kit.jpg",
     badge: "ESSENTIAL",
-    badgeBg: "rgba(34,197,94,0.12)",
-    badgeColor: "#22c55e",
+    badgeBg: "var(--tag-bg)",
+    badgeColor: "var(--tag-text)",
     overview: "The ARC LABS IoT Essential Kit is a compact hands-on trainer built around Raspberry Pi Pico and ESP32. It includes onboard sensor, display, relay, buzzer, potentiometer, terminal, and GPIO sections so students can practice embedded programming, sensor reading, Wi-Fi/Bluetooth IoT, and basic automation on one ready-to-use board.",
     controllers: ["Raspberry Pi Pico", "ESP32 Wi-Fi + Bluetooth"],
     sensors: ["DHT11 — Temperature & Humidity", "HC-SR04 — Ultrasonic Sensor", "LDR — Light Sensor", "IR Obstacle Sensor"],
@@ -229,12 +229,12 @@ const PRODUCTS = [
     tagline: "Compact, beginner-friendly IoT training board for Arduino & ESP32.",
     price: 18000,
     oldPrice: 21000,
-    color: "#f59e0b",
-    glow: "245,158,11",
+    color: "var(--tag-text)",
+    glow: "63,63,70",
     image: "/images/products/lite-kit.jpg",
     badge: "BEGINNER",
-    badgeBg: "rgba(245,158,11,0.15)",
-    badgeColor: "#f59e0b",
+    badgeBg: "var(--tag-bg)",
+    badgeColor: "var(--tag-text)",
     overview: "The ARC LABS IoT Lite Kit is a compact, budget-friendly training platform designed for beginners, students, and aspiring innovators entering the world of IoT and embedded systems. Dual microcontroller support (Arduino UNO + ESP32) with a curated sensor set and plug-and-play design.",
     controllers: ["Arduino UNO (ATmega328P)", "ESP32 (Dual-core Wi-Fi + Bluetooth)", "Dual MCU slots for flexible usage"],
     sensors: ["DHT11 — Temperature & Humidity", "HC-SR04 — Ultrasonic Distance", "IR Obstacle Sensor — Digital proximity", "Touch Sensor — Capacitive input", "LDR — Light detection", "MQ Gas Sensor — Gas leakage", "Potentiometer — Analog ADC testing"],
@@ -264,12 +264,12 @@ const PRODUCTS = [
     tagline: "All-in-one multi-MCU trainer — the most versatile kit in the lineup.",
     price: 24000,
     oldPrice: 27000,
-    color: "#00d4aa",
-    glow: "0,212,170",
+    color: "var(--tag-text)",
+    glow: "63,63,70",
     image: "/images/products/experience-kit.jpg",
     badge: "BEST SELLER",
-    badgeBg: "rgba(0,212,170,0.12)",
-    badgeColor: "#00d4aa",
+    badgeBg: "var(--tag-bg)",
+    badgeColor: "var(--tag-text)",
     isBest: true,
     overview: "The ARC LABS IoT Experience Kit is a comprehensive, all-in-one embedded systems trainer supporting 5 microcontrollers — Arduino, ESP32, STM32, Raspberry Pi Pico, and Raspberry Pi 4/5 — with LoRa, GSM/4G, RS485, and full sensor coverage.",
     controllers: ["Arduino UNO (ATmega328P) — Beginner dev", "ESP32 DevKit — Dual-core Wi-Fi + BT", "STM32 DevKit — ARM Cortex-M industrial", "Raspberry Pi Pico/W — RP2040 + Wi-Fi", "Raspberry Pi 4/5 Header — 40-pin GPIO"],
@@ -302,12 +302,12 @@ const PRODUCTS = [
     tagline: "High-performance board for advanced IoT, edge AI, and Raspberry Pi.",
     price: 30000,
     oldPrice: 33000,
-    color: "#3b82f6",
-    glow: "59,130,246",
+    color: "var(--tag-text)",
+    glow: "63,63,70",
     image: "/images/products/pro-kit.jpg",
     badge: "ADVANCED",
-    badgeBg: "rgba(59,130,246,0.12)",
-    badgeColor: "#3b82f6",
+    badgeBg: "var(--tag-bg)",
+    badgeColor: "var(--tag-text)",
     overview: "The ARC LABS IoT Pro Kit is a high-performance development board for advanced learners, researchers, and developers. Dual-controller support for Raspberry Pi 4 and ESP32 with shared I/O zones — ideal for edge computing, AIoT, sensor fusion, and complex data acquisition.",
     controllers: ["Raspberry Pi 4 — 40-pin GPIO interface", "ESP32 DevKit — Wi-Fi + Bluetooth", "Shared I/O zones for hybrid Pi + ESP32 experiments"],
     sensors: ["BMP180 — Barometric Pressure & Temp", "DHT11 — Temperature & Humidity", "HC-SR04 — Ultrasonic Distance", "MQ-135 — Gas & Air Quality", "ADXL345 — 3-Axis Accelerometer", "Touch Sensor — Capacitive", "IR Obstacle Detection", "LDR — Light Dependent Resistor", "Potentiometer — ADC testing"],
@@ -848,7 +848,7 @@ function ProductCard({ product, isSelected, onSelect }) {
             <div className="pc-price" style={{ color: product.color }}>₹{product.price.toLocaleString("en-IN")} <span> included GST / unit</span></div>
             <div className="pc-old-price">MRP ₹{product.oldPrice.toLocaleString("en-IN")}</div>
           </div>
-          <div style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: ".62rem", color: product.color, background: product.badgeBg, padding: "4px 10px", borderRadius: "5px", textAlign: "center" }}>
+          <div style={{ fontFamily: "var(--font-body)", fontSize: ".62rem", color: product.color, background: product.badgeBg, padding: "4px 10px", borderRadius: "5px", textAlign: "center" }}>
             SAVE<br />₹{(product.oldPrice - product.price).toLocaleString("en-IN")}
           </div>
         </div>

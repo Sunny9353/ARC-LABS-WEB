@@ -92,7 +92,7 @@ export default function VerifyPanel({ onSuccess }) {
                 Issued by ARC LABS - Certificate ID:{" "}
                 <span
                   style={{
-                    fontFamily: "monospace",
+                    fontFamily: "var(--font-body)",
                     letterSpacing: ".05em",
                     color: "var(--accent)",
                   }}

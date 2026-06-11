@@ -101,7 +101,7 @@ export default function Checkout() {
           email: form.email,
           contact: form.phone,
         },
-        theme: { color: "#00d4aa" },
+        theme: { color: "#00DC82" },
       };
 
       if (paymentMethod === "upi_manual") {
