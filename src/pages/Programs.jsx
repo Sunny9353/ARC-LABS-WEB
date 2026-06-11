@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { Fragment, useState, useEffect, useRef } from "react";
 import { jsPDF } from "jspdf";
 import { collection, addDoc } from "firebase/firestore";
 import { db } from "../firebase";
@@ -49,8 +49,8 @@ export const pageStyles = `
   }
   :root[data-theme="light"] .prog-robot-bg::before {
     background:
-      linear-gradient(90deg, var(--bg) 0%, rgba(247,250,252,0.44) 18%, transparent 48%),
-      linear-gradient(180deg, rgba(247,250,252,0.02), rgba(247,250,252,0.24) 76%, var(--bg) 100%);
+      linear-gradient(90deg, var(--bg) 0%, rgba(250,250,250,0.18) 20%, transparent 46%),
+      linear-gradient(180deg, rgba(250,250,250,0.02), rgba(250,250,250,0.10) 78%, var(--bg) 100%);
   }
   .prog-robot-scene {
     width: 100%;
@@ -98,8 +98,10 @@ export const pageStyles = `
     backdrop-filter: blur(8px);
   }
   :root[data-theme="light"] .prog-hero-inner {
-    background: rgba(255,255,255,0.36);
-    border-color: rgba(15,23,42,0.08);
+    background: transparent;
+    border-color: transparent;
+    box-shadow: none;
+    backdrop-filter: none;
   }
   .prog-hero h1 {
     font-size: clamp(2.2rem, 5vw, 3.8rem);
@@ -108,6 +110,9 @@ export const pageStyles = `
     margin-bottom: 1.2rem;
     color: var(--text);
     text-shadow: 0 18px 50px rgba(0,0,0,0.42);
+  }
+  :root[data-theme="light"] .prog-hero h1 {
+    text-shadow: none;
   }
   .prog-hero h1 em {
     font-style: normal;
@@ -205,7 +210,9 @@ export const pageStyles = `
     cursor: pointer;
     position: relative;
     overflow: hidden;
-    transition: background 0.3s;
+    transition:
+      background 0.3s cubic-bezier(0.25,1,0.5,1),
+      box-shadow 0.3s cubic-bezier(0.25,1,0.5,1);
     display: flex;
     flex-direction: column;
   }
@@ -222,7 +229,10 @@ export const pageStyles = `
   .tech-card:hover::before,
   .tech-card.active::before { transform: scaleX(1); }
   .tech-card:hover,
-  .tech-card.active { background: var(--surface-2); }
+  .tech-card.active {
+    background: var(--surface-2);
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--tc-color, var(--accent)) 42%, transparent);
+  }
   .tech-card.active { outline: 1px solid var(--border-2); }
 
   .tc-top {
@@ -295,11 +305,16 @@ export const pageStyles = `
   /* Detail panel */
   .detail-panel {
     margin-top: 24px;
+    grid-column: 1 / -1;
+    scroll-margin-top: calc(var(--nav-h) + 24px);
     border-radius: var(--radius-xl);
     border: 1px solid var(--border-2);
     background: var(--surface-2);
     overflow: hidden;
     animation: pgSlideDown 0.4s cubic-bezier(0.4,0,0.2,1);
+  }
+  .tech-grid .detail-panel {
+    margin: 12px 0 28px;
   }
   @keyframes pgSlideDown {
     from { opacity: 0; transform: translateY(-16px); }
@@ -3759,8 +3774,8 @@ export default function ProgramsPage() {
 
         <div className="tech-grid">
           {TECHNOLOGIES.map((tech) => (
+            <Fragment key={tech.id}>
             <div
-              key={tech.id}
               className={`tech-card${activeTech?.id === tech.id ? " active" : ""}`}
               style={{ "--tc-color": tech.color }}
               onClick={() => handleTechClick(tech)}
@@ -3797,11 +3812,18 @@ export default function ProgramsPage() {
                 <span style={{ fontSize: "0.9rem" }}>&rarr;</span>
               </div>
             </div>
+            {activeTech?.id === tech.id && (
+              <DetailPanel
+                key={`detail-${tech.id}`}
+                tech={tech}
+                onClose={() => setActiveTech(null)}
+              />
+            )}
+            </Fragment>
           ))}
         </div>
 
-        {/* Detail panel renders below the grid */}
-        {activeTech && (
+        {false && activeTech && (
           <DetailPanel
             key={activeTech.id}
             tech={activeTech}

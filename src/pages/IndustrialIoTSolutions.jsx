@@ -787,7 +787,54 @@ const factoryFeatureStyles = `
 :root[data-theme="light"] .iiot-page .sector-viz-dashboard span {
   background-color: #F4F4F5 !important;
 }
-`;
+.iiot-usecases {
+  scroll-margin-top: calc(var(--nav-h) + 18px);
+}
+.iiot-usecase-list {
+  display: grid;
+  gap: 0.8rem;
+}
+.iiot-usecase-tab {
+  min-height: 82px;
+  border-color: var(--border) !important;
+  background: var(--surface) !important;
+  color: var(--text-2) !important;
+  box-shadow: var(--shadow-sm);
+}
+.iiot-usecase-tab:hover,
+.iiot-usecase-tab[class*="border-cyan"] {
+  border-color: rgba(0,220,130,0.42) !important;
+  color: var(--text) !important;
+  background:
+    linear-gradient(135deg, rgba(0,220,130,0.08), transparent 56%),
+    var(--surface) !important;
+}
+.iiot-usecase-tab span:first-child {
+  color: var(--text) !important;
+}
+.iiot-usecase-detail {
+  background:
+    linear-gradient(135deg, rgba(0,220,130,0.055), transparent 48%),
+    var(--surface) !important;
+  border-color: var(--border) !important;
+  box-shadow: var(--shadow-sm);
+}
+:root[data-theme="light"] .iiot-usecases {
+  background: transparent !important;
+  border-color: var(--border) !important;
+}
+:root[data-theme="light"] .iiot-usecases h2,
+:root[data-theme="light"] .iiot-usecase-detail h3 {
+  color: var(--text) !important;
+}
+:root[data-theme="light"] .iiot-usecases p,
+:root[data-theme="light"] .iiot-usecase-detail p {
+  color: var(--text-2) !important;
+}
+:root[data-theme="light"] .iiot-usecase-detail .border-zinc-900 {
+  border-color: var(--border) !important;
+}
+`; 
 
 const FACTORY_FEATURES = [
   { title: "End-to-End Deployment", desc: "From physical sensor installations and PLC mapping to dashboard terminals.", icon: Settings, motionType: "gear" },
@@ -2541,7 +2588,7 @@ export default function IndustrialIoTSolutions() {
         </section>
 
         {/* SECTION 9 â€” INDUSTRIAL USE CASES */}
-        <section className="py-24 px-6 lg:px-16 border-b border-zinc-900 bg-zinc-950/20 relative z-10">
+        <section className="iiot-usecases py-24 px-6 lg:px-16 border-b border-zinc-900 bg-zinc-950/20 relative z-10">
           <div className="max-w-7xl mx-auto">
             <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gsap-reveal">
               <div>
@@ -2557,7 +2604,7 @@ export default function IndustrialIoTSolutions() {
 
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
               {/* Left Column: Use cases switcher */}
-              <div className="lg:col-span-4 space-y-3">
+              <div className="iiot-usecase-list lg:col-span-4 space-y-3">
                 {[
                   { id: 0, title: "Smart Dustbin Telemetry", client: "Municipal Smart City Grid" },
                   { id: 1, title: "Factory Machine Monitoring", client: "Automotive Parts Assembly" },
@@ -2570,7 +2617,7 @@ export default function IndustrialIoTSolutions() {
                 ].map((uc) => (
                   <button
                     key={uc.id}
-                    className={`w-full text-left p-4 rounded border transition-all duration-300 font-mono text-xs flex flex-col items-start ${
+                    className={`iiot-usecase-tab w-full text-left p-4 rounded border transition-all duration-300 font-mono text-xs flex flex-col items-start ${
                       activeUseCase === uc.id
                         ? "border-cyan-500 bg-zinc-900/60 text-white"
                         : "border-zinc-900 bg-zinc-900/20 text-zinc-500 hover:border-zinc-800"
@@ -2584,7 +2631,7 @@ export default function IndustrialIoTSolutions() {
               </div>
 
               {/* Right Column: Case study details */}
-              <div className="lg:col-span-8 bg-zinc-950/80 border border-zinc-800 p-8 rounded-xl relative min-h-[420px] flex flex-col justify-between">
+              <div className="iiot-usecase-detail lg:col-span-8 bg-zinc-950/80 border border-zinc-800 p-8 rounded-xl relative min-h-[420px] flex flex-col justify-between">
                 <AnimatePresence mode="wait">
                   {[
                     {

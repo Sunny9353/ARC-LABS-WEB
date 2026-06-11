@@ -10,7 +10,8 @@ const TEAM = [
     name: "Vamshidar Reddy",
     role: "Co-Founder",
     image:
-      "https://static.wixstatic.com/media/8d617c_d5af19944ebd4084a06c537b648ab1d7~mv2.png/v1/crop/x_0%2Cy_0%2Cw_1024%2Ch_849/fill/w_403%2Ch_334%2Cal_c%2Cq_85%2Cusm_0.66_1.00_0.01%2Cenc_avif%2Cquality_auto/Gemini_Generated_Image_i6pvcgi6pvcgi6pv.png",
+      "https://static.wixstatic.com/media/8d617c_d5af19944ebd4084a06c537b648ab1d7~mv2.png/v1/crop/x_0%2Cy_0%2Cw_1024%2Ch_849/fill/w_806%2Ch_668%2Cal_c%2Cq_92%2Cusm_0.66_1.00_0.01%2Cenc_avif%2Cquality_auto/Gemini_Generated_Image_i6pvcgi6pvcgi6pv.png",
+    imagePosition: "50% 18%",
     bio:
       "Drives innovation in tech education, empowering students to explore and excel in the evolving world of technology.",
   },
@@ -18,7 +19,8 @@ const TEAM = [
     name: "Anvesh Reddy",
     role: "CEO",
     image:
-      "https://static.wixstatic.com/media/8d617c_f1066df64f3947f09ce362eb2d760371~mv2.png/v1/crop/x_0%2Cy_0%2Cw_625%2Ch_518/fill/w_403%2Ch_334%2Cal_c%2Cq_85%2Cusm_0.66_1.00_0.01%2Cenc_avif%2Cquality_auto/Capture_PNG.png",
+      "https://static.wixstatic.com/media/8d617c_f1066df64f3947f09ce362eb2d760371~mv2.png/v1/crop/x_0%2Cy_0%2Cw_625%2Ch_518/fill/w_806%2Ch_668%2Cal_c%2Cq_92%2Cusm_0.66_1.00_0.01%2Cenc_avif%2Cquality_auto/Capture_PNG.png",
+    imagePosition: "50% 16%",
     bio:
       "Leads innovation in IoT and IoE with expertise in robotics, embedded systems, and Python.",
   },
@@ -26,7 +28,8 @@ const TEAM = [
     name: "Apurupa Laxmi",
     role: "Marketing Director",
     image:
-      "https://static.wixstatic.com/media/8d617c_bc7ca3e783da43ddb1c5891a0703d330~mv2.png/v1/crop/x_0%2Cy_182%2Cw_832%2Ch_689/fill/w_403%2Ch_334%2Cal_c%2Cq_85%2Cusm_0.66_1.00_0.01%2Cenc_avif%2Cquality_auto/Generated%20Image%20October%2024%2C%202025%20-%204_02PM.png",
+      "https://static.wixstatic.com/media/8d617c_bc7ca3e783da43ddb1c5891a0703d330~mv2.png/v1/crop/x_0%2Cy_182%2Cw_832%2Ch_689/fill/w_806%2Ch_668%2Cal_c%2Cq_92%2Cusm_0.66_1.00_0.01%2Cenc_avif%2Cquality_auto/Generated%20Image%20October%2024%2C%202025%20-%204_02PM.png",
+    imagePosition: "50% 18%",
     bio:
       "Leads strategic marketing initiatives with expertise in brand growth, digital campaigns, and data-driven decisions.",
   },
@@ -78,7 +81,12 @@ export default function AboutUs() {
           {TEAM.map((member) => (
             <article className="about-team-card" key={member.name}>
               <div className="about-team-image">
-                <img src={member.image} alt={member.name} loading="lazy" />
+                <img
+                  src={member.image}
+                  alt={member.name}
+                  loading="lazy"
+                  style={{ objectPosition: member.imagePosition }}
+                />
               </div>
               <div className="about-team-body">
                 <p className="about-team-role">{member.role}</p>
@@ -110,9 +118,9 @@ export default function AboutUs() {
 <Swiper
   effect="coverflow"
   centeredSlides={true}
-  slidesPerView={3}
+  slidesPerView="auto"
   loop={true}
-  speed={1200}
+  speed={950}
 
 autoplay={{
   delay: 2500,
@@ -121,10 +129,10 @@ autoplay={{
 
   coverflowEffect={{
     rotate: 0,
-    stretch: 0,
-    depth: 200,
-    modifier: 2,
-    scale: 0.85,
+    stretch: -26,
+    depth: 280,
+    modifier: 1.35,
+    scale: 0.82,
     slideShadows: false,
   }}
 

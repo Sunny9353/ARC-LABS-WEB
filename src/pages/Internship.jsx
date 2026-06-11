@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { Fragment, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import "../styles/Internship.css";
 import { DetailPanel, pageStyles } from "./Programs.jsx";
@@ -51,8 +51,8 @@ export default function Internship() {
 
         <div className="tech-grid">
           {INTERNSHIP_TECHS.map((tech) => (
+            <Fragment key={tech.id}>
             <div
-              key={tech.id}
               className={`tech-card${activeTech?.id === tech.id ? " active" : ""}`}
               style={{ "--tc-color": tech.color }}
               onClick={() => handleTechClick(tech)}
@@ -87,10 +87,19 @@ export default function Internship() {
                 <span style={{ fontSize: "0.9rem" }}>&rarr;</span>
               </div>
             </div>
+            {activeTech?.id === tech.id && (
+              <DetailPanel
+                key={`detail-${tech.id}`}
+                tech={tech}
+                durationOptions={INTERNSHIP_DURATIONS}
+                onClose={() => setActiveTech(null)}
+              />
+            )}
+            </Fragment>
           ))}
         </div>
 
-        {activeTech && (
+        {false && activeTech && (
           <DetailPanel
             key={activeTech.id}
             tech={activeTech}

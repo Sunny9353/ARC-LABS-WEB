@@ -719,8 +719,8 @@ function CSR() {
 function Testimonials() {
   const TESTIMONIALS = [
     { stars: 5, text: "The IoRT lab setup at our school was seamless. Students are building real projects from week two. The teacher training made our faculty genuinely confident.", author: "Principal, CBSE School", role: "Hyderabad, Telangana" },
-    { stars: 5, text: "ARC LABS delivered a complete IoT training module for our engineering students. Industry-relevant, practical, and very well structured.", author: "HOD, Electronics Dept.", role: "Engineering College, Vijayawada" },
-    { stars: 5, text: "Our CSR funding for STEM labs was perfectly executed by ARC LABS. The impact documentation made our board reporting straightforward.", author: "CSR Head", role: "Manufacturing Company, Hyderabad" },
+    { stars: 4.5, text: "ARC LABS delivered a complete IoT training module for our engineering students. Industry-relevant, practical, and very well structured.", author: "HOD, Electronics Dept.", role: "Engineering College, Vijayawada" },
+    { stars: 4.5, text: "Our CSR funding for STEM labs was perfectly executed by ARC LABS. The impact documentation made our board reporting straightforward.", author: "CSR Head", role: "Manufacturing Company, Hyderabad" },
   ];
   return (
     <section className="section">
@@ -729,7 +729,17 @@ function Testimonials() {
       <div className="testimonials-grid">
         {TESTIMONIALS.map((t) => (
           <div className="tcard" key={t.author}>
-            <div className="tcard-stars">{"★".repeat(t.stars)}</div>
+            <div className="tcard-stars" aria-label={`${t.stars} out of 5 stars`}>
+              {[1, 2, 3, 4, 5].map((star) => (
+                <span
+                  key={star}
+                  className={star <= Math.floor(t.stars) ? "star-full" : star - 0.5 === t.stars ? "star-half" : "star-empty"}
+                  aria-hidden="true"
+                >
+                  ★
+                </span>
+              ))}
+            </div>
             <p className="tcard-text">{t.text}</p>
             <div className="tcard-author">{t.author}</div>
             <div className="tcard-role">{t.role}</div>

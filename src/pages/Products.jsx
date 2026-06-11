@@ -169,6 +169,19 @@ const pageStyles = `
 .pcta-section p{color:var(--text-3);font-size:.95rem;margin-bottom:2rem;position:relative}
 .pcta-btns{display:flex;gap:.7rem;justify-content:center;flex-wrap:wrap;position:relative}
 
+:root[data-theme="light"] .ph-hero h1{ text-shadow:none; }
+:root[data-theme="light"] .product-dotted-surface{ display:none; }
+:root[data-theme="light"] .ph-hero::before{
+  background:
+    radial-gradient(ellipse, rgba(0,220,130,0.06) 0%, rgba(0,220,130,0.03) 34%, transparent 68%);
+}
+.detail-drawer{
+  scroll-margin-top:calc(var(--nav-h) + 24px);
+}
+.detail-drawer[data-open="true"]{
+  animation:ddIn .42s cubic-bezier(.25,1,.5,1);
+}
+
 @media(max-width:768px){
   .ph-hero{min-height:390px;padding:92px 5vw 58px}
   .product-dotted-surface{inset:-60px -30% -110px;opacity:.42}
@@ -612,6 +625,7 @@ function DetailDrawer({ product, onClose }) {
   return (
     <div
       className="detail-drawer"
+      data-open="true"
       ref={ref}
       style={{
         "--kit-color": product.color,

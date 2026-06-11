@@ -49,6 +49,70 @@ function Layout({ children }) {
   const { pathname } = useLocation();
   const isHome = pathname === "/";
 
+  useEffect(() => {
+    const selectors = [
+      ".section",
+      ".about-section",
+      ".about-hero",
+      ".about-newsletter",
+      ".tech-section",
+      ".internship-hero",
+      ".prog-hero",
+      ".prog-bottom-cta",
+      ".products-wrap",
+      ".ph-hero",
+      ".filter-bar",
+      ".compare-section",
+      ".pcta-section",
+      ".checkout-section",
+      ".not-found",
+      ".iiot-page section",
+      ".gsap-reveal",
+    ].join(",");
+
+    let observer;
+    const timers = [];
+
+    const attachReveal = () => {
+      observer?.disconnect();
+
+      const elements = Array.from(document.querySelectorAll(selectors)).filter(
+        (element) => !element.classList.contains("reveal-ignore")
+      );
+
+      if (!elements.length) return;
+
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        elements.forEach((element) => element.classList.add("is-visible"));
+        return;
+      }
+
+      elements.forEach((element) => element.classList.add("scroll-reveal"));
+
+      observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (!entry.isIntersecting) return;
+            entry.target.classList.add("is-visible");
+            observer.unobserve(entry.target);
+          });
+        },
+        { threshold: 0.08, rootMargin: "0px 0px -8% 0px" }
+      );
+
+      elements.forEach((element) => observer.observe(element));
+    };
+
+    attachReveal();
+    timers.push(window.setTimeout(attachReveal, 120));
+    timers.push(window.setTimeout(attachReveal, 520));
+
+    return () => {
+      timers.forEach((timer) => window.clearTimeout(timer));
+      observer?.disconnect();
+    };
+  }, [pathname]);
+
   return (
     <div className={`app-shell${isHome ? " home-intro-shell" : ""}`}>
       <Navbar />

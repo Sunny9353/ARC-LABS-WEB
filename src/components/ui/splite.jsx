@@ -11,7 +11,7 @@ export function SplineScene({ scene, className, onLoad, onError }) {
         </div>
       }
     >
-      <Spline scene={scene} className={className} onLoad={onLoad} onError={onError} />
+      <Spline scene={scene} className={className} onLoad={onLoad} onError={onError} renderOnDemand />
     </Suspense>
   );
 }
