@@ -3,7 +3,6 @@ import { jsPDF } from "jspdf";
 import { collection, addDoc } from "firebase/firestore";
 import { db } from "../firebase";
 import { Helmet } from "react-helmet-async";
-import { InteractiveRobotSpline } from "../components/ui/interactive-3d-robot";
 /* ─── Page-scoped styles (no global overrides) ─── */
 export const pageStyles = `
   /* Hero */
@@ -28,16 +27,19 @@ export const pageStyles = `
     pointer-events: none;
     z-index: 1;
   }
-  .prog-robot-bg {
+  .prog-hero-system {
     position: absolute;
     top: 0;
     right: 0;
     bottom: 0;
     width: min(58vw, 860px);
     z-index: 0;
-    pointer-events: auto;
+    pointer-events: none;
+    display: grid;
+    place-items: center;
+    overflow: hidden;
   }
-  .prog-robot-bg::before {
+  .prog-hero-system::before {
     content: '';
     position: absolute;
     inset: 0;
@@ -47,43 +49,78 @@ export const pageStyles = `
       linear-gradient(90deg, var(--bg) 0%, rgba(9,9,11,0.52) 18%, transparent 48%),
       linear-gradient(180deg, rgba(9,9,11,0.05), rgba(9,9,11,0.26) 76%, var(--bg) 100%);
   }
-  :root[data-theme="light"] .prog-robot-bg::before {
+  :root[data-theme="light"] .prog-hero-system::before {
     background:
       linear-gradient(90deg, var(--bg) 0%, rgba(250,250,250,0.18) 20%, transparent 46%),
       linear-gradient(180deg, rgba(250,250,250,0.02), rgba(250,250,250,0.10) 78%, var(--bg) 100%);
   }
-  .prog-robot-scene {
-    width: 100%;
-    height: 100%;
-    min-height: 720px;
-    display: block;
-    opacity: 1;
+  .prog-system-card {
+    position: relative;
+    z-index: 0;
+    width: min(520px, 78%);
+    aspect-ratio: 1.12;
+    border-radius: 34px;
+    border: 1px solid var(--border);
+    background:
+      linear-gradient(145deg, rgba(255,255,255,0.08), transparent 34%),
+      radial-gradient(circle at 50% 42%, rgba(0,220,130,0.18), transparent 38%),
+      var(--surface);
+    box-shadow: 0 34px 110px rgba(0,0,0,0.34), inset 0 0 0 1px rgba(255,255,255,0.04);
+    overflow: hidden;
   }
-  .prog-robot-bg canvas {
-    width: 100% !important;
-    height: 100% !important;
-    display: block;
-  }
-  .prog-robot-bg a[href*="spline"] {
-    display: none !important;
-    opacity: 0 !important;
-    pointer-events: none !important;
-  }
-  .robot-spline-loader {
-    width: 100%;
-    height: 100%;
-    min-height: 720px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .robot-spline-loader span {
-    width: 30px;
-    height: 30px;
+  .prog-system-card::before {
+    content: '';
+    position: absolute;
+    inset: 11%;
     border-radius: 50%;
-    border: 3px solid rgba(255,255,255,0.18);
-    border-top-color: var(--accent);
-    animation: spin 0.8s linear infinite;
+    border: 1px dashed rgba(0,220,130,0.34);
+    animation: systemOrbit 16s linear infinite;
+  }
+  .prog-system-card::after {
+    content: '';
+    position: absolute;
+    left: 8%;
+    right: 8%;
+    top: 50%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(0,220,130,0.52), transparent);
+    animation: systemScan 3.6s cubic-bezier(.25,1,.5,1) infinite;
+  }
+  .prog-system-node {
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    border-radius: 999px;
+    background: var(--accent);
+    box-shadow: 0 0 30px rgba(0,220,130,0.72);
+    animation: nodePulse 2.6s ease-in-out infinite;
+  }
+  .prog-system-node:nth-child(1) { top: 18%; left: 22%; }
+  .prog-system-node:nth-child(2) { top: 28%; right: 18%; animation-delay: .4s; }
+  .prog-system-node:nth-child(3) { bottom: 20%; left: 30%; animation-delay: .8s; }
+  .prog-system-node:nth-child(4) { bottom: 28%; right: 26%; animation-delay: 1.2s; }
+  .prog-system-core {
+    position: absolute;
+    inset: 32%;
+    display: grid;
+    place-items: center;
+    border-radius: 28px;
+    border: 1px solid rgba(0,220,130,0.34);
+    background: rgba(0,220,130,0.08);
+    color: var(--text);
+    font-family: var(--font-heading);
+    font-weight: 800;
+    letter-spacing: 0.08em;
+  }
+  @keyframes systemOrbit { to { transform: rotate(360deg); } }
+  @keyframes systemScan {
+    0%, 100% { transform: translateY(-110px); opacity: 0; }
+    18%, 82% { opacity: 1; }
+    50% { transform: translateY(110px); }
+  }
+  @keyframes nodePulse {
+    0%, 100% { transform: scale(1); opacity: .72; }
+    50% { transform: scale(1.45); opacity: 1; }
   }
   .prog-hero-inner {
     position: relative;
@@ -140,19 +177,15 @@ export const pageStyles = `
       padding: 96px 5vw 66px;
       align-items: flex-end;
     }
-    .prog-robot-bg {
+    .prog-hero-system {
       width: 100%;
       inset: 0;
     }
-    .prog-robot-bg::before {
+    .prog-hero-system::before {
       background:
         linear-gradient(180deg, rgba(9,9,11,0.04), rgba(9,9,11,0.42) 52%, var(--bg) 100%);
     }
-    .prog-robot-scene,
-    .robot-spline-loader {
-      min-height: 620px;
-      opacity: 0.78;
-    }
+    .prog-system-card { opacity: 0.42; }
     .prog-hero-inner {
       text-align: center;
       padding: 28px 18px;
@@ -192,13 +225,44 @@ export const pageStyles = `
     font-weight: 400;
     max-width: 480px;
     line-height: 1.7;
-    margin-bottom: 3rem;
+    margin-bottom: 1.8rem;
+  }
+  .level-filter {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin: 0 0 1.6rem;
+  }
+  .level-filter-btn {
+    --level-color: var(--accent);
+    border: 1px solid color-mix(in srgb, var(--level-color) 34%, var(--border));
+    background: color-mix(in srgb, var(--level-color) 8%, var(--surface));
+    color: var(--text-2);
+    border-radius: 999px;
+    padding: 0.75rem 1.1rem;
+    font-family: var(--font-body);
+    font-weight: 800;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: transform .25s cubic-bezier(.25,1,.5,1), background .25s, color .25s, border-color .25s;
+  }
+  .level-filter-btn:hover {
+    transform: translateY(-2px);
+    color: var(--text);
+  }
+  .level-filter-btn.active {
+    background: var(--level-color);
+    border-color: var(--level-color);
+    color: #09090b;
+    box-shadow: 0 16px 42px color-mix(in srgb, var(--level-color) 24%, transparent);
   }
 
   /* Tech grid */
   .tech-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
     gap: 1.5px;
     background: var(--border);
     border-radius: var(--radius-xl);
@@ -215,6 +279,7 @@ export const pageStyles = `
       box-shadow 0.3s cubic-bezier(0.25,1,0.5,1);
     display: flex;
     flex-direction: column;
+    min-height: 330px;
   }
   .tech-card::before {
     content: '';
@@ -230,7 +295,9 @@ export const pageStyles = `
   .tech-card.active::before { transform: scaleX(1); }
   .tech-card:hover,
   .tech-card.active {
-    background: var(--surface-2);
+    background:
+      radial-gradient(420px 180px at 20% 0%, color-mix(in srgb, var(--tc-color, var(--accent)) 12%, transparent), transparent 70%),
+      var(--surface-2);
     box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--tc-color, var(--accent)) 42%, transparent);
   }
   .tech-card.active { outline: 1px solid var(--border-2); }
@@ -3698,9 +3765,21 @@ export function DetailPanel({ tech, onClose, durationOptions = DURATION_OPTIONS 
 }
 
 // ─── MAIN PAGE ────────────────────────────────────────────────────────────────
+export const PROGRAM_LEVELS = [
+  { id: "FOUNDATIONAL", label: "Foundational", color: "#00DC82" },
+  { id: "INTERMEDIATE", label: "Intermediate", color: "#22D3EE" },
+  { id: "ADVANCED", label: "Advanced", color: "#3B82F6" },
+  { id: "EXPERT", label: "Expert", color: "#A855F7" },
+];
+
+export const getLevelMeta = (level) =>
+  PROGRAM_LEVELS.find((item) => item.id === level) || PROGRAM_LEVELS[0];
+
 export default function ProgramsPage() {
 
   const [activeTech, setActiveTech] = useState(null);
+  const [activeLevel, setActiveLevel] = useState("FOUNDATIONAL");
+  const visibleTechnologies = TECHNOLOGIES.filter((tech) => tech.level === activeLevel);
 
   const handleTechClick = (tech) => {
     if (activeTech?.id === tech.id) {
@@ -3724,11 +3803,14 @@ export default function ProgramsPage() {
 
       {/* HERO */}
       <div className="prog-hero">
-        <div className="prog-robot-bg" aria-hidden="true">
-          <InteractiveRobotSpline
-            scene="https://prod.spline.design/PyzDhpQ9E5f1E3MT/scene.splinecode"
-            className="prog-robot-scene"
-          />
+        <div className="prog-hero-system" aria-hidden="true">
+          <div className="prog-system-card">
+            <span className="prog-system-node" />
+            <span className="prog-system-node" />
+            <span className="prog-system-node" />
+            <span className="prog-system-node" />
+            <div className="prog-system-core">ARC</div>
+          </div>
         </div>
         <div className="prog-hero-inner">
           <div className="section-label">
@@ -3772,24 +3854,43 @@ export default function ProgramsPage() {
           between 2-day, 3-day, or 5-day formats.
         </p>
 
+        <div className="level-filter" aria-label="Filter technology tracks by level">
+          {PROGRAM_LEVELS.map((level) => (
+            <button
+              key={level.id}
+              type="button"
+              className={`level-filter-btn${activeLevel === level.id ? " active" : ""}`}
+              style={{ "--level-color": level.color }}
+              onClick={() => {
+                setActiveLevel(level.id);
+                setActiveTech(null);
+              }}
+            >
+              {level.label}
+            </button>
+          ))}
+        </div>
+
         <div className="tech-grid">
-          {TECHNOLOGIES.map((tech) => (
+          {visibleTechnologies.map((tech) => {
+            const levelMeta = getLevelMeta(tech.level);
+            return (
             <Fragment key={tech.id}>
             <div
               className={`tech-card${activeTech?.id === tech.id ? " active" : ""}`}
-              style={{ "--tc-color": tech.color }}
+              style={{ "--tc-color": levelMeta.color }}
               onClick={() => handleTechClick(tech)}
             >
               <div className="tc-top">
                 <div
                   className="tc-icon"
-                  style={{ background: tech.iconBg, color: tech.color }}
+                  style={{ background: tech.iconBg, color: levelMeta.color }}
                 >
                   {tech.iconLabel}
                 </div>
                 <span
                   className="tc-level"
-                  style={{ background: tech.levelBg, color: tech.levelColor }}
+                  style={{ background: levelMeta.color, color: "#09090b" }}
                 >
                   {tech.level}
                 </span>
@@ -3820,7 +3921,7 @@ export default function ProgramsPage() {
               />
             )}
             </Fragment>
-          ))}
+          )})}
         </div>
 
         {false && activeTech && (

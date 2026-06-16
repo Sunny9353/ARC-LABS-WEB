@@ -834,7 +834,155 @@ const factoryFeatureStyles = `
 :root[data-theme="light"] .iiot-usecase-detail .border-zinc-900 {
   border-color: var(--border) !important;
 }
-`; 
+
+.iiot-page section {
+  padding-top: clamp(3.75rem, 7vh, 6rem) !important;
+  padding-bottom: clamp(3.75rem, 7vh, 6rem) !important;
+}
+
+.iiot-page .max-w-7xl {
+  max-width: min(1500px, 90vw) !important;
+}
+
+.iiot-page .max-w-6xl,
+.iiot-page .max-w-5xl {
+  max-width: min(1280px, 90vw) !important;
+}
+
+.iiot-hero {
+  min-height: clamp(680px, 92svh, 900px) !important;
+  padding-top: clamp(5rem, 9vh, 7rem) !important;
+  padding-bottom: clamp(3rem, 5vh, 5rem) !important;
+}
+
+.iiot-hero > .max-w-7xl {
+  align-items: center !important;
+}
+
+.iiot-feature-grid {
+  align-items: stretch !important;
+}
+
+.factory-feature-card,
+.industry-sector-card {
+  min-height: clamp(168px, 18vh, 210px) !important;
+}
+
+.solution-suite-grid {
+  align-items: stretch !important;
+}
+
+.solution-sector-card {
+  min-height: clamp(320px, 34vh, 380px) !important;
+}
+
+@media (min-width: 1024px) {
+  .solution-suite-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: clamp(1rem, 1.5vw, 1.5rem) !important;
+  }
+
+  .iiot-usecase-shell {
+    display: grid !important;
+    grid-template-columns: minmax(300px, 420px) minmax(0, 1fr) !important;
+    gap: clamp(1.25rem, 2vw, 2rem) !important;
+    align-items: stretch !important;
+  }
+
+  .iiot-usecase-list,
+  .iiot-usecase-detail {
+    grid-column: auto !important;
+  }
+}
+
+@media (min-width: 1440px) {
+  .iiot-usecase-shell {
+    max-width: min(1280px, 82vw);
+    margin-inline: auto;
+  }
+}
+
+.iiot-usecase-list {
+  max-height: min(68vh, 680px);
+  overflow-y: auto;
+  padding-right: 0.25rem;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0,220,130,0.35) transparent;
+}
+
+.iiot-usecase-tab {
+  min-height: clamp(68px, 7vh, 92px) !important;
+  justify-content: center;
+}
+
+.iiot-usecase-detail {
+  min-height: clamp(360px, 42vh, 500px) !important;
+  justify-content: center !important;
+}
+
+.iiot-usecase-detail > div {
+  width: 100%;
+}
+
+@media (min-width: 1700px) {
+  .iiot-page section {
+    padding-top: 5rem !important;
+    padding-bottom: 5rem !important;
+  }
+
+  .iiot-hero {
+    min-height: 820px !important;
+  }
+}
+
+.iiot-page section:not(.iiot-hero) {
+  min-height: auto !important;
+}
+
+.iiot-page .py-24 {
+  padding-top: clamp(3rem, 6vh, 5rem) !important;
+  padding-bottom: clamp(3rem, 6vh, 5rem) !important;
+}
+
+.iiot-page .mb-16 {
+  margin-bottom: clamp(2rem, 4vh, 3.5rem) !important;
+}
+
+.iiot-page .mt-16 {
+  margin-top: clamp(2rem, 4vh, 3.5rem) !important;
+}
+
+.iiot-page .gap-12 {
+  gap: clamp(1.75rem, 3vw, 3rem) !important;
+}
+
+.iiot-page .gap-8 {
+  gap: clamp(1.25rem, 2vw, 2rem) !important;
+}
+
+.iiot-hero .max-w-7xl {
+  grid-template-columns: minmax(420px, 0.96fr) minmax(420px, 0.78fr) !important;
+  gap: clamp(2rem, 4vw, 4rem) !important;
+}
+
+.iiot-hero h1 {
+  font-size: clamp(3rem, 5.4vw, 5.6rem) !important;
+}
+
+.iiot-hero p {
+  font-size: clamp(1rem, 1.2vw, 1.2rem) !important;
+}
+
+.iiot-hero .lg\\:col-span-5 > div {
+  max-width: clamp(460px, 33vw, 580px) !important;
+}
+
+@media (max-width: 1023px) {
+  .iiot-hero .max-w-7xl {
+    grid-template-columns: 1fr !important;
+  }
+}
+`;
 
 const FACTORY_FEATURES = [
   { title: "End-to-End Deployment", desc: "From physical sensor installations and PLC mapping to dashboard terminals.", icon: Settings, motionType: "gear" },
@@ -1958,7 +2106,7 @@ export default function IndustrialIoTSolutions() {
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(6,182,212,0.06),rgba(255,255,255,0))]" />
         
         {/* SECTION 1 â€” CINEMATIC HERO */}
-        <section className="relative min-h-screen flex items-center pt-24 pb-12 px-6 lg:px-16 border-b border-zinc-900 z-10">
+        <section className="iiot-hero relative min-h-screen flex items-center pt-24 pb-12 px-6 lg:px-16 border-b border-zinc-900 z-10">
           <canvas id="particles-canvas" className="absolute inset-0 w-full h-full pointer-events-none" />
           
           <div className="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-12 items-center relative z-20">
@@ -2074,7 +2222,7 @@ export default function IndustrialIoTSolutions() {
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-5">
+            <div className="iiot-feature-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-5">
               {FACTORY_FEATURES.map((item) => (
                 <FactoryFeatureCard
                   key={item.title}
@@ -2123,7 +2271,7 @@ export default function IndustrialIoTSolutions() {
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-5">
+            <div className="iiot-feature-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-5">
               {INDUSTRY_SECTORS.map((sector) => (
                 <IndustrySectorCard
                   key={sector.id}
@@ -2151,7 +2299,7 @@ export default function IndustrialIoTSolutions() {
               </p>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div className="solution-suite-grid grid grid-cols-1 lg:grid-cols-2 gap-8">
               {[
                 {
                   title: "Real-Time Machine Monitoring",
@@ -2602,7 +2750,7 @@ export default function IndustrialIoTSolutions() {
               </p>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+            <div className="iiot-usecase-shell grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
               {/* Left Column: Use cases switcher */}
               <div className="iiot-usecase-list lg:col-span-4 space-y-3">
                 {[

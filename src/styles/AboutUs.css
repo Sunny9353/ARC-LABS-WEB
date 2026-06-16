@@ -456,6 +456,279 @@
   transition:all .5s ease;
 }
 
+/* Final cascade lock: this must stay after the legacy gallery block above. */
+.about-gallery {
+  position: relative !important;
+  width: min(1500px, 100%) !important;
+  max-width: 1500px !important;
+  height: clamp(320px, 42vh, 500px) !important;
+  margin: clamp(32px, 5vh, 56px) auto clamp(20px, 4vh, 40px) !important;
+  padding-inline: clamp(92px, 10vw, 180px) !important;
+  overflow: hidden !important;
+  display: flex !important;
+  align-items: center !important;
+}
+
+.about-gallery::before,
+.about-gallery::after {
+  top: 0 !important;
+  bottom: 0 !important;
+  width: clamp(140px, 18vw, 300px) !important;
+  z-index: 8 !important;
+}
+
+.aboutSwiper,
+.aboutSwiper .swiper-wrapper {
+  height: 100% !important;
+  align-items: center !important;
+}
+
+.aboutSwiper .swiper-slide {
+  width: clamp(420px, 46vw, 720px) !important;
+  height: clamp(250px, 34vh, 420px) !important;
+  display: block !important;
+  opacity: 0.22 !important;
+  filter: blur(3px) grayscale(0.25) saturate(0.62) brightness(0.72) !important;
+  transform: scale(0.78) !important;
+}
+
+.aboutSwiper .swiper-slide-prev,
+.aboutSwiper .swiper-slide-next {
+  opacity: 0.48 !important;
+  filter: blur(1.5px) grayscale(0.1) saturate(0.78) brightness(0.78) !important;
+  transform: scale(0.86) !important;
+}
+
+.aboutSwiper .swiper-slide-active {
+  opacity: 1 !important;
+  filter: blur(0) grayscale(0) saturate(1.02) brightness(1) !important;
+  transform: scale(1.03) !important;
+  z-index: 4 !important;
+}
+
+@media (min-width: 1600px) {
+  .about-gallery {
+    width: min(1320px, 78vw) !important;
+    height: clamp(330px, 34vh, 430px) !important;
+    padding-inline: clamp(120px, 11vw, 210px) !important;
+  }
+}
+
+@media (max-width: 720px) {
+  .about-gallery {
+    height: 340px !important;
+    padding-inline: 18px !important;
+  }
+
+  .aboutSwiper .swiper-slide {
+    width: min(84vw, 420px) !important;
+    height: 245px !important;
+  }
+}
+
+/* Final responsive polish overrides */
+.about-hero {
+  min-height: auto !important;
+  padding-top: clamp(76px, 10vh, 118px) !important;
+  padding-bottom: clamp(48px, 7vh, 82px) !important;
+}
+
+.about-section {
+  padding-top: clamp(44px, 6.5vh, 76px) !important;
+  padding-bottom: clamp(44px, 6.5vh, 76px) !important;
+}
+
+.about-story {
+  position: relative;
+  max-width: min(1180px, 82vw);
+  margin-inline: auto;
+  background:
+    linear-gradient(90deg, var(--text-2) 0%, var(--text-2) 38%, var(--accent) 50%, var(--text-2) 62%, var(--text-2) 100%);
+  background-size: 260% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent !important;
+  animation: aboutStorySheen 8s cubic-bezier(.25,1,.5,1) infinite;
+}
+
+@keyframes aboutStorySheen {
+  0%, 28% { background-position: 120% 50%; }
+  64%, 100% { background-position: -120% 50%; }
+}
+
+.about-clients {
+  padding-top: clamp(46px, 6vh, 72px) !important;
+  padding-bottom: clamp(44px, 6vh, 74px) !important;
+  overflow: hidden;
+}
+
+.about-gallery {
+  width: min(1380px, 100%) !important;
+  max-width: 1380px !important;
+  height: clamp(300px, 38vh, 460px) !important;
+  margin: clamp(22px, 4vh, 46px) auto clamp(12px, 3vh, 32px) !important;
+  padding-inline: clamp(116px, 14vw, 240px) !important;
+  overflow: hidden !important;
+}
+
+.about-gallery::before,
+.about-gallery::after {
+  top: 0 !important;
+  bottom: 0 !important;
+  width: clamp(170px, 22vw, 340px) !important;
+  z-index: 8 !important;
+}
+
+.aboutSwiper,
+.aboutSwiper .swiper-wrapper {
+  height: 100% !important;
+  align-items: center !important;
+}
+
+.aboutSwiper .swiper-slide {
+  width: clamp(430px, 42vw, 680px) !important;
+  height: clamp(250px, 32vh, 395px) !important;
+  opacity: 0.2 !important;
+  filter: blur(3px) grayscale(0.25) saturate(0.62) brightness(0.72) !important;
+  transform: scale(0.78) !important;
+}
+
+.aboutSwiper .swiper-slide-prev,
+.aboutSwiper .swiper-slide-next {
+  opacity: 0.46 !important;
+  filter: blur(1.5px) grayscale(0.1) saturate(0.78) brightness(0.78) !important;
+  transform: scale(0.86) !important;
+}
+
+.aboutSwiper .swiper-slide-active {
+  opacity: 1 !important;
+  filter: blur(0) grayscale(0) saturate(1.02) brightness(1) !important;
+  transform: scale(1.02) !important;
+}
+
+@media (min-width: 1600px) {
+  .about-gallery {
+    width: min(1320px, 78vw) !important;
+    height: clamp(330px, 34vh, 430px) !important;
+  }
+}
+
+@media (max-width: 760px) {
+  .about-gallery {
+    padding-inline: 24px !important;
+    height: 320px !important;
+  }
+
+  .aboutSwiper .swiper-slide {
+    width: min(84vw, 420px) !important;
+    height: 245px !important;
+  }
+}
+
+/* Responsive alignment pass: keep About sections composed across browser zoom levels. */
+.about-hero {
+  min-height: auto;
+  padding: clamp(86px, 12vh, 132px) 5vw clamp(56px, 8vh, 92px);
+}
+
+.about-section {
+  padding-block: clamp(52px, 8vh, 88px);
+}
+
+.about-kicker {
+  background: linear-gradient(90deg, var(--accent), var(--text-1), var(--accent));
+  background-size: 240% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: aboutKickerSheen 6s cubic-bezier(.25,1,.5,1) infinite;
+}
+
+.about-story {
+  animation: aboutStoryFloat 9s ease-in-out infinite;
+}
+
+@keyframes aboutKickerSheen {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+@keyframes aboutStoryFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+
+.about-team {
+  padding-top: clamp(56px, 8vh, 84px);
+}
+
+.about-clients {
+  min-height: auto;
+  padding-block: clamp(56px, 8vh, 96px);
+}
+
+.about-gallery {
+  width: min(1500px, 100%);
+  max-width: 1500px;
+  height: clamp(320px, 42vh, 500px);
+  margin: clamp(32px, 5vh, 56px) auto clamp(20px, 4vh, 40px);
+  padding-inline: clamp(72px, 8vw, 150px);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+}
+
+.about-gallery::before,
+.about-gallery::after {
+  top: 0;
+  bottom: 0;
+  width: clamp(120px, 16vw, 260px);
+}
+
+.aboutSwiper {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.aboutSwiper .swiper-slide {
+  width: clamp(420px, 46vw, 720px) !important;
+  height: clamp(250px, 34vh, 420px) !important;
+  display: block;
+}
+
+.aboutSwiper .swiper-slide-active {
+  transform: scale(1.03) !important;
+}
+
+.aboutSwiper .swiper-slide:not(.swiper-slide-active) {
+  opacity: 0.44;
+}
+
+@media (min-width: 1600px) {
+  .about-gallery {
+    height: 460px;
+    padding-inline: clamp(120px, 11vw, 210px);
+  }
+
+  .aboutSwiper .swiper-slide {
+    width: clamp(560px, 40vw, 760px) !important;
+    height: clamp(320px, 28vw, 430px) !important;
+  }
+}
+
+@media (max-width: 720px) {
+  .about-gallery {
+    height: 340px;
+    padding-inline: 18px;
+  }
+
+  .aboutSwiper .swiper-slide {
+    width: min(84vw, 420px) !important;
+    height: 245px !important;
+  }
+}
+
 /* Cascade guard: keep the optimized gallery treatment after older legacy rules. */
 .about-gallery {
   position: relative;

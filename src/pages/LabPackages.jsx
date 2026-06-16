@@ -9,7 +9,7 @@ import { Helmet } from "react-helmet-async";
 ═══════════════════════════════════════════════════════════════════ */
 const pageStyles = `
 /* Hero */
-.lp-hero { padding: 100px 5vw 60px; position: relative; overflow: hidden; }
+.lp-hero { padding: clamp(72px, 8vh, 100px) 5vw clamp(36px, 5vh, 60px); position: relative; overflow: hidden; }
 .lp-hero-bg {
   position: absolute; inset: 0; pointer-events: none;
   background:
@@ -76,8 +76,15 @@ const pageStyles = `
 }
 
 /* Packages grid */
-.lp-pkg-section { padding: 0 5vw 80px; }
-.lp-pkg-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; align-items: start; }
+.lp-pkg-section { padding: clamp(18px, 3vh, 42px) 5vw clamp(56px, 7vh, 80px); }
+.lp-pkg-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(1rem, 1.5vw, 1.5rem);
+  align-items: stretch;
+  max-width: min(1500px, 100%);
+  margin: 0 auto;
+}
 @media(max-width:900px) { .lp-pkg-grid { grid-template-columns: 1fr; } }
 @media(min-width:901px) and (max-width:1100px) { .lp-pkg-grid { grid-template-columns: 1fr 1fr; } }
 
@@ -86,6 +93,7 @@ const pageStyles = `
   border-radius: 20px; overflow: hidden; border: 1px solid var(--border-1);
   background: var(--surface-2); position: relative;
   transition: all .35s cubic-bezier(.4,0,.2,1); display: flex; flex-direction: column;
+  height: 100%;
 }
 .lp-card:hover { transform: translateY(-6px); box-shadow: 0 28px 70px rgba(0,0,0,.5); }
 .lp-card.featured {
@@ -100,7 +108,7 @@ const pageStyles = `
   font-family: var(--font-body); font-size: .58rem; font-weight: 700;
   padding: 4px 10px; border-radius: 5px; letter-spacing: .07em;
 }
-.lp-card-head { padding: 26px 26px 0; }
+.lp-card-head { padding: clamp(22px, 2.2vw, 30px) clamp(22px, 2vw, 30px) 0; }
 .lp-card-tier {
   font-family: var(--font-body); font-size: .62rem;
   letter-spacing: .1em; text-transform: uppercase; margin-bottom: .5rem;
@@ -130,7 +138,7 @@ const pageStyles = `
 }
 
 /* Features list */
-.lp-includes { padding: 0 26px; flex: 1; }
+.lp-includes { padding: 0 clamp(22px, 2vw, 30px); flex: 1; }
 .lp-includes h4 {
   font-family: var(--font-body); font-size: .62rem;
   color: var(--text-3); letter-spacing: .1em; text-transform: uppercase; margin-bottom: .9rem;
@@ -165,7 +173,7 @@ const pageStyles = `
 .lp-spec span { color: var(--text-3); text-transform: capitalize; }
 
 /* Card footer */
-.lp-card-foot { padding: 16px 26px 22px; display: flex; flex-direction: column; gap: .6rem; }
+.lp-card-foot { margin-top: auto; padding: 16px clamp(22px, 2vw, 30px) 22px; display: flex; flex-direction: column; gap: .6rem; }
 
 /* Inside section tabs */
 .lp-inside { padding: 0 5vw 80px; }

@@ -626,6 +626,8 @@
   position: relative;
   min-height: 500px;
   overflow: hidden;
+  display: grid;
+  place-items: center;
 }
 .spline-scene::before {
   content: '';
@@ -641,6 +643,136 @@
   height: 100% !important;
   min-height: 500px;
   display: block;
+}
+.lab-console-visual {
+  width: min(560px, 82%);
+  aspect-ratio: 1.18;
+  position: relative;
+  display: grid;
+  place-items: center;
+}
+.lab-console-panel {
+  width: 78%;
+  height: 72%;
+  border-radius: 26px;
+  border: 1px solid rgba(0,220,130,0.28);
+  background:
+    linear-gradient(145deg, rgba(255,255,255,0.08), transparent 32%),
+    radial-gradient(circle at 52% 35%, rgba(0,220,130,0.18), transparent 40%),
+    rgba(24,24,27,0.84);
+  box-shadow: 0 34px 110px rgba(0,0,0,0.34), inset 0 0 0 1px rgba(255,255,255,0.04);
+  overflow: hidden;
+  position: relative;
+}
+.lab-console-panel::before {
+  content: '';
+  position: absolute;
+  inset: 16%;
+  border: 1px dashed rgba(0,220,130,0.28);
+  border-radius: 999px;
+  animation: labOrbit 18s linear infinite;
+}
+.lab-console-panel::after {
+  content: '';
+  position: absolute;
+  left: 10%;
+  right: 10%;
+  top: 50%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(0,220,130,0.65), transparent);
+  animation: labScan 3.4s cubic-bezier(.25,1,.5,1) infinite;
+}
+.lab-console-header {
+  position: absolute;
+  top: 22px;
+  left: 24px;
+  display: flex;
+  gap: 8px;
+}
+.lab-console-header span {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: var(--accent);
+  box-shadow: 0 0 18px rgba(0,220,130,0.55);
+}
+.lab-circuit-grid {
+  position: absolute;
+  inset: 26% 17% 31%;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+.lab-circuit-grid i {
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.035);
+  position: relative;
+}
+.lab-circuit-grid i::after {
+  content: '';
+  position: absolute;
+  inset: 38% auto auto 50%;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--accent);
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 22px rgba(0,220,130,0.65);
+}
+.lab-waveform {
+  position: absolute;
+  left: 15%;
+  right: 15%;
+  bottom: 20%;
+  height: 50px;
+  display: flex;
+  align-items: end;
+  justify-content: center;
+  gap: 10px;
+}
+.lab-waveform span {
+  width: 8px;
+  border-radius: 999px;
+  background: var(--accent);
+  opacity: 0.85;
+  animation: labBars 1.7s ease-in-out infinite;
+}
+.lab-waveform span:nth-child(1) { height: 28%; animation-delay: 0s; }
+.lab-waveform span:nth-child(2) { height: 52%; animation-delay: .1s; }
+.lab-waveform span:nth-child(3) { height: 78%; animation-delay: .2s; }
+.lab-waveform span:nth-child(4) { height: 42%; animation-delay: .3s; }
+.lab-waveform span:nth-child(5) { height: 90%; animation-delay: .4s; }
+.lab-waveform span:nth-child(6) { height: 62%; animation-delay: .5s; }
+.lab-waveform span:nth-child(7) { height: 38%; animation-delay: .6s; }
+.lab-kit-stack {
+  position: absolute;
+  right: 4%;
+  bottom: 4%;
+  display: grid;
+  gap: 10px;
+}
+.lab-kit-stack span {
+  min-width: 84px;
+  padding: 10px 14px;
+  border-radius: 14px;
+  background: rgba(0,220,130,0.12);
+  border: 1px solid rgba(0,220,130,0.28);
+  color: var(--accent);
+  font-family: var(--font-heading);
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-align: center;
+}
+@keyframes labOrbit { to { transform: rotate(360deg); } }
+@keyframes labScan {
+  0%, 100% { transform: translateY(-120px); opacity: 0; }
+  18%, 82% { opacity: 1; }
+  50% { transform: translateY(120px); }
+}
+@keyframes labBars {
+  0%, 100% { transform: scaleY(.68); opacity: .52; }
+  50% { transform: scaleY(1); opacity: 1; }
 }
 .spline-idle-preview {
   min-height: 500px;
@@ -756,6 +888,16 @@
   background:
     radial-gradient(circle at 54% 38%, rgba(0,220,130,0.055), transparent 42%),
     linear-gradient(180deg, rgba(255,255,255,0.04), rgba(244,244,245,0.06));
+}
+:root[data-theme="light"] .lab-console-panel {
+  background:
+    linear-gradient(145deg, rgba(255,255,255,0.92), rgba(244,244,245,0.76)),
+    radial-gradient(circle at 52% 35%, rgba(0,220,130,0.14), transparent 42%);
+  box-shadow: 0 30px 90px rgba(9,9,11,0.10), inset 0 0 0 1px rgba(255,255,255,0.8);
+}
+:root[data-theme="light"] .lab-circuit-grid i {
+  border-color: rgba(9,9,11,0.08);
+  background: rgba(9,9,11,0.035);
 }
 :root[data-theme="light"] .spline-idle-preview {
   background:
@@ -998,12 +1140,17 @@
   justify-content: center;
   position: relative;
   overflow: hidden;
+  padding: 14px;
 }
 .product-img img{
-  width: 88%;
-  height: 88%;
+  width: 100%;
+  height: 100%;
+  max-width: 92%;
+  max-height: 92%;
   object-fit: contain;
   object-position: center;
+  margin: auto;
+  display: block;
   transition: transform .45s ease;
 }
 

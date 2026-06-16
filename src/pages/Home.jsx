@@ -59,7 +59,7 @@ const homeSchema = {
       priceRange: "INR",
       address: {
         "@type": "PostalAddress",
-        streetAddress: "PLOTNO : 1EP, BRINDAVAN MEADOWS, SAHEBNAGAR KALAN",
+        streetAddress: "Plot No : 1EP, Brindavan Meadows, Sahebnagar Kalan",
         addressLocality: "Hyderabad",
         addressRegion: "Telangana",
         postalCode: "501510",
@@ -781,7 +781,7 @@ function CTASection() {
         <a href="https://wa.me/917815809412" className="btn btn-secondary" target="_blank" rel="noreferrer">WhatsApp</a>
       </div>
       <p className="cta-address">
-        PLOTNO : 1EP, BRINDAVAN MEADOWS, SAHEBNAGAR KALAN, Hyderabad &ndash; 501510 &middot; GST &amp; MSME Registered
+        Plot No : 1EP, Brindavan Meadows, Sahebnagar Kalan, Hyderabad &ndash; 501510 &middot; GST &amp; MSME Registered
       </p>
     </div>
   );

@@ -1,30 +1,7 @@
 import { Card } from "./ui/card";
-import { InteractiveRobotSpline } from "./ui/interactive-3d-robot";
 import { Spotlight } from "./ui/spotlight";
-import { useEffect, useRef, useState } from "react";
 
 export function SplineSceneBasic() {
-  const sceneRef = useRef(null);
-  const [shouldMountScene, setShouldMountScene] = useState(false);
-
-  useEffect(() => {
-    const node = sceneRef.current;
-    if (!node || shouldMountScene) return undefined;
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setShouldMountScene(true);
-          observer.disconnect();
-        }
-      },
-      { rootMargin: "420px 0px" }
-    );
-
-    observer.observe(node);
-    return () => observer.disconnect();
-  }, [shouldMountScene]);
-
   return (
     <Card className="spline-card">
       <Spotlight className="spline-spotlight" fill="white" />
@@ -47,18 +24,38 @@ export function SplineSceneBasic() {
           </div>
         </div>
 
-        <div className="spline-scene" ref={sceneRef}>
-          {shouldMountScene ? (
-            <InteractiveRobotSpline
-              scene="https://prod.spline.design/PyzDhpQ9E5f1E3MT/scene.splinecode"
-              className="spline-canvas"
-            />
-          ) : (
-            <div className="spline-idle-preview" aria-hidden="true">
-              <span />
-              <strong>3D lab preview</strong>
+        <div className="spline-scene" aria-hidden="true">
+          <div className="lab-console-visual">
+            <div className="lab-console-panel">
+              <div className="lab-console-header">
+                <span />
+                <span />
+                <span />
+              </div>
+              <div className="lab-circuit-grid">
+                <i />
+                <i />
+                <i />
+                <i />
+                <i />
+                <i />
+              </div>
+              <div className="lab-waveform">
+                <span />
+                <span />
+                <span />
+                <span />
+                <span />
+                <span />
+                <span />
+              </div>
             </div>
-          )}
+            <div className="lab-kit-stack">
+              <span>AI</span>
+              <span>IoT</span>
+              <span>ROB</span>
+            </div>
+          </div>
         </div>
       </div>
     </Card>

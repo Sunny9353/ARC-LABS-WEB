@@ -1,7 +1,7 @@
 import { Fragment, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import "../styles/Internship.css";
-import { DetailPanel, pageStyles } from "./Programs.jsx";
+import { DetailPanel, PROGRAM_LEVELS, getLevelMeta, pageStyles } from "./Programs.jsx";
 import {
   INTERNSHIP_TECHNOLOGIES as INTERNSHIP_TECHS,
   INTERNSHIP_DURATIONS,
@@ -9,6 +9,8 @@ import {
 
 export default function Internship() {
   const [activeTech, setActiveTech] = useState(null);
+  const [activeLevel, setActiveLevel] = useState("FOUNDATIONAL");
+  const visibleTechs = INTERNSHIP_TECHS.filter((tech) => tech.level === activeLevel);
 
   const handleTechClick = (tech) => {
     setActiveTech((prev) => (prev?.id === tech.id ? null : tech));
@@ -49,24 +51,43 @@ export default function Internship() {
           week, or 4-5 week internship.
         </p>
 
+        <div className="level-filter" aria-label="Filter internship tracks by level">
+          {PROGRAM_LEVELS.map((level) => (
+            <button
+              key={level.id}
+              type="button"
+              className={`level-filter-btn${activeLevel === level.id ? " active" : ""}`}
+              style={{ "--level-color": level.color }}
+              onClick={() => {
+                setActiveLevel(level.id);
+                setActiveTech(null);
+              }}
+            >
+              {level.label}
+            </button>
+          ))}
+        </div>
+
         <div className="tech-grid">
-          {INTERNSHIP_TECHS.map((tech) => (
+          {visibleTechs.map((tech) => {
+            const levelMeta = getLevelMeta(tech.level);
+            return (
             <Fragment key={tech.id}>
             <div
               className={`tech-card${activeTech?.id === tech.id ? " active" : ""}`}
-              style={{ "--tc-color": tech.color }}
+              style={{ "--tc-color": levelMeta.color }}
               onClick={() => handleTechClick(tech)}
             >
               <div className="tc-top">
                 <div
                   className="tc-icon"
-                  style={{ background: tech.iconBg, color: tech.color }}
+                  style={{ background: tech.iconBg, color: levelMeta.color }}
                 >
                   {tech.iconLabel}
                 </div>
                 <span
                   className="tc-level"
-                  style={{ background: tech.levelBg, color: tech.levelColor }}
+                  style={{ background: levelMeta.color, color: "#09090b" }}
                 >
                   {tech.level}
                 </span>
@@ -96,7 +117,7 @@ export default function Internship() {
               />
             )}
             </Fragment>
-          ))}
+          )})}
         </div>
 
         {false && activeTech && (
