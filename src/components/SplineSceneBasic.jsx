@@ -1,5 +1,6 @@
 import { Card } from "./ui/card";
 import { Spotlight } from "./ui/spotlight";
+import RobotPreviewFrame from "./RobotPreviewFrame";
 
 export function SplineSceneBasic() {
   return (
@@ -24,38 +25,13 @@ export function SplineSceneBasic() {
           </div>
         </div>
 
-        <div className="spline-scene" aria-hidden="true">
-          <div className="lab-console-visual">
-            <div className="lab-console-panel">
-              <div className="lab-console-header">
-                <span />
-                <span />
-                <span />
-              </div>
-              <div className="lab-circuit-grid">
-                <i />
-                <i />
-                <i />
-                <i />
-                <i />
-                <i />
-              </div>
-              <div className="lab-waveform">
-                <span />
-                <span />
-                <span />
-                <span />
-                <span />
-                <span />
-                <span />
-              </div>
-            </div>
-            <div className="lab-kit-stack">
-              <span>AI</span>
-              <span>IoT</span>
-              <span>ROB</span>
-            </div>
-          </div>
+        <div className="spline-scene robot-preview-scene">
+          <RobotPreviewFrame
+            className="robot-preview-frame"
+            title="Interactive ARC LABS robot preview"
+            loading="lazy"
+            view="home"
+          />
         </div>
       </div>
     </Card>

@@ -58,8 +58,7 @@
 
   text-align: center;
 }
-.about-section-head h2,
-.about-newsletter h2 {
+.about-section-head h2 {
   font-size: clamp(2rem, 4vw, 3.2rem);
   line-height: 1.05;
   letter-spacing: -0.035em;
@@ -226,48 +225,6 @@
     transform .5s ease,
     filter .5s ease;
 }
-.about-newsletter {
-  padding: 72px 5vw;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(320px, 0.72fr);
-  gap: 3rem;
-  align-items: end;
-  background: var(--surface);
-  border-top: 1px solid var(--border);
-  position: relative;
-  z-index: 1;
-}
-.about-newsletter-form label {
-  display: block;
-  color: var(--text-3);
-  font-size: 0.82rem;
-  margin-bottom: 0.65rem;
-}
-.about-newsletter-form div {
-  display: flex;
-  gap: 10px;
-}
-.about-newsletter-form input {
-  min-width: 0;
-  flex: 1;
-  height: 48px;
-  border: 1px solid var(--border-2);
-  border-radius: var(--radius);
-  background: var(--bg-alt);
-  color: var(--text);
-  padding: 0 14px;
-  font: inherit;
-}
-.about-newsletter-form button {
-  height: 48px;
-  border: 0;
-  border-radius: var(--radius);
-  background: var(--accent);
-  color: var(--bg);
-  padding: 0 24px;
-  font-weight: 800;
-  cursor: pointer;
-}
 
 @media (max-width: 960px) {
   .about-team-grid {
@@ -283,9 +240,6 @@
   }
   .about-client-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-  .about-newsletter {
-    grid-template-columns: 1fr;
   }
 }
 
@@ -305,9 +259,6 @@
   }
   .about-client-grid {
     grid-template-columns: 1fr;
-  }
-  .about-newsletter-form div {
-    flex-direction: column;
   }
 }
 .about-client-logo:hover{

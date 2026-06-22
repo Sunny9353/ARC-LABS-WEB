@@ -1,6 +1,11 @@
 import { Link } from "react-router-dom";
 import "../styles/Footer.css";
 
+// Import your local social media icons
+import linkedinIcon from "../assets/social_media_logos/Linkedin.webp";
+import youtubeIcon from "../assets/social_media_logos/Youtube.png";
+import instagramIcon from "../assets/social_media_logos/instagram.png";
+
 const LINKS = {
   Programs: [
     { label: "School Lab Setup",      to: "/lab-packages" },
@@ -86,19 +91,24 @@ export default function Footer() {
 
         <div className="footer-social">
           {[
-            { label: "Li", href: "https://www.linkedin.com/company/arclabs-india" },
-            { label: "Yt", href: "https://www.youtube.com/@arclabs" },
-            { label: "Ig", href: "https://www.instagram.com/arclabs.in" },
+            { id: "Li", name: "LinkedIn", href: "https://www.linkedin.com/company/arclabs-india", icon: linkedinIcon },
+            { id: "Yt", name: "YouTube", href: "https://www.youtube.com/@arclabs", icon: youtubeIcon },
+            { id: "Ig", name: "Instagram", href: "https://www.instagram.com/arclabs.in", icon: instagramIcon },
           ].map((s) => (
             <a
-              key={s.label}
+              key={s.id}
               href={s.href}
               className="social-btn"
               target="_blank"
               rel="noreferrer"
-              aria-label={s.label === "Li" ? "LinkedIn" : s.label === "Yt" ? "YouTube" : "Instagram"}
+              aria-label={s.name}
             >
-              {s.label}
+              {/* Added basic styling to ensure the icons fit well inside the anchor tags */}
+              <img 
+                src={s.icon} 
+                alt={s.name} 
+                style={{ width: "24px", height: "24px", objectFit: "contain", display: "block" }} 
+              />
             </a>
           ))}
         </div>

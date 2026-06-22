@@ -152,19 +152,6 @@ autoplay={{
 </div>
       </section>
 
-      <section className="about-newsletter">
-        <div>
-          <div className="section-label">Stay Connected</div>
-          <h2>Be the first to find out about the newest programs, workshops, and community activities.</h2>
-        </div>
-        <form className="about-newsletter-form">
-          <label htmlFor="about-email">Email*</label>
-          <div>
-            <input id="about-email" type="email" placeholder="hello@example.com" />
-            <button type="submit">Join</button>
-          </div>
-        </form>
-      </section>
     </>
   );
 }

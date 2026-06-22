@@ -54,7 +54,6 @@ function Layout({ children }) {
       ".section",
       ".about-section",
       ".about-hero",
-      ".about-newsletter",
       ".tech-section",
       ".internship-hero",
       ".prog-hero",

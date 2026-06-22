@@ -83,7 +83,6 @@ const SECTOR_STYLE = {
   "Industrial Telemetry Systems": { accent: "#00DC82", dim: "rgba(0,220,130,0.08)", border: "rgba(0,220,130,0.34)", label: "Signal fabric" },
   "AI-Based Surveillance": { accent: "#00DC82", dim: "rgba(0,220,130,0.08)", border: "rgba(0,220,130,0.34)", label: "Vision safety" },
   "Edge AI Infrastructure": { accent: "#00DC82", dim: "rgba(0,220,130,0.08)", border: "rgba(0,220,130,0.34)", label: "Edge compute" },
-  "Remote Asset Monitoring": { accent: "#00DC82", dim: "rgba(0,220,130,0.08)", border: "rgba(0,220,130,0.34)", label: "Asset tracking" },
   "Smart Sensor Networks": { accent: "#00DC82", dim: "rgba(0,220,130,0.08)", border: "rgba(0,220,130,0.34)", label: "Mesh health" },
   "Industrial Dashboard Systems": { accent: "#00DC82", dim: "rgba(0,220,130,0.08)", border: "rgba(0,220,130,0.34)", label: "Control UI" },
   "Cloud + Edge IoT Integration": { accent: "#00DC82", dim: "rgba(0,220,130,0.08)", border: "rgba(0,220,130,0.34)", label: "Secure pipeline" },
@@ -154,18 +153,6 @@ function SectorCardViz({ title, accent, points = [] }) {
             {p}
           </span>
         ))}
-      </div>
-    );
-  }
-
-  if (title === "Remote Asset Monitoring") {
-    return (
-      <div className="sector-viz sector-viz-route">
-        <svg viewBox="0 0 180 42" preserveAspectRatio="none">
-          <polyline points="4,34 36,24 72,29 106,13 144,20 176,8" fill="none" stroke={accent} strokeWidth="2" strokeDasharray="5 4" />
-          <circle cx="176" cy="8" r="4" fill={accent} />
-        </svg>
-        <em style={{ color: accent }}>GPS locked</em>
       </div>
     );
   }
@@ -1421,44 +1408,6 @@ function SectorDashboardBody({ project, channels, values, history, logs }) {
     );
   }
 
-  if (project?.title === "Remote Asset Monitoring") {
-    return (
-      <div className="px-6 py-5 space-y-4">
-        {kpiGrid}
-        <div className="grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] gap-4">
-          <DashboardPanel title="GPS Route And Cold Chain Guard" accent={accent}>
-            <svg viewBox="0 0 760 210" className="h-48 w-full">
-              <path d="M40 150 C150 42 230 178 330 92 S530 42 700 122" fill="none" stroke={accent} strokeWidth="3" strokeLinecap="round" />
-              {[40, 190, 330, 510, 700].map((x, i) => (
-                <g key={x}>
-                  <circle cx={x} cy={i % 2 ? 88 : 140} r="13" fill="#18181B" stroke={accent} />
-                  <circle cx={x} cy={i % 2 ? 88 : 140} r="4" fill={accent} />
-                </g>
-              ))}
-            </svg>
-          </DashboardPanel>
-          <DashboardPanel title="Asset Exception Board" accent={accent}>
-            <div className="grid grid-cols-2 gap-3">
-              {[
-                ["Geo Fence", "inside", "ok"],
-                ["Door", "sealed", "ok"],
-                ["Cargo Temp", "4.8°C", "ok"],
-                ["Shock Event", "0", "clear"],
-              ].map(([label, value, state]) => (
-                <div key={label} className="rounded-lg border border-zinc-800 bg-black/25 p-3">
-                  <span className="block text-[10px] font-mono uppercase tracking-widest text-zinc-500">{label}</span>
-                  <strong className="mt-2 block text-lg font-mono text-white">{value}</strong>
-                  <span className="mt-1 block text-[10px] font-mono uppercase" style={{ color: accent }}>{state}</span>
-                </div>
-              ))}
-            </div>
-          </DashboardPanel>
-        </div>
-        {logPanel}
-      </div>
-    );
-  }
-
   if (project?.title === "Industrial Dashboard Systems") {
     return (
       <div className="px-6 py-5 space-y-4">
@@ -1637,12 +1586,6 @@ function LiveProjectDashboard({ project, onClose }) {
       { key: "cpu", label: "Edge CPU", unit: "%", min: 22, max: 68, decimals: 0, accent: ARC_ACCENT },
       { key: "ram", label: "RAM Used", unit: "MB", min: 120, max: 260, decimals: 0, accent: ARC_ACCENT },
       { key: "acc", label: "Model Accuracy", unit: "%", min: 94, max: 99, decimals: 2, accent: ARC_ACCENT },
-    ],
-    "Remote Asset Monitoring": [
-      { key: "speed", label: "Asset Speed", unit: "km/h", min: 0, max: 78, decimals: 1, accent: ARC_ACCENT },
-      { key: "temp", label: "Cargo Temp", unit: "°C", min: -4, max: 8, decimals: 1, accent: ARC_ACCENT },
-      { key: "fuel", label: "Fuel Level", unit: "%", min: 22, max: 92, decimals: 0, accent: ARC_ACCENT },
-      { key: "tilt", label: "Tilt Vector", unit: "°", min: 0, max: 12, decimals: 1, accent: ARC_ACCENT },
     ],
     "Smart Sensor Networks": [
       { key: "nodes", label: "Active Nodes", unit: "", min: 38, max: 42, decimals: 0, accent: ARC_ACCENT },
@@ -2348,14 +2291,6 @@ export default function IndustrialIoTSolutions() {
                   val: "< 5ms Inference Latency",
                   icon: Cpu,
                   p: [2, 3, 2, 2, 4, 2, 3, 2, 2]
-                },
-                {
-                  title: "Remote Asset Monitoring",
-                  desc: "Track mobile and stationary assets across logistics networks. Monitor GPS locations, temperature limits of cold cargo, tilt vectors, and humidity profiles with secure cellular modules.",
-                  tech: ["BLE Tag Network", "GSM Gateway", "Geofencing Engine"],
-                  val: "Asset temperature metrics",
-                  icon: Signal,
-                  p: [5, 4, 6, 5, 5, 4, 5, 6, 5]
                 },
                 {
                   title: "Smart Sensor Networks",
@@ -3232,8 +3167,8 @@ export default function IndustrialIoTSolutions() {
             </div>
 
             {/* Address Footer details */}
-            <div className="border-t border-zinc-900 pt-10 text-[10px] font-mono text-zinc-500 uppercase tracking-wider space-y-2">
-              <p>ARC LABS SYSTEMS DIVISION &middot; HYDERABAD, TELANGANA &middot; GST &amp; MSME REGISTERED</p>
+            <div className="border-t border-zinc-900 pt-10 text-[10px] font-mono text-zinc-500 tracking-wider space-y-2">
+              <p>Arc Labs Systems Division &middot; Hyderabad, Telangana &middot; GST &amp; MSME Registered</p>
               <p className="text-zinc-600">4-7-138/1, Narendra Nagar, Habsiguda, Hyderabad &ndash; 500007</p>
             </div>
           </div>

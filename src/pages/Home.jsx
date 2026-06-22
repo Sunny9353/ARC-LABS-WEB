@@ -234,7 +234,7 @@ function Hero() {
 
         <div className="hero-lab-preview" aria-hidden="true">
           <SplineScene
-            scene="https://prod.spline.design/qJ53MrE6jmG9KYUu/scene.splinecode"
+            scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
             className="hero-lab-scene"
             onLoad={handleSplineReady}
             onError={handleSplineReady}

@@ -3,6 +3,7 @@ import { jsPDF } from "jspdf";
 import { collection, addDoc } from "firebase/firestore";
 import { db } from "../firebase";
 import { Helmet } from "react-helmet-async";
+import RobotPreviewFrame from "../components/RobotPreviewFrame";
 /* ─── Page-scoped styles (no global overrides) ─── */
 export const pageStyles = `
   /* Hero */
@@ -32,9 +33,9 @@ export const pageStyles = `
     top: 0;
     right: 0;
     bottom: 0;
-    width: min(58vw, 860px);
+    width: min(50vw, 760px);
     z-index: 0;
-    pointer-events: none;
+    pointer-events: auto;
     display: grid;
     place-items: center;
     overflow: hidden;
@@ -54,73 +55,129 @@ export const pageStyles = `
       linear-gradient(90deg, var(--bg) 0%, rgba(250,250,250,0.18) 20%, transparent 46%),
       linear-gradient(180deg, rgba(250,250,250,0.02), rgba(250,250,250,0.10) 78%, var(--bg) 100%);
   }
-  .prog-system-card {
+  .prog-robot-stage {
     position: relative;
     z-index: 0;
-    width: min(520px, 78%);
-    aspect-ratio: 1.12;
-    border-radius: 34px;
-    border: 1px solid var(--border);
-    background:
-      linear-gradient(145deg, rgba(255,255,255,0.08), transparent 34%),
-      radial-gradient(circle at 50% 42%, rgba(0,220,130,0.18), transparent 38%),
-      var(--surface);
-    box-shadow: 0 34px 110px rgba(0,0,0,0.34), inset 0 0 0 1px rgba(255,255,255,0.04);
-    overflow: hidden;
-  }
-  .prog-system-card::before {
-    content: '';
-    position: absolute;
-    inset: 11%;
-    border-radius: 50%;
-    border: 1px dashed rgba(0,220,130,0.34);
-    animation: systemOrbit 16s linear infinite;
-  }
-  .prog-system-card::after {
-    content: '';
-    position: absolute;
-    left: 8%;
-    right: 8%;
-    top: 50%;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(0,220,130,0.52), transparent);
-    animation: systemScan 3.6s cubic-bezier(.25,1,.5,1) infinite;
-  }
-  .prog-system-node {
-    position: absolute;
-    width: 14px;
-    height: 14px;
-    border-radius: 999px;
-    background: var(--accent);
-    box-shadow: 0 0 30px rgba(0,220,130,0.72);
-    animation: nodePulse 2.6s ease-in-out infinite;
-  }
-  .prog-system-node:nth-child(1) { top: 18%; left: 22%; }
-  .prog-system-node:nth-child(2) { top: 28%; right: 18%; animation-delay: .4s; }
-  .prog-system-node:nth-child(3) { bottom: 20%; left: 30%; animation-delay: .8s; }
-  .prog-system-node:nth-child(4) { bottom: 28%; right: 26%; animation-delay: 1.2s; }
-  .prog-system-core {
-    position: absolute;
-    inset: 32%;
-    display: grid;
-    place-items: center;
+    width: min(650px, 88%);
+    aspect-ratio: 1.14;
     border-radius: 28px;
-    border: 1px solid rgba(0,220,130,0.34);
-    background: rgba(0,220,130,0.08);
-    color: var(--text);
-    font-family: var(--font-heading);
-    font-weight: 800;
-    letter-spacing: 0.08em;
+    border: 1px solid rgba(0,220,130,0.28);
+    background:
+      radial-gradient(circle at 50% 88%, rgba(0,220,130,0.16), transparent 46%),
+      #000;
+    box-shadow:
+      0 42px 120px rgba(0,0,0,0.46),
+      0 0 72px rgba(0,220,130,0.08),
+      inset 0 0 0 1px rgba(255,255,255,0.035);
+    overflow: hidden;
+    isolation: isolate;
   }
-  @keyframes systemOrbit { to { transform: rotate(360deg); } }
-  @keyframes systemScan {
-    0%, 100% { transform: translateY(-110px); opacity: 0; }
-    18%, 82% { opacity: 1; }
-    50% { transform: translateY(110px); }
+  .prog-robot-stage::before {
+    content: '';
+    position: absolute;
+    inset: auto 9% 9% 9%;
+    z-index: 2;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(0,220,130,0.78), transparent);
+    box-shadow: 0 0 26px rgba(0,220,130,0.42);
+    pointer-events: none;
   }
-  @keyframes nodePulse {
-    0%, 100% { transform: scale(1); opacity: .72; }
-    50% { transform: scale(1.45); opacity: 1; }
+  .prog-robot-stage::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+    background: linear-gradient(110deg, transparent 34%, rgba(0,220,130,0.08) 48%, transparent 62%);
+    transform: translateX(-78%);
+    animation: progRobotSweep 6s cubic-bezier(.25,1,.5,1) infinite;
+  }
+  .prog-robot-frame {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    border: 0;
+    display: block;
+    background: #000;
+    transform: scale(1.5);
+    transform-origin: center center;
+  }
+  .prog-robot-status,
+  .prog-robot-readout {
+    position: absolute;
+    z-index: 3;
+    pointer-events: none;
+    font-family: var(--font-body);
+    font-size: 0.62rem;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+  }
+  .prog-robot-status {
+    top: 22px;
+    left: 24px;
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    color: rgba(250,250,250,0.64);
+  }
+  .prog-robot-status span {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 16px rgba(0,220,130,0.72);
+    animation: progRobotPulse 2s ease-in-out infinite;
+  }
+  .prog-robot-readout {
+    right: 24px;
+    bottom: 22px;
+    display: grid;
+    justify-items: end;
+    gap: 4px;
+  }
+  .prog-robot-readout strong {
+    color: rgba(250,250,250,0.62);
+    font-weight: 500;
+  }
+  .prog-robot-readout span {
+    color: var(--accent);
+  }
+  .prog-robot-corner {
+    position: absolute;
+    z-index: 3;
+    width: 28px;
+    height: 28px;
+    pointer-events: none;
+  }
+  .prog-robot-corner-tl {
+    top: 13px;
+    left: 13px;
+    border-top: 1px solid rgba(0,220,130,0.54);
+    border-left: 1px solid rgba(0,220,130,0.54);
+  }
+  .prog-robot-corner-br {
+    right: 13px;
+    bottom: 13px;
+    border-right: 1px solid rgba(0,220,130,0.54);
+    border-bottom: 1px solid rgba(0,220,130,0.54);
+  }
+  :root[data-theme="light"] .prog-robot-stage {
+    border-color: rgba(0,220,130,0.36);
+    box-shadow:
+      0 28px 80px rgba(9,9,11,0.16),
+      0 0 70px rgba(0,220,130,0.08),
+      inset 0 0 0 1px rgba(255,255,255,0.08);
+  }
+  @keyframes progRobotSweep {
+    0%, 48% { opacity: 0; transform: translateX(-78%); }
+    58% { opacity: 1; }
+    100% { opacity: 0; transform: translateX(78%); }
+  }
+  @keyframes progRobotPulse {
+    0%, 100% { opacity: .5; transform: scale(.86); }
+    50% { opacity: 1; transform: scale(1.16); }
   }
   .prog-hero-inner {
     position: relative;
@@ -185,7 +242,14 @@ export const pageStyles = `
       background:
         linear-gradient(180deg, rgba(9,9,11,0.04), rgba(9,9,11,0.42) 52%, var(--bg) 100%);
     }
-    .prog-system-card { opacity: 0.42; }
+    .prog-robot-stage {
+      width: min(620px, 94%);
+      opacity: 0.5;
+      pointer-events: none;
+    }
+    .prog-robot-frame { transform: scale(1.18); }
+    .prog-robot-status,
+    .prog-robot-readout { display: none; }
     .prog-hero-inner {
       text-align: center;
       padding: 28px 18px;
@@ -3803,13 +3867,23 @@ export default function ProgramsPage() {
 
       {/* HERO */}
       <div className="prog-hero">
-        <div className="prog-hero-system" aria-hidden="true">
-          <div className="prog-system-card">
-            <span className="prog-system-node" />
-            <span className="prog-system-node" />
-            <span className="prog-system-node" />
-            <span className="prog-system-node" />
-            <div className="prog-system-core">ARC</div>
+        <div className="prog-hero-system">
+          <div className="prog-robot-stage">
+            <RobotPreviewFrame
+              className="prog-robot-frame"
+              title="Interactive ARC LABS training robot"
+              loading="eager"
+              view="programs"
+            />
+            <div className="prog-robot-status" aria-hidden="true">
+              <span /> Interactive training unit
+            </div>
+            <div className="prog-robot-readout" aria-hidden="true">
+              <strong>Pointer tracking</strong>
+              <span>Live</span>
+            </div>
+            <i className="prog-robot-corner prog-robot-corner-tl" aria-hidden="true" />
+            <i className="prog-robot-corner prog-robot-corner-br" aria-hidden="true" />
           </div>
         </div>
         <div className="prog-hero-inner">
