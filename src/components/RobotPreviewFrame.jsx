@@ -25,7 +25,8 @@ export default function RobotPreviewFrame({ className, title, loading = "lazy", 
       src={`/robot-preview/tiny_robo.html?theme=${theme}&view=${view}`}
       title={title}
       loading={loading}
-      sandbox="allow-scripts allow-same-origin"
+      allow="fullscreen"
+      referrerPolicy="strict-origin-when-cross-origin"
     />
   );
 }
