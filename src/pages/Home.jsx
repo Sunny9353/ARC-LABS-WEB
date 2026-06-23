@@ -137,7 +137,7 @@ const homeSchema = {
 /* ─── Hero ─────────────────────────────────────────────── */
 const HOME_HERO_IMAGES = [
   { src: "/images/home/308be169-ac9a-4660-a0b4-8cf97f2a7520.JPG" },
-  { src: "/images/home/9846ae80-54c9-444e-851e-471326155bbe.JPG"},
+  { src: "/images/home/9846ae80-54c9-444e-851e-471326155bbe.JPG" },
   { src: "/images/home/air.jpeg" },
   { src: "/images/home/d8669014-ecc6-409d-a572-bd2823fc8c57.JPG" },
   { src: "/images/home/diet.jpeg" },
@@ -146,8 +146,8 @@ const HOME_HERO_IMAGES = [
   { src: "/images/home/IMG_4249 (1).jpg" },
   { src: "/images/home/IMG_9918.jpg" },
   { src: "/images/home/kolhapur.jpeg", },
-  { src: "/images/home/mh.jpeg"},
-  { src: "/images/home/fdp.jpeg"}
+  { src: "/images/home/mh.jpeg" },
+  { src: "/images/home/fdp.jpeg" }
 ];
 
 function Hero() {
@@ -227,7 +227,7 @@ function Hero() {
 
           <div className="hero-actions">
             <Link to="/lab-packages" className="btn btn-primary">Set Up a Lab →</Link>
-            <Link to="/programs"     className="btn btn-secondary">Explore Programs</Link>
+            <Link to="/programs" className="btn btn-secondary">Explore Programs</Link>
           </div>
 
         </div>
@@ -278,9 +278,9 @@ function Hero() {
 /* ─── Trust Marquee ────────────────────────────────────── */
 function TrustBar() {
   const ITEMS = [
-    "IIT Programs Delivered","NEP 2020 Aligned","MSME Registered",
-    "Made-in-India Hardware","25,000+ Students","CSR-Ready Labs",
-    "IoRT + AI Systems","ATL Compatible Kits","Teacher Certification",
+    "IIT Programs Delivered", "NEP 2020 Aligned", "MSME Registered",
+    "Made-in-India Hardware", "25,000+ Students", "CSR-Ready Labs",
+    "IoRT + AI Systems", "ATL Compatible Kits", "Teacher Certification",
   ];
   return (
     <div className="trust-bar">
@@ -306,21 +306,21 @@ function AIReadyIntro() {
             Hyderabad-based AI, IoT and Robotics lab setup partner.
           </h2>
         </div>
-<div className="company-info-box">
-  <h2>About ARC LABS</h2>
+        <div className="company-info-box">
+          <h2>About ARC LABS</h2>
 
-  <p>
-    ARC LABS is a Hyderabad-based STEM lab implementation company that
-    builds AI, IoT, Robotics, and Industrial IoT labs for schools,
-    colleges, and CSR partners across India.
-  </p>
+          <p>
+            ARC LABS is a Hyderabad-based STEM lab implementation company that
+            builds AI, IoT, Robotics, and Industrial IoT labs for schools,
+            colleges, and CSR partners across India.
+          </p>
 
-  <p>
-    We provide hardware kits, curriculum, teacher training,
-    installation, certification, and annual support so institutions
-    can launch practical technology labs with one accountable partner.
-  </p>
-</div>
+          <p>
+            We provide hardware kits, curriculum, teacher training,
+            installation, certification, and annual support so institutions
+            can launch practical technology labs with one accountable partner.
+          </p>
+        </div>
       </div>
     </section>
   );
@@ -459,8 +459,8 @@ function Services() {
               key={s.id}
               className={`service-card${isOpen ? " service-card--open" : ""}`}
               style={{
-                "--svc-color":  s.color,
-                "--svc-dim":    s.colorDim,
+                "--svc-color": s.color,
+                "--svc-dim": s.colorDim,
                 "--svc-border": s.colorBorder,
               }}
               onClick={() => toggle(s.id)}
@@ -509,10 +509,10 @@ function Services() {
 function StatsBand() {
   const STATS = [
     { num: "25,000+", label: "Students Upskilled", desc: "Schools, colleges & corporates" },
-    { num: "1,000+",  label: "Faculty Certified",  desc: "Including IIT & NIT programs" },
-    { num: "3,000+",  label: "Training Sessions",  desc: "Delivered across India" },
-    { num: "10+",     label: "Years in EdTech",    desc: "MSME-registered, Hyderabad" },
-    { num: "500+",    label: "Institutions",       desc: "Schools, colleges & labs" },
+    { num: "1,000+", label: "Faculty Certified", desc: "Including IIT & NIT programs" },
+    { num: "3,000+", label: "Training Sessions", desc: "Delivered across India" },
+    { num: "10+", label: "Years in EdTech", desc: "MSME-registered, Hyderabad" },
+    { num: "500+", label: "Institutions", desc: "Schools, colleges & labs" },
   ];
   return (
     <div className="stats-band">
@@ -531,39 +531,39 @@ function StatsBand() {
 
 /* ─── Products Preview ─────────────────────────────────── */
 function ProductsPreview() {
-const PRODUCTS = [
-  {
-    image: "/images/products/essential-kit.jpg",
-    label: "ESSENTIAL",
-    name: "ARC Labs IoT Essential Kit",
-    desc: "Ready-to-use Pico + ESP32 trainer with sensors, OLED display, relays, buzzer, and GPIO practice sections.",
-    tags: ["Pico", "ESP32", "IoT Trainer"],
-  },
+  const PRODUCTS = [
+    {
+      image: "/images/products/essential-kit.jpg",
+      label: "ESSENTIAL",
+      name: "ARC Labs IoT Essential Kit",
+      desc: "Ready-to-use Pico + ESP32 trainer with sensors, OLED display, relays, buzzer, and GPIO practice sections.",
+      tags: ["Pico", "ESP32", "IoT Trainer"],
+    },
 
-  {
-    image: "/images/products/lite-kit.jpg",
-    label: "STARTER",
-    name: "ARC Labs IoT Lite Kit",
-    desc: "Beginner IoT board with Arduino & ESP32 support. Essential sensors for classroom learning.",
-    tags: ["Arduino", "ESP32", "IoT Basics"],
-  },
+    {
+      image: "/images/products/lite-kit.jpg",
+      label: "STARTER",
+      name: "ARC Labs IoT Lite Kit",
+      desc: "Beginner IoT board with Arduino & ESP32 support. Essential sensors for classroom learning.",
+      tags: ["Arduino", "ESP32", "IoT Basics"],
+    },
 
-  {
-    image: "/images/products/pro-kit.jpg",
-    label: "PRO",
-    name: "ARC Labs IoT Pro Kit",
-    desc: "Advanced board with Raspberry Pi & ESP32, industrial sensors, and cloud connectivity.",
-    tags: ["Raspberry Pi", "ESP32", "Cloud IoT"],
-  },
+    {
+      image: "/images/products/pro-kit.jpg",
+      label: "PRO",
+      name: "ARC Labs IoT Pro Kit",
+      desc: "Advanced board with Raspberry Pi & ESP32, industrial sensors, and cloud connectivity.",
+      tags: ["Raspberry Pi", "ESP32", "Cloud IoT"],
+    },
 
-  {
-    image: "/images/products/experience-kit.jpg",
-    label: "FLAGSHIP",
-    name: "IoT Experience Kit",
-    desc: "All-in-one platform — Arduino, ESP32, STM32, Pico, Raspberry Pi. The complete lab solution.",
-    tags: ["Multi-MCU", "LoRa", "Research"],
-  },
-];
+    {
+      image: "/images/products/experience-kit.jpg",
+      label: "FLAGSHIP",
+      name: "IoT Experience Kit",
+      desc: "All-in-one platform — Arduino, ESP32, STM32, Pico, Raspberry Pi. The complete lab solution.",
+      tags: ["Multi-MCU", "LoRa", "Research"],
+    },
+  ];
   return (
     <section className="section" id="products">
       <div className="products-header">
@@ -581,10 +581,10 @@ const PRODUCTS = [
           <Link to="/products" className="product-card" key={p.name}>
             <div className="product-img">
               {p.image && <img
-  src={p.image}
-  alt={p.name}
-  loading="lazy"
-/>}
+                src={p.image}
+                alt={p.name}
+                loading="lazy"
+              />}
               <span className="product-label">{p.label}</span>
             </div>
             <div className="product-body">
@@ -668,10 +668,10 @@ function Packages() {
 /* ─── CSR Section ──────────────────────────────────────── */
 function CSR() {
   const METRICS = [
-    { val: "₹800",   label: "Min. cost per beneficiary" },
-    { val: "3 Yrs",  label: "Outcome tracking" },
-    { val: "Sch VII",label: "Companies Act eligible" },
-    { val: "100%",   label: "Documentation provided" },
+    { val: "₹800", label: "Min. cost per beneficiary" },
+    { val: "3 Yrs", label: "Outcome tracking" },
+    { val: "Sch VII", label: "Companies Act eligible" },
+    { val: "100%", label: "Documentation provided" },
   ];
   const CHECKLIST = [
     "Complete lab setup funded by CSR allocation",
@@ -718,33 +718,136 @@ function CSR() {
 /* ─── Testimonials ─────────────────────────────────────── */
 function Testimonials() {
   const TESTIMONIALS = [
-    { stars: 5, text: "The IoRT lab setup at our school was seamless. Students are building real projects from week two. The teacher training made our faculty genuinely confident.", author: "Principal, CBSE School", role: "Hyderabad, Telangana" },
-    { stars: 4.5, text: "ARC LABS delivered a complete IoT training module for our engineering students. Industry-relevant, practical, and very well structured.", author: "HOD, Electronics Dept.", role: "Engineering College, Vijayawada" },
-    { stars: 4.5, text: "Our CSR funding for STEM labs was perfectly executed by ARC LABS. The impact documentation made our board reporting straightforward.", author: "CSR Head", role: "Manufacturing Company, Hyderabad" },
+    {
+      stars: 5,
+      text: "The program and trainer both were very informative from learning how to glow the inbuilt led on a esp8266 to building projects with it.Yes it was a bit fast forward but we had to cover a lot so thats understandable,the trainer was very helpful he took doubts personally there was no issue.We learned a lot from him.",
+      author: "Lavish Chutani",
+      role: "VIT, Chennai"
+    },
+    {
+      stars: 5,
+      text: "I had the opportunity to attend a two-day workshop, and I must say the trainer was highly knowledgeable and engaging. Their teaching style made complex topics easy to understand, and I truly gained valuable insights.",
+      author: "Ambrish",
+      role: "SRM University, Ramapuram "
+    },
+    {
+      stars: 5,
+      text: "The trainer was very good and guided us effectively throughout the program. He provided sufficient theoretical knowledge, and the sessions were highly hands-on, which helped us gain deeper practical understanding. He began teaching from scratch, covering the basic components and gradually progressing to advanced robotics concepts in a clear, step-by-step manner.",
+      author: "Nandhini S",
+      role: "Loyola ICAM College of Engineering and Technology, Chennai"
+    },
+    {
+      stars: 5,
+      text: "The SIC training program was extremely informative and well-structured. We gained a clear understanding of IoT concepts, AWS services, MQTT protocol, and cloud integration. The trainer explained every topic in a simple and practical manner, which made complex concepts easy to understand.The hands-on sessions and real-time examples helped us connect theory with practical implementation. It was truly interesting and enjoyable working with sir. Overall, this training greatly improved our technical knowledge and confidence in IoT and cloud technologies.",
+      author: "Likhith M",
+      role: "Cambridge Institute of Technology, Banglore"
+    },
+    {
+      stars: 5,
+      text: "I really enjoyed the workshop and also found it very informative. The explanations were very clear and made it easy for me to move forward in my project from workshop and also my academic real time project which was based on the same concept as the projects conducted in workshop.",
+      author: "R Maniraj",
+      role: "JNTUH-UCESTH, Hyderabad"
+    },
+    {
+      stars: 5,
+      text: "Mr. Anvesh was an excellent teacher, who introduced various new and key topics related to AI, ML which allowed us to enhance our base knowledge to use these concepts in day - day lives. He was very helpful, helping us solve problems we may have faced during the course. It was an excellent opportunity to learn from him.",
+      author: "Aditya Gupta",
+      role: "Delhi Public School, Hyderabad"
+    },
+    {
+      stars: 5,
+      text: "The Training Material provided was comprehensive and the Trainer detailed the topics during the session in a clear manner. With practical online project examples.",
+      author: "Zakir Hussain Shaikh",
+      role: "Roads and Transport Authority, Dubai"
+    },
+    {
+      stars: 5,
+      text: "The IoT course trainer demonstrated exceptional expertise, combining deep technical knowledge of IoT systems with up-to-date industry insights. Their teaching style was clear and engaging, breaking down complex topics like IoT architecture with practical examples, visual aids, and live demos. The hands-on labs using tools like Raspberry Pi, along with real-world case studies, added significant value. They encouraged interaction, answered questions patiently, and adapted explanations to suit varying skill levels. The course materials were well-structured, making the learning experience both effective and enjoyable.",
+      author: "Prajwal N M",
+      role: "Don Bosco Institute of Technology, Bangalore"
+    },
+    {
+      stars: 4.5,
+      text: "The four days bootcamp, sir taught about IOT models, new technology in IOT and concepts IORT and Raspberry Pi. I learnt different things from IORT and Raspberry Pi and built different models apart from my academics. Thank you, Sir for giving this opportunity.",
+      author: "Arramachetty Umesh",
+      role: "Mohan Babu University, Tirupati"
+    },
+    {
+      stars: 5,
+      text: "Beyond imparting valuable coding skills, he emphasized the importance of teamwork and effective communication. He encouraged us to collaborate openly, share ideas, and leverage each other's strengths, fostering a supportive environment. His focus on problem-solving and adaptability taught us how to approach challenges creatively and with resilience. Overall, he instilled in us a strong work ethic and a passion for continuous learning, which will undoubtedly benefit us in our future endeavours.",
+      author: "Shivani Sreejith",
+      role: "The Village International School, Kerala"
+    },
+    {
+      stars: 5,
+      text: "Our trainer organised the workshop in excellent way. His sessions are enjoyable and so interesting to learn IoT (Node MCU). We all are well knowledged about IoT from his sessions. It will be very helpful to participate in hackathons and some other events.",
+      author: "Devakrishnan G",
+      role: "KGiSL Institute of Technology, Coimbatore"
+    },
+    {
+      stars: 5,
+      text: "The trainer who taught about Raspberry Pi over three days likely provided a comprehensive, hands-on learning experience. They introduced participants to the Raspberry Pi, a versatile, credit-card-sized computer, and guided them through setting it up, exploring its operating system, and understanding its various uses in projects such as IoT, automation, and programming. Their teaching likely balanced theory and practice, ensuring participants gained not just technical knowledge, but also the confidence to apply Raspberry Pi in real-world applications.",
+      author: "Malyala Sai Charan",
+      role: "CMR Technical Campus, Medchal"
+    },
+    {
+      stars: 4,
+      text: "The trainer is teaching really excellent. The topics which he is teaching are easily understanding to me.",
+      author: "Balla Deekshith",
+      role: "Swarnandhra College of Engineering and Technology, Narsapur"
+    },
+    {
+      stars: 5,
+      text: "Very much Knowledgeable,   interactive delivery, Nice, Super. Full of energy throughout the day",
+      author: "ASHIK K N",
+      role: "Janatics Global Solutions Private Limited, Coimbatore"
+    },
+    {
+      stars: 4.5,
+      text: "A great trainer doesn’t just teach — they inspire. Thank you for being that mentor for us in IORT.",
+      author: "Balavinothen S",
+      role: "Mepco Schlenk Engineering College, Kochi"
+    },
+    {
+      stars: 4,
+      text: "First-class knowledge and a truly professional approach.",
+      author: "Niyati Anil Chougale",
+      role: "D.y. Patil Agriculture and Technical University, Talsande"
+    }
   ];
   return (
     <section className="section">
       <div className="section-label">Impact</div>
-      <h2 className="section-heading">What institutions say about <span style={{ color: "var(--accent)" }}>ARC LABS.</span></h2>
-      <div className="testimonials-grid">
-        {TESTIMONIALS.map((t) => (
-          <div className="tcard" key={t.author}>
-            <div className="tcard-stars" aria-label={`${t.stars} out of 5 stars`}>
-              {[1, 2, 3, 4, 5].map((star) => (
-                <span
-                  key={star}
-                  className={star <= Math.floor(t.stars) ? "star-full" : star - 0.5 === t.stars ? "star-half" : "star-empty"}
-                  aria-hidden="true"
-                >
-                  ★
-                </span>
-              ))}
+
+      <h2 className="section-heading">
+        What institutions say about
+        <span style={{ color: "var(--accent)" }}>
+          {" "}ARC LABS.
+        </span>
+      </h2>
+
+      <div className="testimonial-marquee">
+        <div className="testimonial-track">
+          {[...TESTIMONIALS, ...TESTIMONIALS].map((t, index) => (
+            <div className="tcard" key={index}>
+              <div className="tcard-stars">
+                {"★★★★★"}
+              </div>
+
+              <p className="tcard-text">
+                {t.text}
+              </p>
+
+              <div className="tcard-author">
+                {t.author}
+              </div>
+
+              <div className="tcard-role">
+                {t.role}
+              </div>
             </div>
-            <p className="tcard-text">{t.text}</p>
-            <div className="tcard-author">{t.author}</div>
-            <div className="tcard-role">{t.role}</div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     </section>
   );
