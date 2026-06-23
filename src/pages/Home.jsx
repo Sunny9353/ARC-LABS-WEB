@@ -716,6 +716,18 @@ function CSR() {
 }
 
 /* ─── Testimonials ─────────────────────────────────────── */
+const renderStars = (rating) =>
+  Array.from({ length: 5 }, (_, index) => {
+    const value = index + 1;
+    const className =
+      rating >= value ? "star-full" : rating >= value - 0.5 ? "star-half" : "star-empty";
+    return (
+      <span className={className} key={value}>
+        ★
+      </span>
+    );
+  });
+
 function Testimonials() {
   const TESTIMONIALS = [
     {
@@ -831,7 +843,7 @@ function Testimonials() {
           {[...TESTIMONIALS, ...TESTIMONIALS].map((t, index) => (
             <div className="tcard" key={index}>
               <div className="tcard-stars">
-                {"★★★★★"}
+                {renderStars(t.stars)}
               </div>
 
               <p className="tcard-text">

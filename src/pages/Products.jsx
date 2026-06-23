@@ -24,7 +24,7 @@ const pageStyles = `
 /* Product grid */
 .products-wrap{padding:0 5vw 80px;position:relative;z-index:1}
 .pg-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:1.4rem;align-items:stretch}
-.pg-grid.focus-mode{grid-template-columns:minmax(280px,420px);justify-content:center}
+.pg-grid.focus-mode{display:none}
 .pg-grid.focus-mode .pcard:not(.selected){display:none}
 
 /* Product card */
@@ -36,8 +36,8 @@ const pageStyles = `
 .pc-visual{height:220px;position:relative;overflow:hidden;background:linear-gradient(135deg,var(--bg),var(--surface-2));display:flex;align-items:center;justify-content:center}
 .pc-image{width:100%;height:100%;object-fit:contain;object-position:center;position:relative;z-index:1;padding:14px}
 .pc-badge-wrap{position:absolute;top:14px;left:14px;display:flex;gap:6px;z-index:2}
-.pc-badge{font-family:var(--font-body);font-size:.62rem;font-weight:600;padding:4px 10px;border-radius:5px;letter-spacing:.06em}
-.pc-best{position:absolute;top:14px;right:14px;z-index:2;background:var(--amber);color:var(--bg);font-family:var(--font-body);font-size:.6rem;font-weight:700;padding:4px 10px;border-radius:5px;letter-spacing:.06em}
+.pc-badge{font-family:var(--font-body);font-size:.62rem;font-weight:700;padding:4px 10px;border-radius:5px;letter-spacing:.06em;border:1px solid color-mix(in srgb,var(--pc-color,var(--accent)) 38%,transparent);box-shadow:0 10px 24px rgba(0,220,130,.12)}
+.pc-best{position:absolute;top:14px;right:14px;z-index:2;background:var(--accent-dim);color:var(--accent);border:1px solid rgba(0,220,130,.34);font-family:var(--font-body);font-size:.6rem;font-weight:800;padding:4px 10px;border-radius:5px;letter-spacing:.06em;box-shadow:0 10px 24px rgba(0,220,130,.13)}
 .pc-fade{position:absolute;bottom:0;left:0;right:0;height:60px;background:linear-gradient(transparent,var(--surface));z-index:1}
 
 .pc-body{padding:22px 22px 0;display:flex;flex-direction:column;flex:1}
@@ -62,7 +62,7 @@ const pageStyles = `
 .pc-btn-buy:hover{filter:brightness(1.1);transform:translateY(-1px)}
 
 /* Detail drawer */
-.detail-drawer{margin:2rem auto 0;background:var(--surface-2);border:1px solid var(--border-2);border-radius:var(--radius-xl);overflow:hidden;animation:ddIn .35s ease;grid-column:1/-1;width:min(100%,1080px);box-shadow:var(--shadow-lg)}
+.detail-drawer{margin:2rem auto 0;background:var(--surface-2);border:1px solid var(--border-2);border-radius:var(--radius-xl);overflow:hidden;animation:ddIn .35s ease;grid-column:1/-1;width:min(100%,1080px);box-shadow:var(--shadow-lg);scroll-margin-top:calc(var(--nav-h) + 18px);transform-origin:top center}
 @keyframes ddIn{from{opacity:0;transform:translateY(-12px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}}
 
 /* Kit assembly animation */
@@ -176,7 +176,7 @@ const pageStyles = `
     radial-gradient(ellipse, rgba(0,220,130,0.06) 0%, rgba(0,220,130,0.03) 34%, transparent 68%);
 }
 .detail-drawer{
-  scroll-margin-top:calc(var(--nav-h) + 24px);
+  scroll-margin-top:calc(var(--nav-h) + 18px);
 }
 .detail-drawer[data-open="true"]{
   animation:ddIn .42s cubic-bezier(.25,1,.5,1);
@@ -208,12 +208,12 @@ const PRODUCTS = [
     tagline: "Dual-controller trainer with Raspberry Pi Pico, ESP32, sensors, relays, and display modules.",
     price: 12000,
     oldPrice: 15000,
-    color: "var(--tag-text)",
-    glow: "63,63,70",
+    color: "var(--accent)",
+    glow: "0,220,130",
     image: "/images/products/essential-kit.jpg",
     badge: "ESSENTIAL",
-    badgeBg: "var(--tag-bg)",
-    badgeColor: "var(--tag-text)",
+    badgeBg: "var(--accent-dim)",
+    badgeColor: "var(--accent)",
     overview: "The ARC LABS IoT Essential Kit is a compact hands-on trainer built around Raspberry Pi Pico and ESP32. It includes onboard sensor, display, relay, buzzer, potentiometer, terminal, and GPIO sections so students can practice embedded programming, sensor reading, Wi-Fi/Bluetooth IoT, and basic automation on one ready-to-use board.",
     controllers: ["Raspberry Pi Pico", "ESP32 Wi-Fi + Bluetooth"],
     sensors: ["DHT11 — Temperature & Humidity", "HC-SR04 — Ultrasonic Sensor", "LDR — Light Sensor", "IR Obstacle Sensor"],
@@ -242,12 +242,12 @@ const PRODUCTS = [
     tagline: "Compact, beginner-friendly IoT training board for Arduino & ESP32.",
     price: 18000,
     oldPrice: 21000,
-    color: "var(--tag-text)",
-    glow: "63,63,70",
+    color: "var(--accent)",
+    glow: "0,220,130",
     image: "/images/products/lite-kit.jpg",
     badge: "BEGINNER",
-    badgeBg: "var(--tag-bg)",
-    badgeColor: "var(--tag-text)",
+    badgeBg: "var(--accent-dim)",
+    badgeColor: "var(--accent)",
     overview: "The ARC LABS IoT Lite Kit is a compact, budget-friendly training platform designed for beginners, students, and aspiring innovators entering the world of IoT and embedded systems. Dual microcontroller support (Arduino UNO + ESP32) with a curated sensor set and plug-and-play design.",
     controllers: ["Arduino UNO (ATmega328P)", "ESP32 (Dual-core Wi-Fi + Bluetooth)", "Dual MCU slots for flexible usage"],
     sensors: ["DHT11 — Temperature & Humidity", "HC-SR04 — Ultrasonic Distance", "IR Obstacle Sensor — Digital proximity", "Touch Sensor — Capacitive input", "LDR — Light detection", "MQ Gas Sensor — Gas leakage", "Potentiometer — Analog ADC testing"],
@@ -277,12 +277,12 @@ const PRODUCTS = [
     tagline: "All-in-one multi-MCU trainer — the most versatile kit in the lineup.",
     price: 24000,
     oldPrice: 27000,
-    color: "var(--tag-text)",
-    glow: "63,63,70",
+    color: "var(--accent)",
+    glow: "0,220,130",
     image: "/images/products/experience-kit.jpg",
     badge: "BEST SELLER",
-    badgeBg: "var(--tag-bg)",
-    badgeColor: "var(--tag-text)",
+    badgeBg: "var(--accent-dim)",
+    badgeColor: "var(--accent)",
     isBest: true,
     overview: "The ARC LABS IoT Experience Kit is a comprehensive, all-in-one embedded systems trainer supporting 5 microcontrollers — Arduino, ESP32, STM32, Raspberry Pi Pico, and Raspberry Pi 4/5 — with LoRa, GSM/4G, RS485, and full sensor coverage.",
     controllers: ["Arduino UNO (ATmega328P) — Beginner dev", "ESP32 DevKit — Dual-core Wi-Fi + BT", "STM32 DevKit — ARM Cortex-M industrial", "Raspberry Pi Pico/W — RP2040 + Wi-Fi", "Raspberry Pi 4/5 Header — 40-pin GPIO"],
@@ -315,12 +315,12 @@ const PRODUCTS = [
     tagline: "High-performance board for advanced IoT, edge AI, and Raspberry Pi.",
     price: 30000,
     oldPrice: 33000,
-    color: "var(--tag-text)",
-    glow: "63,63,70",
+    color: "var(--accent)",
+    glow: "0,220,130",
     image: "/images/products/pro-kit.jpg",
     badge: "ADVANCED",
-    badgeBg: "var(--tag-bg)",
-    badgeColor: "var(--tag-text)",
+    badgeBg: "var(--accent-dim)",
+    badgeColor: "var(--accent)",
     overview: "The ARC LABS IoT Pro Kit is a high-performance development board for advanced learners, researchers, and developers. Dual-controller support for Raspberry Pi 4 and ESP32 with shared I/O zones — ideal for edge computing, AIoT, sensor fusion, and complex data acquisition.",
     controllers: ["Raspberry Pi 4 — 40-pin GPIO interface", "ESP32 DevKit — Wi-Fi + Bluetooth", "Shared I/O zones for hybrid Pi + ESP32 experiments"],
     sensors: ["BMP180 — Barometric Pressure & Temp", "DHT11 — Temperature & Humidity", "HC-SR04 — Ultrasonic Distance", "MQ-135 — Gas & Air Quality", "ADXL345 — 3-Axis Accelerometer", "Touch Sensor — Capacitive", "IR Obstacle Detection", "LDR — Light Dependent Resistor", "Potentiometer — ADC testing"],
@@ -612,7 +612,7 @@ function DetailDrawer({ product, onClose }) {
   const ref = useRef(null);
 
   useEffect(() => {
-    setTimeout(() => ref.current?.scrollIntoView({ behavior: "smooth", block: "center" }), 80);
+    setTimeout(() => ref.current?.scrollIntoView({ behavior: "smooth", block: "start" }), 80);
   }, []);
 
   const TABS = [
@@ -661,7 +661,7 @@ function DetailDrawer({ product, onClose }) {
           <div style={{ textDecoration: "line-through", fontSize: ".8rem", color: "var(--text-4)", textAlign: "right" }}>
             MRP ₹{product.oldPrice.toLocaleString("en-IN")}
           </div>
-          <button className="btn btn-secondary" onClick={onClose} style={{ padding: "6px 14px", fontSize: ".75rem" }}>
+          <button className="btn btn-secondary product-detail-close" onClick={onClose} style={{ padding: "6px 14px", fontSize: ".75rem" }}>
             Close
           </button>
         </div>
@@ -841,7 +841,6 @@ function ProductCard({ product, isSelected, onSelect }) {
         <div className="pc-badge-wrap">
           <span className="pc-badge" style={{ background: product.badgeBg, color: product.badgeColor }}>{product.badge}</span>
         </div>
-        {product.isBest && <span className="pc-best">BEST SELLER</span>}
         {product.image ? (
           <img className="pc-image" src={product.image} alt={product.name} loading="lazy" />
         ) : null}

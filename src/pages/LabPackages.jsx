@@ -213,7 +213,7 @@ const pageStyles = `
   border-top: 1px solid var(--border-1); border-bottom: 1px solid var(--border-1);
 }
 .lp-proc-grid {
-  display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  display: grid; grid-template-columns: repeat(6, minmax(0, 1fr));
   gap: 0; position: relative; margin-top: 3rem;
 }
 .lp-proc-grid::before {
@@ -240,6 +240,13 @@ const pageStyles = `
   font-family: var(--font-body); font-size: .6rem;
   color: var(--ps-color, var(--accent)); letter-spacing: .08em;
   background: var(--tag-bg); padding: 3px 10px; border-radius: 4px;
+}
+@media(max-width:1100px) {
+  .lp-proc-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); row-gap: 2rem; }
+  .lp-proc-grid::before { display: none; }
+}
+@media(max-width:640px) {
+  .lp-proc-grid { grid-template-columns: 1fr; }
 }
 
 /* ROI Calculator */

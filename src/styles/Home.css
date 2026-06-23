@@ -1089,7 +1089,8 @@
   gap: 1px;
   background: var(--border);
   border-radius: var(--radius-lg);
-  overflow: hidden;
+  overflow: visible;
+  padding: 1px;
 }
 
 /* Base card */
@@ -1098,12 +1099,14 @@
   padding: 32px 28px;
   position: relative;
   cursor: pointer;
-  transition: background 0.25s ease;
+  transition: background 0.28s cubic-bezier(0.25,1,0.5,1), box-shadow 0.28s cubic-bezier(0.25,1,0.5,1), transform 0.28s cubic-bezier(0.25,1,0.5,1);
   outline: none;
 }
 .service-card:hover,
 .service-card:focus-visible {
   background: var(--surface-2);
+  transform: translateY(-2px);
+  box-shadow: inset 0 0 0 1px var(--svc-border);
 }
 .service-card--open {
   background: var(--surface-2) !important;
@@ -1115,6 +1118,7 @@
   top: 0;
   left: 0;
   right: 0;
+  z-index: 1;
   height: 3px;
   background: var(--svc-color);
   transform: scaleX(0);
@@ -1504,7 +1508,8 @@
 .testimonial-marquee {
   position: relative;
   overflow: hidden;
-  margin-top: 3rem;
+  margin-top: 2.25rem;
+  padding: 14px 0 30px;
 }
 
 .testimonial-marquee::before,
@@ -1540,7 +1545,8 @@
   display: flex;
   gap: 1.5rem;
   width: max-content;
-  animation: testimonialScroll 60s linear infinite;
+  animation: testimonialScroll 110s linear infinite;
+  align-items: stretch;
 }
 
 .testimonial-marquee:hover .testimonial-track {
@@ -1557,13 +1563,16 @@
 }
 
 .tcard {
-  width: 500px;
+  width: 600px;
+  height: 320px;
   flex-shrink: 0;
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 24px;
   padding: 30px;
-  transition: 0.3s;
+  transition: transform 0.32s cubic-bezier(0.25,1,0.5,1), border-color 0.32s ease, box-shadow 0.32s ease;
+  display: flex;
+  flex-direction: column;
 }
 
 .tcard:hover {
@@ -1615,8 +1624,12 @@
   line-height: 1.7;
   margin-bottom: 1.2rem;
   font-style: italic;
+  display: -webkit-box;
+  -webkit-line-clamp: 5;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
-.tcard-author { font-weight: 600; font-size: 0.875rem; color: var(--text); }
+.tcard-author { font-weight: 600; font-size: 0.875rem; color: var(--text); margin-top: auto; }
 .tcard-role   { font-size: 0.8rem; color: var(--text-4); margin-top: 2px; }
 
 /* FAQ */

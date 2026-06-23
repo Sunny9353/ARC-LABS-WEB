@@ -10,7 +10,7 @@ const LINKS = {
   Programs: [
     { label: "School Lab Setup",      to: "/lab-packages" },
     { label: "College Training",      to: "/programs" },
-    { label: "Online Internships",    to: "/internship" },
+    { label: "Programs & Internships", to: "/programs" },
     { label: "Teacher Certification", to: "/programs" },
   ],
   Company: [

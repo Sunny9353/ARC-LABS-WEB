@@ -1,8 +1,7 @@
 // Auto-generated bespoke internship curricula for ARC LABS.
-// Card visuals (colour, tools, descriptions, icons) are reused from the Programs page;
+// Card visuals (colour, tools, descriptions, icons) are supplied by the Programs page;
 // only the day-by-day syllabus below is internship-specific. A 20-step plan per track is
 // sliced into focused 10-, 15- and 20-day internships.
-import { TECHNOLOGIES } from "../pages/Programs.jsx";
 
 const META = {
   "iot": {
@@ -1764,7 +1763,7 @@ export const INTERNSHIP_DURATIONS = [
   { days: 20, label: "Pro", color: "#f59e0b", top: "4-5", sub: "Weeks" },
 ];
 
-export const INTERNSHIP_TECHNOLOGIES = TECHNOLOGIES.filter(
+export const buildInternshipTechnologies = (technologies) => technologies.filter(
   (t) => PLANS[t.id]
 ).map((t) => {
   const meta = META[t.id];

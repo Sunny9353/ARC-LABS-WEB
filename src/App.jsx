@@ -6,7 +6,6 @@ import "./styles/App.css";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import ArcLabsChatBot from "./components/ArcLabsChatBot";
-import { ThemeDock } from "./components/ui/docks";
 
 // Pages — lazy-loaded
 const Home = lazy(() => import("./pages/Home"));
@@ -18,7 +17,6 @@ const CSRPartners = lazy(() => import("./pages/CSRPartners"));
 const Certification = lazy(() => import("./pages/Certification"));
 const Checkout = lazy(() => import("./pages/Checkout"));
 const IndustrialIoTSolutions = lazy(() => import("./pages/IndustrialIoTSolutions"));
-const Internship = lazy(() => import("./pages/Internship"));
 const LegalPage = lazy(() => import("./pages/LegalPage"));
 
 function ScrollReset() {
@@ -117,7 +115,6 @@ function Layout({ children }) {
       <Navbar />
       <main style={{ position: "relative", zIndex: 1 }}>{children}</main>
       <Footer />
-      <ThemeDock />
       <ArcLabsChatBot />
       <a
         href="https://wa.me/917815809412"
@@ -144,7 +141,6 @@ export default function App() {
             <Route path="/about-us" element={<AboutUs />} />
             <Route path="/industrial-iot-solutions" element={<IndustrialIoTSolutions />} />
             <Route path="/programs" element={<Programs />} />
-            <Route path="/internship" element={<Internship />} />
             <Route path="/products" element={<Products />} />
             <Route path="/lab-packages" element={<LabPackages />} />
             <Route path="/csr-partners" element={<CSRPartners />} />

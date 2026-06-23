@@ -1,18 +1,15 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
+import { Moon, Sun } from "lucide-react";
 import "../styles/Navbar.css";
+
+const THEME_STORAGE_KEY = "arclabs_theme";
 
 const NAV_LINKS = [
   { path: "/",             label: "Home" },
   { path: "/about-us",     label: "About Us" },
   { path: "/industrial-iot-solutions", label: "IIoT Solutions" },
-  {
-    path: "/programs",
-    label: "Programs",
-    children: [
-      { path: "/internship", label: "Internship" },
-    ],
-  },
+  { path: "/programs",    label: "Programs" },
   { path: "/products",     label: "Products" },
   { path: "/lab-packages", label: "Lab Packages" },
   { path: "/csr-partners", label: "CSR" },
@@ -22,6 +19,10 @@ const NAV_LINKS = [
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [theme, setTheme] = useState(() => {
+    if (typeof window === "undefined") return "dark";
+    return localStorage.getItem(THEME_STORAGE_KEY) === "light" ? "light" : "dark";
+  });
   const location = useLocation();
   const isHome = location.pathname === "/";
 
@@ -31,7 +32,15 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  useEffect(() => {
+    document.documentElement.dataset.theme = theme;
+    document.documentElement.dataset.themeMode = theme;
+    localStorage.setItem(THEME_STORAGE_KEY, theme);
+  }, [theme]);
+
   useEffect(() => setMobileOpen(false), [location.pathname]);
+
+  const nextTheme = theme === "dark" ? "light" : "dark";
 
   return (
     <>
@@ -75,6 +84,17 @@ export default function Navbar() {
               Get Started
             </Link>
           </li>
+          <li>
+            <button
+              type="button"
+              className="nav-theme-toggle"
+              onClick={() => setTheme(nextTheme)}
+              aria-label={`Switch to ${nextTheme} mode`}
+              title={`Switch to ${nextTheme} mode`}
+            >
+              {theme === "dark" ? <Sun aria-hidden="true" /> : <Moon aria-hidden="true" />}
+            </button>
+          </li>
         </ul>
 
         <button
@@ -106,6 +126,15 @@ export default function Navbar() {
         <Link to="/lab-packages" className="nav-cta" style={{ textAlign: "center", marginTop: 4 }}>
           Get Started
         </Link>
+        <button
+          type="button"
+          className="nav-theme-toggle mobile"
+          onClick={() => setTheme(nextTheme)}
+          aria-label={`Switch to ${nextTheme} mode`}
+        >
+          {theme === "dark" ? <Sun aria-hidden="true" /> : <Moon aria-hidden="true" />}
+          <span>{nextTheme === "light" ? "Light mode" : "Dark mode"}</span>
+        </button>
       </div>
     </>
   );

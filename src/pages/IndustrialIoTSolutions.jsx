@@ -840,6 +840,7 @@ const factoryFeatureStyles = `
   min-height: clamp(680px, 92svh, 900px) !important;
   padding-top: clamp(5rem, 9vh, 7rem) !important;
   padding-bottom: clamp(3rem, 5vh, 5rem) !important;
+  overflow: hidden !important;
 }
 
 .iiot-hero > .max-w-7xl {
@@ -948,8 +949,10 @@ const factoryFeatureStyles = `
 }
 
 .iiot-hero .max-w-7xl {
-  grid-template-columns: minmax(420px, 0.96fr) minmax(420px, 0.78fr) !important;
-  gap: clamp(2rem, 4vw, 4rem) !important;
+  display: grid !important;
+  grid-template-columns: minmax(0, 1.08fr) minmax(360px, 0.72fr) !important;
+  gap: clamp(2rem, 4vw, 4.5rem) !important;
+  max-width: min(1360px, 88vw) !important;
 }
 
 .iiot-hero h1 {
@@ -961,12 +964,30 @@ const factoryFeatureStyles = `
 }
 
 .iiot-hero .lg\\:col-span-5 > div {
-  max-width: clamp(460px, 33vw, 580px) !important;
+  max-width: clamp(390px, 31vw, 500px) !important;
 }
 
 @media (max-width: 1023px) {
   .iiot-hero .max-w-7xl {
     grid-template-columns: 1fr !important;
+  }
+}
+
+@media (min-width: 1024px) {
+  .iiot-hero .lg\\:col-span-7,
+  .iiot-hero .lg\\:col-span-5 {
+    grid-column: auto / span 1 !important;
+  }
+}
+
+@media (max-width: 1320px) and (min-width: 1024px) {
+  .iiot-hero h1 {
+    font-size: clamp(2.8rem, 4.6vw, 4.5rem) !important;
+  }
+
+  .iiot-hero .max-w-7xl {
+    grid-template-columns: minmax(0, 1fr) minmax(340px, 0.68fr) !important;
+    max-width: min(1220px, 90vw) !important;
   }
 }
 `;
@@ -1711,7 +1732,7 @@ function LiveProjectDashboard({ project, onClose }) {
           </div>
           <button
             onClick={onClose}
-            className="text-zinc-400 hover:text-white border border-zinc-800 hover:border-zinc-700 rounded px-3 py-1 text-sm font-mono"
+            className="iiot-dashboard-close text-zinc-400 hover:text-white border border-zinc-800 hover:border-zinc-700 rounded px-3 py-1 text-sm font-mono"
             aria-label="Close dashboard"
           >
             × CLOSE

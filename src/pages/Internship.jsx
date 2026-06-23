@@ -1,15 +1,16 @@
 import { Fragment, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import "../styles/Internship.css";
-import { DetailPanel, PROGRAM_LEVELS, getLevelMeta, pageStyles } from "./Programs.jsx";
+import { DetailPanel, PROGRAM_LEVELS, TECHNOLOGIES, getLevelMeta, pageStyles } from "./Programs.jsx";
 import {
-  INTERNSHIP_TECHNOLOGIES as INTERNSHIP_TECHS,
+  buildInternshipTechnologies,
   INTERNSHIP_DURATIONS,
 } from "../data/internshipCurriculum.js";
 
 export default function Internship() {
   const [activeTech, setActiveTech] = useState(null);
   const [activeLevel, setActiveLevel] = useState("FOUNDATIONAL");
+  const INTERNSHIP_TECHS = buildInternshipTechnologies(TECHNOLOGIES);
   const visibleTechs = INTERNSHIP_TECHS.filter((tech) => tech.level === activeLevel);
 
   const handleTechClick = (tech) => {

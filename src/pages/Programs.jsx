@@ -4,93 +4,71 @@ import { collection, addDoc } from "firebase/firestore";
 import { db } from "../firebase";
 import { Helmet } from "react-helmet-async";
 import RobotPreviewFrame from "../components/RobotPreviewFrame";
+import { buildInternshipTechnologies, INTERNSHIP_DURATIONS } from "../data/internshipCurriculum.js";
 /* ─── Page-scoped styles (no global overrides) ─── */
 export const pageStyles = `
   /* Hero */
   .prog-hero {
-    min-height: 720px;
-    padding: 112px 5vw 86px;
+    min-height: calc(100svh - var(--nav-h));
+    padding: clamp(64px, 7vh, 92px) 5vw clamp(48px, 6vh, 76px);
     position: relative;
-    overflow: hidden;
+    overflow: clip;
     display: flex;
     align-items: center;
-    justify-content: flex-start;
+    justify-content: center;
   }
   .prog-hero::before {
-    content: '';
-    position: absolute;
-    top: -100px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 900px;
-    height: 500px;
-    background: radial-gradient(ellipse, var(--tag-bg) 0%, var(--tag-bg) 40%, transparent 70%);
-    pointer-events: none;
-    z-index: 1;
+    display: none;
+  }
+  .prog-hero-panel {
+    width: min(1580px, 100%);
+    display: grid;
+    grid-template-columns: minmax(380px, 0.86fr) minmax(520px, 1.14fr);
+    align-items: center;
+    gap: clamp(2rem, 6vw, 7rem);
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+    position: relative;
+    z-index: 2;
+    overflow: visible;
+  }
+  .prog-hero-panel::before {
+    display: none;
   }
   .prog-hero-system {
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    width: min(50vw, 760px);
+    position: relative;
+    width: 100%;
+    grid-column: 2;
     z-index: 0;
     pointer-events: auto;
     display: grid;
     place-items: center;
-    overflow: hidden;
+    overflow: visible;
   }
   .prog-hero-system::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    z-index: 1;
-    pointer-events: none;
-    background:
-      linear-gradient(90deg, var(--bg) 0%, rgba(9,9,11,0.52) 18%, transparent 48%),
-      linear-gradient(180deg, rgba(9,9,11,0.05), rgba(9,9,11,0.26) 76%, var(--bg) 100%);
-  }
-  :root[data-theme="light"] .prog-hero-system::before {
-    background:
-      linear-gradient(90deg, var(--bg) 0%, rgba(250,250,250,0.18) 20%, transparent 46%),
-      linear-gradient(180deg, rgba(250,250,250,0.02), rgba(250,250,250,0.10) 78%, var(--bg) 100%);
+    display: none;
   }
   .prog-robot-stage {
     position: relative;
     z-index: 0;
-    width: min(650px, 88%);
-    aspect-ratio: 1.14;
-    border-radius: 28px;
-    border: 1px solid rgba(0,220,130,0.28);
-    background:
-      radial-gradient(circle at 50% 88%, rgba(0,220,130,0.16), transparent 46%),
-      #000;
-    box-shadow:
-      0 42px 120px rgba(0,0,0,0.46),
-      0 0 72px rgba(0,220,130,0.08),
-      inset 0 0 0 1px rgba(255,255,255,0.035);
-    overflow: hidden;
+    width: 100%;
+    min-height: clamp(500px, 62vh, 720px);
+    aspect-ratio: 1.22;
+    border-radius: 0;
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+    overflow: visible;
     isolation: isolate;
   }
   .prog-robot-stage::before {
-    content: '';
-    position: absolute;
-    inset: auto 9% 9% 9%;
-    z-index: 2;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(0,220,130,0.78), transparent);
-    box-shadow: 0 0 26px rgba(0,220,130,0.42);
-    pointer-events: none;
+    display: none;
   }
   .prog-robot-stage::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    z-index: 2;
-    pointer-events: none;
-    background: linear-gradient(110deg, transparent 34%, rgba(0,220,130,0.08) 48%, transparent 62%);
-    transform: translateX(-78%);
-    animation: progRobotSweep 6s cubic-bezier(.25,1,.5,1) infinite;
+    display: none;
   }
   .prog-robot-frame {
     position: absolute;
@@ -100,8 +78,8 @@ export const pageStyles = `
     height: 100%;
     border: 0;
     display: block;
-    background: #000;
-    transform: scale(1.5);
+    background: transparent;
+    transform: scale(1.24);
     transform-origin: center center;
   }
   .prog-robot-status,
@@ -145,11 +123,7 @@ export const pageStyles = `
     color: var(--accent);
   }
   .prog-robot-corner {
-    position: absolute;
-    z-index: 3;
-    width: 28px;
-    height: 28px;
-    pointer-events: none;
+    display: none;
   }
   .prog-robot-corner-tl {
     top: 13px;
@@ -164,16 +138,8 @@ export const pageStyles = `
     border-bottom: 1px solid rgba(0,220,130,0.54);
   }
   :root[data-theme="light"] .prog-robot-stage {
-    border-color: rgba(0,220,130,0.36);
-    box-shadow:
-      0 28px 80px rgba(9,9,11,0.16),
-      0 0 70px rgba(0,220,130,0.08),
-      inset 0 0 0 1px rgba(255,255,255,0.08);
-  }
-  @keyframes progRobotSweep {
-    0%, 48% { opacity: 0; transform: translateX(-78%); }
-    58% { opacity: 1; }
-    100% { opacity: 0; transform: translateX(78%); }
+    border-color: transparent;
+    box-shadow: none;
   }
   @keyframes progRobotPulse {
     0%, 100% { opacity: .5; transform: scale(.86); }
@@ -182,14 +148,15 @@ export const pageStyles = `
   .prog-hero-inner {
     position: relative;
     z-index: 2;
+    grid-column: 1;
     text-align: left;
-    max-width: 620px;
+    max-width: 640px;
     margin: 0;
-    padding: 38px 32px;
-    border-radius: 24px;
-    background: rgba(5,8,18,0.28);
-    border: 1px solid rgba(255,255,255,0.08);
-    backdrop-filter: blur(8px);
+    padding: 0;
+    border-radius: 0;
+    background: transparent;
+    border: 0;
+    backdrop-filter: none;
   }
   :root[data-theme="light"] .prog-hero-inner {
     background: transparent;
@@ -198,7 +165,7 @@ export const pageStyles = `
     backdrop-filter: none;
   }
   .prog-hero h1 {
-    font-size: clamp(2.2rem, 5vw, 3.8rem);
+    font-size: clamp(2.1rem, 4.7vw, 3.55rem);
     line-height: 1.08;
     letter-spacing: -0.03em;
     margin-bottom: 1.2rem;
@@ -217,43 +184,53 @@ export const pageStyles = `
     font-size: 1rem;
     font-weight: 400;
     max-width: 500px;
-    margin: 0 0 2.5rem;
+    margin: 0 0 1.8rem;
     line-height: 1.75;
   }
   .prog-stats-row {
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
     justify-content: flex-start;
-    gap: 2.5rem;
-    flex-wrap: wrap;
-    padding-top: 2rem;
+    gap: 1.2rem;
+    padding-top: 1.5rem;
     border-top: 1px solid var(--border);
   }
   @media (max-width: 768px) {
     .prog-hero {
-      min-height: 620px;
-      padding: 96px 5vw 66px;
-      align-items: flex-end;
+      min-height: auto;
+      padding: 86px 5vw 58px;
+      align-items: center;
+    }
+    .prog-hero-panel {
+      width: 100%;
+      grid-template-columns: 1fr;
+      padding: 0;
+      gap: 1.25rem;
     }
     .prog-hero-system {
       width: 100%;
-      inset: 0;
+      position: relative;
+      inset: auto;
+      grid-column: 1;
+      order: -1;
     }
     .prog-hero-system::before {
       background:
         linear-gradient(180deg, rgba(9,9,11,0.04), rgba(9,9,11,0.42) 52%, var(--bg) 100%);
     }
     .prog-robot-stage {
-      width: min(620px, 94%);
-      opacity: 0.5;
+      width: 100%;
+      min-height: 360px;
+      opacity: 0.86;
       pointer-events: none;
     }
-    .prog-robot-frame { transform: scale(1.18); }
+    .prog-robot-frame { transform: scale(1.08); }
     .prog-robot-status,
     .prog-robot-readout { display: none; }
     .prog-hero-inner {
       text-align: center;
-      padding: 28px 18px;
-      border-radius: 18px;
+      padding: 0;
+      border-radius: 0;
     }
     .prog-hero p {
       margin-left: auto;
@@ -261,12 +238,13 @@ export const pageStyles = `
     }
     .prog-stats-row {
       justify-content: center;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
     }
   }
   .prog-stat { text-align: center; }
   .prog-stat-n {
     font-family: var(--font-heading);
-    font-size: 1.6rem;
+    font-size: 1.45rem;
     font-weight: 800;
     color: var(--accent);
   }
@@ -297,6 +275,41 @@ export const pageStyles = `
     gap: 0.75rem;
     margin: 0 0 1.6rem;
   }
+  .track-mode-switch {
+    width: min(560px, 100%);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    padding: 8px;
+    margin: 2.1rem auto 2rem;
+    border: 1px solid rgba(0,220,130,0.22);
+    border-radius: 999px;
+    background:
+      linear-gradient(135deg, rgba(0,220,130,0.11), rgba(255,255,255,0.035)),
+      rgba(9,9,11,0.54);
+    box-shadow: 0 20px 55px rgba(0,0,0,0.26), inset 0 1px 0 rgba(255,255,255,0.06);
+  }
+  .track-mode-btn {
+    border: 0;
+    border-radius: 999px;
+    background: transparent;
+    color: var(--text-3);
+    padding: 14px 18px;
+    font-family: var(--font-body);
+    font-weight: 800;
+    font-size: 0.82rem;
+    cursor: pointer;
+    transition: background 0.25s ease, color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
+  }
+  .track-mode-btn:hover {
+    color: var(--text);
+    transform: translateY(-1px);
+  }
+  .track-mode-btn.active {
+    background: linear-gradient(135deg, var(--accent), #22d3ee);
+    color: #09090b;
+    box-shadow: 0 16px 38px rgba(0,220,130,0.24);
+  }
   .level-filter-btn {
     --level-color: var(--accent);
     border: 1px solid color-mix(in srgb, var(--level-color) 34%, var(--border));
@@ -326,11 +339,24 @@ export const pageStyles = `
   /* Tech grid */
   .tech-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 1.5px;
     background: var(--border);
     border-radius: var(--radius-xl);
     overflow: hidden;
+  }
+  @media (max-width: 980px) {
+    .tech-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  @media (max-width: 640px) {
+    .tech-grid {
+      grid-template-columns: 1fr;
+    }
+    .track-mode-switch {
+      grid-template-columns: 1fr;
+    }
   }
   .tech-card {
     background: var(--surface);
@@ -3839,11 +3865,33 @@ export const PROGRAM_LEVELS = [
 export const getLevelMeta = (level) =>
   PROGRAM_LEVELS.find((item) => item.id === level) || PROGRAM_LEVELS[0];
 
+const INTERNSHIP_TECHNOLOGIES = buildInternshipTechnologies(TECHNOLOGIES).filter(
+  (tech) => tech.id !== "robotics"
+);
+
 export default function ProgramsPage() {
 
   const [activeTech, setActiveTech] = useState(null);
   const [activeLevel, setActiveLevel] = useState("FOUNDATIONAL");
-  const visibleTechnologies = TECHNOLOGIES.filter((tech) => tech.level === activeLevel);
+  const [trackMode, setTrackMode] = useState("programs");
+  const isInternshipMode = trackMode === "internships";
+  const visibleTechnologies = isInternshipMode
+    ? INTERNSHIP_TECHNOLOGIES
+    : TECHNOLOGIES.filter((tech) => tech.level === activeLevel);
+  const durationOptions = isInternshipMode ? INTERNSHIP_DURATIONS : DURATION_OPTIONS;
+  const sectionCopy = isInternshipMode
+    ? {
+        label: "Internship Tracks",
+        title: "Choose your internship track.",
+        accent: "Build a portfolio-ready capstone.",
+        desc: "Project-based internships run for 2-3, 3-4, or 4-5 weeks with mentor review, lab practice, documentation, and certification.",
+      }
+    : {
+        label: "Technology Tracks",
+        title: "Choose your domain.",
+        accent: "See the curriculum.",
+        desc: "Click any technology card to expand the full curriculum - choose between 2-day, 3-day, or 5-day formats.",
+      };
 
   const handleTechClick = (tech) => {
     if (activeTech?.id === tech.id) {
@@ -3851,6 +3899,11 @@ export default function ProgramsPage() {
       return;
     }
     setActiveTech(tech);
+  };
+
+  const switchTrackMode = (mode) => {
+    setTrackMode(mode);
+    setActiveTech(null);
   };
 
   return (
@@ -3867,67 +3920,77 @@ export default function ProgramsPage() {
 
       {/* HERO */}
       <div className="prog-hero">
-        <div className="prog-hero-system">
-          <div className="prog-robot-stage">
-            <RobotPreviewFrame
-              className="prog-robot-frame"
-              title="Interactive ARC LABS training robot"
-              loading="eager"
-              view="programs"
-            />
-            <div className="prog-robot-status" aria-hidden="true">
-              <span /> Interactive training unit
+        <div className="prog-hero-panel">
+          <div className="prog-hero-inner">
+            <div className="section-label">
+              10 Technology Tracks / 3 Workshop Formats
             </div>
-            <div className="prog-robot-readout" aria-hidden="true">
-              <strong>Pointer tracking</strong>
-              <span>Live</span>
+            <h1>
+              AI, IoT &amp; Robotics
+              <br />
+              <em>Training Programs &amp; Workshops</em>
+            </h1>
+            <p>
+              Pick a technology track. Choose your workshop duration. Click to see
+              exactly what we teach, session by session.
+            </p>
+            <div className="prog-stats-row">
+              {[
+                { n: "10", l: "Technology Tracks" },
+                { n: "3", l: "Workshop Formats" },
+                { n: "35hrs", l: "Max per Bootcamp" },
+                { n: "100%", l: "Hands-On Delivery" },
+              ].map((s) => (
+                <div className="prog-stat" key={s.l}>
+                  <div className="prog-stat-n">{s.n}</div>
+                  <div className="prog-stat-l">{s.l}</div>
+                </div>
+              ))}
             </div>
-            <i className="prog-robot-corner prog-robot-corner-tl" aria-hidden="true" />
-            <i className="prog-robot-corner prog-robot-corner-br" aria-hidden="true" />
           </div>
-        </div>
-        <div className="prog-hero-inner">
-          <div className="section-label">
-            10 Technology Tracks / 3 Workshop Formats
-          </div>
-          <h1>
-            AI, IoT &amp; Robotics
-            <br />
-            <em>Training Programs &amp; Workshops</em>
-          </h1>
-          <p>
-            Pick a technology track. Choose your workshop duration. Click to see
-            exactly what we teach, session by session.
-          </p>
-          <div className="prog-stats-row">
-            {[
-              { n: "10", l: "Technology Tracks" },
-              { n: "3", l: "Workshop Formats" },
-              { n: "35hrs", l: "Max per Bootcamp" },
-              { n: "100%", l: "Hands-On Delivery" },
-            ].map((s) => (
-              <div className="prog-stat" key={s.l}>
-                <div className="prog-stat-n">{s.n}</div>
-                <div className="prog-stat-l">{s.l}</div>
-              </div>
-            ))}
+
+          <div className="prog-hero-system">
+            <div className="prog-robot-stage">
+              <RobotPreviewFrame
+                className="prog-robot-frame"
+                title="Interactive ARC LABS training robot"
+                loading="eager"
+                view="programs"
+              />
+              <i className="prog-robot-corner prog-robot-corner-tl" aria-hidden="true" />
+              <i className="prog-robot-corner prog-robot-corner-br" aria-hidden="true" />
+            </div>
           </div>
         </div>
       </div>
 
       {/* TECH GRID */}
       <div className="tech-section">
-        <div className="section-label">Technology Tracks</div>
+        <div className="section-label">{sectionCopy.label}</div>
         <h2 className="section-heading">
-          Choose your domain.
+          {sectionCopy.title}
           <br />
-          See the curriculum.
+          <span style={{ color: "var(--accent)" }}>{sectionCopy.accent}</span>
         </h2>
-        <p className="sec-sub">
-          Click any technology card to expand the full curriculum — choose
-          between 2-day, 3-day, or 5-day formats.
-        </p>
+        <p className="sec-sub">{sectionCopy.desc}</p>
 
+        <div className="track-mode-switch" aria-label="Track type">
+          {[
+            { id: "programs", label: "Program Tracks" },
+            { id: "internships", label: "Internship Tracks" },
+          ].map((mode) => (
+            <button
+              key={mode.id}
+              type="button"
+              className={`track-mode-btn${trackMode === mode.id ? " active" : ""}`}
+              onClick={() => switchTrackMode(mode.id)}
+            >
+              {mode.label}
+            </button>
+          ))}
+        </div>
+
+        {!isInternshipMode && (
         <div className="level-filter" aria-label="Filter technology tracks by level">
           {PROGRAM_LEVELS.map((level) => (
             <button
@@ -3944,6 +4007,7 @@ export default function ProgramsPage() {
             </button>
           ))}
         </div>
+        )}
 
         <div className="tech-grid">
           {visibleTechnologies.map((tech) => {
@@ -3962,12 +4026,14 @@ export default function ProgramsPage() {
                 >
                   {tech.iconLabel}
                 </div>
-                <span
-                  className="tc-level"
-                  style={{ background: levelMeta.color, color: "#09090b" }}
-                >
-                  {tech.level}
-                </span>
+                {!isInternshipMode && (
+                  <span
+                    className="tc-level"
+                    style={{ background: levelMeta.color, color: "#09090b" }}
+                  >
+                    {tech.level}
+                  </span>
+                )}
               </div>
               <h3>
                 {tech.abbr} — {tech.name}
@@ -3991,6 +4057,7 @@ export default function ProgramsPage() {
               <DetailPanel
                 key={`detail-${tech.id}`}
                 tech={tech}
+                durationOptions={durationOptions}
                 onClose={() => setActiveTech(null)}
               />
             )}
@@ -4002,6 +4069,7 @@ export default function ProgramsPage() {
           <DetailPanel
             key={activeTech.id}
             tech={activeTech}
+            durationOptions={durationOptions}
             onClose={() => setActiveTech(null)}
           />
         )}

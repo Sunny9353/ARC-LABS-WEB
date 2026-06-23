@@ -82,8 +82,8 @@ function RobotPreviewScene({ theme }) {
     const currentHeadQuaternion = new THREE.Quaternion();
     const targetHeadQuaternion = new THREE.Quaternion();
     const clock = new THREE.Clock();
-    const targetPlaneDepth = 0.08;
-    const lookDamping = 8;
+    const targetPlaneDepth = 0.12;
+    const lookDamping = 18;
 
     const requestRender = () => {
       if (animationFrameId === null && !document.hidden && !disposed) {
