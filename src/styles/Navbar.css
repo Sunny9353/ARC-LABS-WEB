@@ -22,9 +22,9 @@
   position: fixed;
   left: 0;
   right: 0;
-  opacity: 0;
-  transform: translateY(-100%);
-  animation: navbarIntro 0.9s cubic-bezier(.2,.82,.2,1) 4s forwards;
+  opacity: 1;
+  transform: translateY(0);
+  animation: none;
 }
 
 body.home-hero-loading .navbar.home-intro {
@@ -36,7 +36,7 @@ body.home-hero-loading .navbar.home-intro {
 
 body.home-hero-ready .navbar.home-intro {
   pointer-events: auto;
-  animation: navbarIntro 0.9s cubic-bezier(.2,.82,.2,1) forwards;
+  animation: navbarIntro 0.9s cubic-bezier(.2,.82,.2,1) 0.08s both;
 }
 
 .navbar.scrolled {

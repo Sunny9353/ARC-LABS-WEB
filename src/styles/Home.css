@@ -32,7 +32,7 @@
   visibility: visible;
   transition: opacity 0.65s cubic-bezier(.2,.8,.2,1), visibility 0.65s cubic-bezier(.2,.8,.2,1);
 }
-.hero-scene-loaded .hero-boot-loader {
+.hero-ready .hero-boot-loader {
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
@@ -349,10 +349,16 @@
   transform: scale(1.12);
   animation: none;
 }
-.hero-scene-loaded .hero-lab-preview {
+.hero-waiting.hero-scene-loaded .hero-lab-preview {
   opacity: 1;
   visibility: visible;
   animation: heroSplineReveal 4s cubic-bezier(.2,.82,.2,1) both;
+}
+.hero-ready .hero-lab-preview {
+  opacity: 1;
+  visibility: visible;
+  transform: scale(1);
+  animation: none;
 }
 .hero-ready .hero-bg-tech-text {
   visibility: visible;

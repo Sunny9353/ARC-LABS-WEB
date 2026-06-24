@@ -457,9 +457,9 @@ h1, h2, h3, h4, h5, h6 {
   transition: all 0.3s ease;
 }
 .home-intro-shell .wa-float {
-  opacity: 0;
-  transform: translate3d(0, 18px, 0);
-  animation: waFloatReveal 0.7s cubic-bezier(.2,.8,.2,1) 4.85s forwards;
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+  animation: none;
 }
 .wa-float:hover {
   transform: translateY(-3px);

@@ -1,4 +1,4 @@
-import { Fragment, useState, useEffect, useRef } from "react";
+import { Fragment, useState, useEffect, useRef, useCallback } from "react";
 import { createPortal } from "react-dom";
 import { jsPDF } from "jspdf";
 import { collection, addDoc } from "firebase/firestore";
@@ -83,6 +83,34 @@ export const pageStyles = `
     background: transparent;
     transform: scale(1);
     transform-origin: center center;
+    opacity: 1;
+    transition: opacity 0.45s ease;
+  }
+  .prog-robot-frame .robot-preview-canvas,
+  .prog-robot-frame canvas {
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 100%;
+    display: block;
+  }
+  .prog-robot-stage:not(.is-ready) .prog-robot-frame {
+    opacity: 0.01;
+  }
+  .prog-robot-stage:not(.is-ready)::before {
+    content: "";
+    display: block;
+    position: absolute;
+    inset: 12%;
+    border-radius: 999px;
+    background:
+      radial-gradient(circle, rgba(0,220,130,0.18), transparent 58%);
+    filter: blur(14px);
+    opacity: 0.55;
+    animation: progRobotLoading 1.8s ease-in-out infinite;
+  }
+  @keyframes progRobotLoading {
+    0%, 100% { transform: scale(0.92); opacity: 0.34; }
+    50% { transform: scale(1.04); opacity: 0.62; }
   }
   .prog-robot-status,
   .prog-robot-readout {
@@ -3887,6 +3915,8 @@ export default function ProgramsPage() {
   const [activeTech, setActiveTech] = useState(null);
   const [activeLevel, setActiveLevel] = useState("ALL");
   const [trackMode, setTrackMode] = useState("programs");
+  const [robotReady, setRobotReady] = useState(false);
+  const handleRobotReady = useCallback(() => setRobotReady(true), []);
   const isInternshipMode = trackMode === "internships";
   const visibleTechnologies = isInternshipMode
     ? INTERNSHIP_TECHNOLOGIES
@@ -3965,12 +3995,13 @@ export default function ProgramsPage() {
           </div>
 
           <div className="prog-hero-system">
-            <div className="prog-robot-stage">
+            <div className={`prog-robot-stage${robotReady ? " is-ready" : ""}`}>
               <RobotPreviewFrame
                 className="prog-robot-frame"
                 title="Interactive ARC LABS training robot"
                 loading="eager"
                 view="programs"
+                onReady={handleRobotReady}
               />
               <i className="prog-robot-corner prog-robot-corner-tl" aria-hidden="true" />
               <i className="prog-robot-corner prog-robot-corner-br" aria-hidden="true" />

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { SplineSceneBasic, SplineSceneBasicFallback } from "../components/SplineSceneBasic";
@@ -190,14 +190,19 @@ function Hero() {
     return () => window.clearTimeout(revealTimer);
   }, [splineLoaded, shouldPlayIntro]);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
+    if (!shouldPlayIntro) {
+      document.body.classList.remove("home-hero-loading", "home-hero-ready");
+      return undefined;
+    }
+
     document.body.classList.toggle("home-hero-loading", !heroReady);
     document.body.classList.toggle("home-hero-ready", heroReady);
 
     return () => {
       document.body.classList.remove("home-hero-loading", "home-hero-ready");
     };
-  }, [heroReady]);
+  }, [heroReady, shouldPlayIntro]);
 
   return (
     <section

@@ -131,9 +131,9 @@
   font-family: var(--font-body);
 }
 .home-intro-shell .arc-chatbot {
-  opacity: 0;
-  transform: translate3d(0, 18px, 0);
-  animation: fixedUiReveal 0.7s cubic-bezier(.2,.8,.2,1) 4.85s forwards;
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+  animation: none;
 }
 
 body.home-hero-loading .home-intro-shell .arc-chatbot,
@@ -173,7 +173,7 @@ body.home-hero-ready .home-intro-shell .wa-float {
 }
 .arc-chat-panel {
   width: min(390px, calc(100vw - 32px));
-  max-height: min(680px, calc(100svh - var(--nav-h) - 176px));
+  max-height: min(680px, calc(100svh - var(--nav-h) - 132px));
   margin-bottom: 14px;
   border-radius: 18px;
   background:
@@ -185,6 +185,8 @@ body.home-hero-ready .home-intro-shell .wa-float {
   backdrop-filter: blur(18px);
   animation: arcChatPanelIn 0.34s cubic-bezier(.2,.8,.2,1) both;
   transform-origin: right bottom;
+  display: flex;
+  flex-direction: column;
 }
 :root[data-theme="light"] .arc-chat-panel {
   background: rgba(255,255,255,0.96);
@@ -195,6 +197,7 @@ body.home-hero-ready .home-intro-shell .wa-float {
   to { opacity: 1; transform: translate3d(0, 0, 0) scale(1); }
 }
 .arc-chat-header {
+  flex: 0 0 auto;
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
@@ -222,13 +225,16 @@ body.home-hero-ready .home-intro-shell .wa-float {
   flex: 0 0 auto;
 }
 .arc-chat-body {
-  height: min(330px, calc(100vh - 390px));
-  min-height: 230px;
+  flex: 1 1 auto;
+  min-height: 140px;
+  max-height: none;
   overflow-y: auto;
+  overflow-x: hidden;
   padding: 18px;
   display: flex;
   flex-direction: column;
   gap: 14px;
+  scrollbar-width: thin;
 }
 .arc-chat-message {
   display: grid;
@@ -302,10 +308,13 @@ body.home-hero-ready .home-intro-shell .wa-float {
   color: var(--text);
 }
 .arc-chat-prompts {
+  flex: 0 0 auto;
   display: flex;
   gap: 8px;
   overflow-x: auto;
+  overflow-y: hidden;
   padding: 0 18px 14px;
+  scrollbar-width: thin;
 }
 .arc-chat-prompts button {
   flex: 0 0 auto;
@@ -326,6 +335,7 @@ body.home-hero-ready .home-intro-shell .wa-float {
   border-color: rgba(0,232,212,0.22);
 }
 .arc-chat-input-wrap {
+  flex: 0 0 auto;
   margin: 0 14px 14px;
   background: var(--surface);
   border: 1px solid var(--border-2);
@@ -333,7 +343,8 @@ body.home-hero-ready .home-intro-shell .wa-float {
   overflow: hidden;
 }
 .arc-chat-input {
-  min-height: 46px;
+  min-height: 54px;
+  max-height: 112px;
   border: 0;
   border-radius: 0;
   background: transparent;
@@ -372,10 +383,10 @@ body.home-hero-ready .home-intro-shell .wa-float {
   }
   .arc-chat-panel {
     width: 100%;
-    max-height: calc(100svh - var(--nav-h) - 154px);
+    max-height: calc(100svh - var(--nav-h) - 118px);
   }
   .arc-chat-body {
-    height: min(320px, calc(100vh - 390px));
+    min-height: 120px;
   }
   .arc-chat-launcher span {
     display: none;

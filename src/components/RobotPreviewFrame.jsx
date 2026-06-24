@@ -52,7 +52,7 @@ function disposeObject(object) {
   });
 }
 
-function RobotPreviewScene({ theme }) {
+function RobotPreviewScene({ theme, view, onReady }) {
   const mountRef = useRef(null);
 
   useEffect(() => {
@@ -73,7 +73,7 @@ function RobotPreviewScene({ theme }) {
     renderer.setSize(mount.clientWidth, mount.clientHeight);
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = isLightTheme ? 1.12 : 1.28;
+    renderer.toneMappingExposure = isLightTheme ? 1.12 : 1.5;
     renderer.shadowMap.enabled = !window.matchMedia("(pointer: coarse)").matches;
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     renderer.domElement.style.display = "block";
@@ -90,6 +90,8 @@ function RobotPreviewScene({ theme }) {
     let animationFrameId = null;
     let hasPointerTarget = false;
     let disposed = false;
+    let hasReportedReady = false;
+    let stabilizeUntil = 0;
 
     const pointer = new THREE.Vector2(0, 0);
     const raycaster = new THREE.Raycaster();
@@ -154,6 +156,10 @@ function RobotPreviewScene({ theme }) {
       const delta = Math.min(clock.getDelta(), 0.1);
       let needsAnotherFrame = false;
 
+      if (performance.now() < stabilizeUntil) {
+        needsAnotherFrame = true;
+      }
+
       if (head && camera && neutralHeadQuaternion) {
         currentHeadQuaternion.copy(head.quaternion);
         targetHeadQuaternion.copy(neutralHeadQuaternion);
@@ -193,7 +199,13 @@ function RobotPreviewScene({ theme }) {
         faceFill.intensity = (isLightTheme ? 320 : 520) + 420 * fillWeight;
       }
 
-      if (camera) renderer.render(scene, camera);
+      if (camera) {
+        renderer.render(scene, camera);
+        if (!hasReportedReady) {
+          hasReportedReady = true;
+          onReady?.();
+        }
+      }
       if (needsAnotherFrame) requestRender();
     }
 
@@ -202,12 +214,12 @@ function RobotPreviewScene({ theme }) {
 
     scene.add(
       new THREE.HemisphereLight(
-        isLightTheme ? 0xffffff : 0xd8e1de,
-        isLightTheme ? 0xd4d4d8 : 0x050706,
-        isLightTheme ? 1.45 : 1.05
+        isLightTheme ? 0xffffff : 0xe8fff8,
+        isLightTheme ? 0xd4d4d8 : 0x07100d,
+        isLightTheme ? 1.45 : 1.4
       )
     );
-    scene.add(new THREE.AmbientLight(isLightTheme ? 0xffffff : 0xb8c2bf, isLightTheme ? 0.72 : 0.58));
+    scene.add(new THREE.AmbientLight(isLightTheme ? 0xffffff : 0xd8fff1, isLightTheme ? 0.72 : 0.86));
 
     loader.load(
       MODEL_URL,
@@ -283,12 +295,12 @@ function RobotPreviewScene({ theme }) {
         const size = bounds.getSize(new THREE.Vector3());
         const modelRadius = Math.max(size.x, size.y, size.z) || 10;
 
-        const keyLight = new THREE.DirectionalLight(0xffffff, isLightTheme ? 2.25 : 2.8);
+        const keyLight = new THREE.DirectionalLight(0xffffff, isLightTheme ? 2.25 : 3.5);
         keyLight.position.copy(center).add(new THREE.Vector3(modelRadius, modelRadius * 1.4, modelRadius));
         keyLight.target.position.copy(center);
         scene.add(keyLight, keyLight.target);
 
-        const rimLight = new THREE.DirectionalLight(0x00dc82, isLightTheme ? 0.85 : 1.45);
+        const rimLight = new THREE.DirectionalLight(0x00dc82, isLightTheme ? 0.85 : 1.9);
         rimLight.position.copy(center).add(new THREE.Vector3(-modelRadius, modelRadius * 0.55, -modelRadius));
         rimLight.target.position.copy(center);
         scene.add(rimLight, rimLight.target);
@@ -297,7 +309,7 @@ function RobotPreviewScene({ theme }) {
           head.lookAt(camera.position);
           neutralHeadQuaternion = head.quaternion.clone();
 
-          faceFill = new THREE.PointLight(isLightTheme ? 0xffffff : 0xcff5e8, isLightTheme ? 260 : 180, 0, 2);
+          faceFill = new THREE.PointLight(isLightTheme ? 0xffffff : 0xeafff7, isLightTheme ? 260 : 420, 0, 2);
           const cameraRight = new THREE.Vector3(1, 0, 0).applyQuaternion(camera.quaternion);
           const cameraUp = new THREE.Vector3(0, 1, 0).applyQuaternion(camera.quaternion);
           faceFill.name = "Face Fill";
@@ -308,6 +320,9 @@ function RobotPreviewScene({ theme }) {
         updateViewport();
         requestAnimationFrame(updateViewport);
         window.setTimeout(updateViewport, 180);
+        window.setTimeout(updateViewport, 520);
+        window.setTimeout(updateViewport, 1100);
+        stabilizeUntil = performance.now() + 1800;
         requestRender();
       },
       undefined,
@@ -351,12 +366,12 @@ function RobotPreviewScene({ theme }) {
       renderer.forceContextLoss();
       renderer.domElement.remove();
     };
-  }, [theme]);
+  }, [theme, view, onReady]);
 
   return <div ref={mountRef} className="robot-preview-canvas" aria-hidden="true" />;
 }
 
-export default function RobotPreviewFrame({ className, title, view = "home" }) {
+export default function RobotPreviewFrame({ className, title, view = "home", onReady }) {
   const [theme, setTheme] = useState(readTheme);
 
   useEffect(() => {
@@ -370,7 +385,7 @@ export default function RobotPreviewFrame({ className, title, view = "home" }) {
 
   return (
     <div className={className} role="img" aria-label={title || "Interactive robot preview"} data-view={view}>
-      <RobotPreviewScene theme={theme} />
+      <RobotPreviewScene theme={theme} view={view} onReady={onReady} />
     </div>
   );
 }

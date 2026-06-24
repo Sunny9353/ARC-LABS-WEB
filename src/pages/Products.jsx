@@ -38,7 +38,7 @@ const pageStyles = `
 .pc-visual{height:220px;position:relative;overflow:hidden;background:linear-gradient(135deg,var(--bg),var(--surface-2));display:flex;align-items:center;justify-content:center}
 .pc-image{width:100%;height:100%;object-fit:contain;object-position:center;position:relative;z-index:1;padding:14px}
 .pc-badge-wrap{position:absolute;top:14px;left:14px;display:flex;gap:6px;z-index:2}
-.pc-badge{font-family:var(--font-body);font-size:.62rem;font-weight:700;padding:4px 10px;border-radius:5px;letter-spacing:.06em;border:1px solid color-mix(in srgb,var(--pc-color,var(--accent)) 38%,transparent);box-shadow:0 10px 24px rgba(0,220,130,.12)}
+.pc-badge{font-family:var(--font-body);font-size:.62rem;font-weight:800;padding:5px 11px;border-radius:6px;letter-spacing:.06em;border:1px solid var(--pc-color,var(--accent));background:var(--pc-color,var(--accent));color:#04110f;box-shadow:0 12px 26px color-mix(in srgb,var(--pc-color,var(--accent)) 28%,transparent)}
 .pc-best{position:absolute;top:14px;right:14px;z-index:2;background:var(--accent-dim);color:var(--accent);border:1px solid rgba(0,220,130,.34);font-family:var(--font-body);font-size:.6rem;font-weight:800;padding:4px 10px;border-radius:5px;letter-spacing:.06em;box-shadow:0 10px 24px rgba(0,220,130,.13)}
 .pc-fade{position:absolute;bottom:0;left:0;right:0;height:60px;background:linear-gradient(transparent,var(--surface));z-index:1}
 
@@ -74,10 +74,16 @@ const pageStyles = `
 .kit-stage::before{content:'';position:absolute;left:12%;right:12%;bottom:40px;height:26px;background:radial-gradient(ellipse,rgba(0,0,0,.48),transparent 68%);filter:blur(4px);opacity:.65}
 .kit-caption{position:absolute;left:36px;top:28px;font-family:var(--font-heading);font-weight:800;font-size:1rem;letter-spacing:-.01em;color:var(--text);z-index:3}
 .kit-caption span{display:block;margin-top:4px;font-family:var(--font-body);font-size:.72rem;font-weight:500;color:var(--text-3);letter-spacing:0}
-.kit-board{width:min(660px,88vw);min-height:330px;position:relative;display:flex;align-items:center;justify-content:center}
-.kit-photo-wrap{width:min(560px,82vw);aspect-ratio:3/2;border:1px solid rgba(255,255,255,.16);border-radius:18px;background:linear-gradient(135deg,rgba(var(--kit-glow),.18),rgba(255,255,255,.04)),var(--surface);box-shadow:0 28px 60px rgba(0,0,0,.36),inset 0 0 0 1px rgba(255,255,255,.06);position:relative;overflow:hidden;animation:kitDrop .72s cubic-bezier(.18,.89,.32,1.22) both;transform-origin:center}
+.kit-gallery{width:min(820px,94vw);display:grid;grid-template-columns:74px minmax(0,1fr);gap:18px;align-items:center;position:relative;z-index:2}
+.kit-thumbs{display:flex;flex-direction:column;gap:10px;align-items:stretch;justify-content:flex-start;align-self:stretch;padding-top:4px}
+.kit-thumb{width:66px;height:66px;border:1px solid var(--border-2);border-radius:8px;background:#fff;padding:5px;cursor:pointer;transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease}
+.kit-thumb:hover,.kit-thumb.active{border-color:var(--kit-color,var(--accent));box-shadow:0 10px 26px rgba(var(--kit-glow),.18);transform:translateX(2px)}
+.kit-thumb img{width:100%;height:100%;display:block;object-fit:contain;object-position:center}
+.kit-board{width:100%;min-height:330px;position:relative;display:flex;align-items:center;justify-content:center}
+.kit-photo-wrap{width:min(620px,100%);aspect-ratio:3/2;border:1px solid rgba(255,255,255,.16);border-radius:18px;background:#fff;box-shadow:0 28px 60px rgba(0,0,0,.36),inset 0 0 0 1px rgba(255,255,255,.06);position:relative;overflow:hidden;animation:kitDrop .72s cubic-bezier(.18,.89,.32,1.22) both;transform-origin:center;cursor:zoom-in}
 .kit-photo-wrap::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.14),transparent);transform:translateX(-120%);animation:kitShine 1.4s ease .65s both}
-.kit-photo{width:100%;height:100%;object-fit:contain;object-position:center;display:block}
+.kit-photo{width:100%;height:100%;object-fit:contain;object-position:center;display:block;transition:transform .18s ease;transform-origin:var(--zoom-x,50%) var(--zoom-y,50%);will-change:transform}
+.kit-photo-wrap.is-zooming .kit-photo{transform:scale(2.1)}
 
 @keyframes kitDrop{0%{opacity:0;transform:translateY(-260px) rotate(-4deg) scale(.9)}72%{opacity:1;transform:translateY(12px) rotate(1deg) scale(1.02)}100%{opacity:1;transform:translateY(0) rotate(0) scale(1)}}
 @keyframes kitShine{to{transform:translateX(120%)}}
@@ -191,6 +197,10 @@ const pageStyles = `
   .product-dotted-surface{inset:-60px -30% -110px;opacity:.42}
   .kit-stage{min-height:430px;padding:84px 18px 24px}
   .kit-caption{left:20px;top:22px;right:20px}
+  .kit-gallery{grid-template-columns:1fr;gap:12px;width:100%;padding-top:38px}
+  .kit-thumbs{flex-direction:row;justify-content:flex-start;overflow-x:auto;padding:2px 2px 6px}
+  .kit-thumb{width:58px;height:58px;flex:0 0 auto}
+  .kit-thumb:hover,.kit-thumb.active{transform:translateY(-2px)}
   .kit-board{width:100%;min-height:300px}
   .kit-photo-wrap{width:100%}
 
@@ -215,6 +225,11 @@ const PRODUCTS = [
     color: "var(--accent)",
     glow: "0,220,130",
     image: "/images/products/essential-kit.jpg",
+    galleryImages: [
+      { src: "/images/products/essential-kit.jpg", alt: "ARC LABS IoT Essential Kit main product image" },
+      { src: "/images/products/gallery/essential-kit-1.jpg", alt: "ARC LABS IoT Essential Kit close-up image 1" },
+      { src: "/images/products/gallery/essential-kit-2.jpg", alt: "ARC LABS IoT Essential Kit close-up image 2" },
+    ],
     badge: "ESSENTIAL",
     badgeBg: "var(--accent-dim)",
     badgeColor: "var(--accent)",
@@ -249,6 +264,11 @@ const PRODUCTS = [
     color: "var(--accent)",
     glow: "0,220,130",
     image: "/images/products/lite-kit.jpg",
+    galleryImages: [
+      { src: "/images/products/gallery/lite-kit-1.jpg", alt: "ARC LABS IoT Lite Kit product image 1" },
+      { src: "/images/products/gallery/lite-kit-2.jpg", alt: "ARC LABS IoT Lite Kit product image 2" },
+      { src: "/images/products/gallery/lite-kit-3.jpg", alt: "ARC LABS IoT Lite Kit product image 3" },
+    ],
     badge: "BEGINNER",
     badgeBg: "var(--accent-dim)",
     badgeColor: "var(--accent)",
@@ -614,6 +634,11 @@ function isCompareDash(value) {
 function DetailDrawer({ product, anchorY, onClose }) {
   useBodyScrollLock(true);
   const [tab, setTab] = useState("specs");
+  const galleryImages = product.galleryImages?.length
+    ? product.galleryImages
+    : [{ src: product.image, alt: product.name }];
+  const [activeImage, setActiveImage] = useState(galleryImages[0]);
+  const [zoomPoint, setZoomPoint] = useState({ active: false, x: 50, y: 50 });
   const ref = useRef(null);
 
   const TABS = [
@@ -639,11 +664,42 @@ function DetailDrawer({ product, anchorY, onClose }) {
         <div className="kit-caption">
           {product.short} assembly
         </div>
-        <div className="kit-board">
-          <div className="kit-photo-wrap">
-            <img className="kit-photo" src={product.image} alt={product.name} />
+        <div className="kit-gallery">
+          {galleryImages.length > 1 && (
+            <div className="kit-thumbs" aria-label={`${product.name} images`}>
+              {galleryImages.map((image) => (
+                <button
+                  type="button"
+                  key={image.src}
+                  className={`kit-thumb${activeImage.src === image.src ? " active" : ""}`}
+                  onClick={() => setActiveImage(image)}
+                  aria-label={`View ${image.alt || product.name}`}
+                >
+                  <img src={image.src} alt="" loading="lazy" />
+                </button>
+              ))}
+            </div>
+          )}
+          <div className="kit-board">
+            <div
+              className={`kit-photo-wrap${zoomPoint.active ? " is-zooming" : ""}`}
+              style={{
+                "--zoom-x": `${zoomPoint.x}%`,
+                "--zoom-y": `${zoomPoint.y}%`,
+              }}
+              onMouseMove={(event) => {
+                const rect = event.currentTarget.getBoundingClientRect();
+                setZoomPoint({
+                  active: true,
+                  x: ((event.clientX - rect.left) / rect.width) * 100,
+                  y: ((event.clientY - rect.top) / rect.height) * 100,
+                });
+              }}
+              onMouseLeave={() => setZoomPoint((current) => ({ ...current, active: false }))}
+            >
+              <img className="kit-photo" src={activeImage.src} alt={activeImage.alt || product.name} />
+            </div>
           </div>
-    
         </div>
       </div>
       <div className="dd-header">
@@ -845,7 +901,7 @@ function ProductCard({ product, isSelected, onSelect }) {
     >
       <div className="pc-visual">
         <div className="pc-badge-wrap">
-          <span className="pc-badge" style={{ background: product.badgeBg, color: product.badgeColor }}>{product.badge}</span>
+          <span className="pc-badge">{product.badge}</span>
         </div>
         {product.image ? (
           <img className="pc-image" src={product.image} alt={product.name} loading="lazy" />
@@ -947,7 +1003,7 @@ export default function ProductsPage() {
         <div className="badge" style={{ marginBottom: "1.8rem" }}>
           ARC Labs Hardware · Made in India
         </div>
-        <h1>IoT &amp; Robotics Development Kits<br /><em>for STEM Education</em></h1>
+        <h1>IoT &amp; Robotics Development Kits<br /><em>for Innovation</em></h1>
         <p>Four development boards. Every major microcontroller. Designed in Hyderabad for Indian classrooms and labs.</p>
       </div>
 
