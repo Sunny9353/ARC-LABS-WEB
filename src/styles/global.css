@@ -140,6 +140,10 @@ body {
   transition: background-color 0.35s ease, color 0.35s ease;
 }
 
+body.arc-scroll-locked {
+  overflow: hidden !important;
+}
+
 ::selection { background: var(--accent); color: var(--bg); }
 
 ::-webkit-scrollbar { width: 4px; }
@@ -377,6 +381,24 @@ h1, h2, h3, h4, h5, h6 {
   color: var(--tag-text);
 }
 
+.field-invalid,
+.field-invalid:focus {
+  border-color: #ef4444 !important;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.18) !important;
+  animation: fieldShake 0.42s cubic-bezier(.36,.07,.19,.97);
+}
+
+.field-invalid-wrap label {
+  color: #f87171 !important;
+}
+
+.form-error-text {
+  color: #f87171;
+  font-size: 0.78rem;
+  line-height: 1.5;
+  margin-top: 0.45rem;
+}
+
 /* ── Keyframes ── */
 @keyframes pulse {
   0%, 100% { box-shadow: 0 0 0 0 var(--accent-glow); }
@@ -397,6 +419,12 @@ h1, h2, h3, h4, h5, h6 {
 @keyframes shimmer {
   0% { background-position: -200% 0; }
   100% { background-position: 200% 0; }
+}
+@keyframes fieldShake {
+  10%, 90% { transform: translateX(-1px); }
+  20%, 80% { transform: translateX(2px); }
+  30%, 50%, 70% { transform: translateX(-4px); }
+  40%, 60% { transform: translateX(4px); }
 }
 
 /* ── Intersection Observer Fade ── */

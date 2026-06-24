@@ -1,12 +1,13 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { Helmet } from "react-helmet-async";
 import "../styles/Checkout.css";
 import { PRODUCTS } from "../data/products";
 import { addDoc, collection } from "firebase/firestore";
 import { db } from "../firebase";
-import emailjs from "emailjs-com";
 import jsPDF from "jspdf";
+import { useBodyScrollLock, validateRequiredFields } from "../utils/ui";
 
 const ESSENTIAL_KIT = {
   id: "essential",
@@ -14,9 +15,114 @@ const ESSENTIAL_KIT = {
   image: "/images/products/essential-kit.jpg",
 };
 
+function CheckoutDialog({ type = "info", title, message, children, onClose }) {
+  useBodyScrollLock(true);
+  const icon = type === "danger" ? "x" : type === "success" ? "OK" : "!";
+
+  const dialog = (
+    <div className="co-dialog-overlay" onClick={(e) => e.target === e.currentTarget && onClose?.()}>
+      <div className={`co-dialog co-dialog-${type}`}>
+        <div className="co-dialog-icon">{icon}</div>
+        <h3>{title}</h3>
+        <p>{message}</p>
+        <div className="co-dialog-actions">
+          {children || (
+            <button type="button" className="btn btn-primary" onClick={onClose}>
+              OK
+            </button>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+
+  return typeof document === "undefined" ? dialog : createPortal(dialog, document.body);
+}
+
+function downloadReceipt(receipt) {
+  const doc = new jsPDF();
+  const rows = [
+    ["Receipt No.", receipt.receiptNo],
+    ["Payment ID", receipt.paymentId],
+    ["Status", "Paid"],
+    ["Product", receipt.productName],
+    ["Amount", `INR ${receipt.amount}`],
+    ["Customer", receipt.customerName],
+    ["Email", receipt.customerEmail],
+    ["Phone", receipt.customerPhone],
+    ["Shipping", receipt.shipping],
+    ["Date", receipt.date],
+  ];
+
+  doc.setFillColor(0, 220, 130);
+  doc.rect(0, 0, 210, 38, "F");
+  doc.setTextColor(9, 9, 11);
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(20);
+  doc.text("ARC LABS PAYMENT RECEIPT", 18, 23);
+
+  doc.setTextColor(24, 24, 27);
+  doc.setFontSize(11);
+  doc.setFont("helvetica", "normal");
+  doc.text("Thank you for your purchase. Keep this receipt for your records.", 18, 50);
+
+  let y = 68;
+  rows.forEach(([label, value]) => {
+    doc.setFont("helvetica", "bold");
+    doc.text(label, 18, y);
+    doc.setFont("helvetica", "normal");
+    doc.text(String(value || "-"), 72, y, { maxWidth: 112 });
+    y += label === "Shipping" ? 18 : 10;
+  });
+
+  doc.setDrawColor(0, 220, 130);
+  doc.roundedRect(18, y + 8, 174, 28, 3, 3);
+  doc.setFont("helvetica", "bold");
+  doc.setTextColor(0, 140, 95);
+  doc.text("Payment completed successfully", 28, y + 25);
+  doc.save(`${receipt.productName}-receipt.pdf`);
+}
+
+function ReceiptDialog({ receipt, onClose }) {
+  return (
+    <CheckoutDialog
+      type="success"
+      title="Payment successful"
+      message="Your order is confirmed. The receipt is ready whenever you want to download it."
+      onClose={onClose}
+    >
+      <div className="co-receipt">
+        <div className="co-receipt-top">
+          <span>Paid</span>
+          <strong>Rs. {Number(receipt.amount).toLocaleString("en-IN")}</strong>
+        </div>
+        {[
+          ["Receipt", receipt.receiptNo],
+          ["Payment ID", receipt.paymentId],
+          ["Product", receipt.productName],
+          ["Customer", receipt.customerName],
+          ["Shipping", receipt.shipping],
+        ].map(([label, value]) => (
+          <div className="co-receipt-row" key={label}>
+            <span>{label}</span>
+            <strong>{value}</strong>
+          </div>
+        ))}
+      </div>
+      <button type="button" className="btn btn-secondary" onClick={onClose}>
+        Close
+      </button>
+      <button type="button" className="btn btn-primary" onClick={() => downloadReceipt(receipt)}>
+        Download
+      </button>
+    </CheckoutDialog>
+  );
+}
+
 export default function Checkout() {
   const query = new URLSearchParams(useLocation().search);
   const navigate = useNavigate();
+  const formRef = useRef(null);
 
   const productId = query.get("product");
   const price = query.get("price");
@@ -35,13 +141,12 @@ export default function Checkout() {
     region: "",
     zip: "",
   });
-
-  const [paymentMethod, setPaymentMethod] = useState("upi_manual");
-  const [upiId, setUpiId] = useState("");
   const [loading, setLoading] = useState(false);
   const [razorpayLoaded, setRazorpayLoaded] = useState(false);
+  const [notice, setNotice] = useState(null);
+  const [confirmBack, setConfirmBack] = useState(false);
+  const [receipt, setReceipt] = useState(null);
 
-  // Load Razorpay SDK
   useEffect(() => {
     const script = document.createElement("script");
     script.src = "https://checkout.razorpay.com/v1/checkout.js";
@@ -54,21 +159,16 @@ export default function Checkout() {
     };
   }, []);
 
+  const updateField = (key, value) => setForm((prev) => ({ ...prev, [key]: value }));
+
   const handlePayment = () => {
-    if (!form.name || !form.email || !form.phone || !form.address || !form.city || !form.region || !form.zip) {
-      alert("Please fill all delivery address details");
-      return;
-    }
+    if (!formRef.current || !validateRequiredFields(formRef.current)) return;
     if (!price || !product) {
-      alert("Invalid product or price");
-      return;
-    }
-    if (paymentMethod === "upi_manual" && !upiId.trim()) {
-      alert("Please enter your UPI ID (e.g., user@okhdfcbank)");
+      setNotice({ type: "danger", title: "Kit unavailable", message: "Please go back and choose a valid product again." });
       return;
     }
     if (!razorpayLoaded || !window.Razorpay) {
-      alert("Payment system loading...");
+      setNotice({ type: "info", title: "Payment is loading", message: "The secure payment system is still getting ready. Try again in a moment." });
       return;
     }
 
@@ -91,10 +191,8 @@ export default function Checkout() {
           customer_city: form.city,
           customer_region: form.region,
           customer_zip: form.zip,
-          customer_state_code: "36",
           product_id: productId,
           product_name: product.name,
-          payment_method: paymentMethod,
         },
         prefill: {
           name: form.name,
@@ -102,356 +200,152 @@ export default function Checkout() {
           contact: form.phone,
         },
         theme: { color: "#00DC82" },
-      };
+        handler: async (response) => {
+          try {
+            await addDoc(collection(db, "orders"), {
+              customerName: form.name,
+              customerEmail: form.email,
+              customerPhone: form.phone,
+              customerCountry: form.country,
+              customerAddress: form.address,
+              customerCity: form.city,
+              customerRegion: form.region,
+              customerZip: form.zip,
+              productId: product.id,
+              productName: product.name,
+              productPrice: price,
+              paymentId: response.razorpay_payment_id,
+              createdAt: new Date(),
+              status: "Paid",
+            });
 
-      if (paymentMethod === "upi_manual") {
-        options.method = { upi: true };
-        options.upi = { flow: "collect" };
-        options.prefill.vpa = upiId;
-      } else if (paymentMethod === "upi_qr") {
-        options.method = { upi: true };
-        options.upi = { flow: "qr" };
-      } else if (paymentMethod === "card") {
-        options.method = { card: true };
-      } else if (paymentMethod === "netbanking") {
-        options.method = { netbanking: true };
-      }
-
-options.handler = async function (response) {
-
-  try {
-
-    // SAVE ORDER TO FIREBASE
-    await addDoc(collection(db, "orders"), {
-
-      customerName: form.name,
-      customerEmail: form.email,
-      customerPhone: form.phone,
-      customerCountry: form.country,
-      customerAddress: form.address,
-      customerCity: form.city,
-      customerRegion: form.region,
-      customerZip: form.zip,
-
-      productId: product.id,
-      productName: product.name,
-      productPrice: price,
-
-      paymentId: response.razorpay_payment_id,
-
-      paymentMethod: paymentMethod,
-
-      createdAt: new Date(),
-
-      status: "Paid"
-    });
-
-    // GENERATE PDF INVOICE
-    const doc = new jsPDF();
-
-    doc.setFontSize(22);
-    doc.text("ARC LABS INVOICE", 20, 20);
-
-    doc.setFontSize(12);
-
-    doc.text(`Customer Name: ${form.name}`, 20, 40);
-    doc.text(`Email: ${form.email}`, 20, 50);
-    doc.text(`Phone: ${form.phone}`, 20, 60);
-    doc.text(`Country: ${form.country}`, 20, 70);
-    doc.text(`Address: ${form.address}`, 20, 80);
-    doc.text(`City: ${form.city}`, 20, 90);
-    doc.text(`Region/State: ${form.region}`, 20, 100);
-    doc.text(`ZIP Code: ${form.zip}`, 20, 110);
-
-    doc.text(`Product: ${product.name}`, 20, 130);
-    doc.text(`Price: ₹${price} + GST`, 20, 140);
-
-    doc.text(
-      `Payment ID: ${response.razorpay_payment_id}`,
-      20,
-      160
-    );
-
-    doc.text(
-      `Status: PAID`,
-      20,
-      170
-    );
-
-    doc.save(
-      `${product.name}-Invoice.pdf`
-    );
-
-    // SEND EMAIL TO CLIENT
-    await emailjs.send(
-
-      "YOUR_SERVICE_ID",
-
-      "YOUR_TEMPLATE_ID",
-
-      {
-
-        customer_name: form.name,
-
-        customer_email: form.email,
-
-        customer_phone: form.phone,
-
-        product_name: product.name,
-
-        product_price: price,
-
-        payment_id:
-          response.razorpay_payment_id,
-
-      },
-
-      "YOUR_PUBLIC_KEY"
-    );
-
-    // SEND EMAIL TO COMPANY
-    await emailjs.send(
-
-      "YOUR_SERVICE_ID",
-
-      "YOUR_TEMPLATE_ID",
-
-      {
-
-        customer_name: form.name,
-
-        customer_email:
-          "hello@arclabs.in",
-
-        customer_phone: form.phone,
-
-        product_name: product.name,
-
-        product_price: price,
-
-        payment_id:
-          response.razorpay_payment_id,
-
-      },
-
-      "YOUR_PUBLIC_KEY"
-    );
-
-    setLoading(false);
-
-    alert(
-      `Payment Successful!\n\nInvoice Generated & Email Sent`
-    );
-
-    setForm({
-      name: "",
-      email: "",
-      phone: "",
-      country: "India",
-      address: "",
-      city: "",
-      region: "",
-      zip: "",
-    });
-
-    setUpiId("");
-
-    setTimeout(() => {
-
-      navigate(
-        "/products",
-        { replace: true }
-      );
-
-    }, 2000);
-
-  } catch (err) {
-
-    setLoading(false);
-
-    console.log(err);
-
-    alert(
-      "Payment completed but invoice/email failed"
-    );
-  }
-};
-
-      options.modal = {
-        ondismiss: function () {
-          setLoading(false);
-          alert("Payment cancelled");
+            setReceipt({
+              receiptNo: `ARC-${Date.now().toString().slice(-8)}`,
+              paymentId: response.razorpay_payment_id,
+              productName: product.name,
+              amount: price,
+              customerName: form.name,
+              customerEmail: form.email,
+              customerPhone: form.phone,
+              shipping: `${form.address}, ${form.city}, ${form.region} - ${form.zip}, ${form.country}`,
+              date: new Date().toLocaleString("en-IN"),
+            });
+            setLoading(false);
+          } catch (err) {
+            setLoading(false);
+            setNotice({
+              type: "danger",
+              title: "Receipt sync failed",
+              message: "Payment completed, but saving the order failed. Please contact ARC LABS with your payment ID.",
+            });
+          }
+        },
+        modal: {
+          ondismiss: () => {
+            setLoading(false);
+            setNotice({
+              type: "danger",
+              title: "Payment cancelled",
+              message: "No amount was captured. You can review your details and start the payment again.",
+            });
+          },
         },
       };
 
       const rzp = new window.Razorpay(options);
-      rzp.on("payment.failed", function (response) {
+      rzp.on("payment.failed", (response) => {
         setLoading(false);
-        alert("Payment failed: " + response.error.reason);
+        setNotice({
+          type: "danger",
+          title: "Payment failed",
+          message: response?.error?.reason || "The payment provider could not complete this transaction.",
+        });
       });
       rzp.open();
     } catch (err) {
       setLoading(false);
-      alert("Payment Error: " + err.message);
+      setNotice({ type: "danger", title: "Payment error", message: err.message });
     }
   };
 
-  const METHODS = [
-    { id: "upi_manual", label: "UPI (ID)" },
-    { id: "upi_qr", label: "UPI (QR)" },
-    { id: "card", label: "Card" },
-    { id: "netbanking", label: "Netbanking" },
-  ];
-
   return (
     <>
-    <Helmet>
-      <title>Checkout — ARC LABS</title>
-      <meta name="robots" content="noindex, nofollow" />
-    </Helmet>
-    <div className="co-page">
-      <div className="co-card">
-        {/* LEFT: PRODUCT */}
-        <div className="co-left">
-<img
-  src={product?.image}
-  alt={product?.name}
-  className="co-product-img"
-/>
-</div>
-
-        {/* RIGHT: FORM */}
-        <div className="co-right">
-          <h3>Enter Your Details</h3>
-
-          <input
-            type="text"
-            placeholder="Full Name *"
-            value={form.name}
-            onChange={(e) => setForm({ ...form, name: e.target.value })}
-            disabled={loading}
-            required
-          />
-
-          <input
-            type="email"
-            placeholder="Email Address *"
-            value={form.email}
-            onChange={(e) => setForm({ ...form, email: e.target.value })}
-            disabled={loading}
-            required
-          />
-
-          <input
-            type="tel"
-            placeholder="Phone Number *"
-            value={form.phone}
-            onChange={(e) => setForm({ ...form, phone: e.target.value })}
-            disabled={loading}
-            required
-            pattern="[0-9]{10}"
-          />
-
-          <h4 className="co-section-heading" style={{ marginTop: "1rem", marginBottom: "0.4rem", fontSize: "0.95rem", fontWeight: 600 }}>
-            Shipping / Delivery Address
-          </h4>
-
-          <select
-            value={form.country}
-            onChange={(e) => setForm({ ...form, country: e.target.value })}
-            disabled={loading}
-            required
-            className="co-select"
-            style={{ width: "100%", padding: "12px 14px", marginBottom: "10px", borderRadius: "8px", border: "1px solid var(--border, #ddd)", background: "var(--surface, #fff)", color: "inherit", fontSize: "0.9rem" }}
-          >
-            <option value="India">India</option>
-            <option value="United States">United States</option>
-            <option value="United Kingdom">United Kingdom</option>
-            <option value="United Arab Emirates">United Arab Emirates</option>
-            <option value="Singapore">Singapore</option>
-            <option value="Australia">Australia</option>
-            <option value="Canada">Canada</option>
-            <option value="Other">Other</option>
-          </select>
-
-          <input
-            type="text"
-            placeholder="Street Address (House No., Street, Area) *"
-            value={form.address}
-            onChange={(e) => setForm({ ...form, address: e.target.value })}
-            disabled={loading}
-            required
-          />
-
-          <input
-            type="text"
-            placeholder="City *"
-            value={form.city}
-            onChange={(e) => setForm({ ...form, city: e.target.value })}
-            disabled={loading}
-            required
-          />
-
-          <input
-            type="text"
-            placeholder="State / Region *"
-            value={form.region}
-            onChange={(e) => setForm({ ...form, region: e.target.value })}
-            disabled={loading}
-            required
-          />
-
-          <input
-            type="text"
-            placeholder="ZIP / Postal Code *"
-            value={form.zip}
-            onChange={(e) => setForm({ ...form, zip: e.target.value })}
-            disabled={loading}
-            required
-          />
-
-          {/* PAYMENT METHOD SELECTION */}
-          <div className="co-methods-section">
-            <label className="co-methods-label">Select Payment Method:</label>
-            <div className="co-method-grid">
-              {METHODS.map((m) => (
-                <button
-                  key={m.id}
-                  className={`co-method-btn${paymentMethod === m.id ? " active" : ""}`}
-                  onClick={() => setPaymentMethod(m.id)}
-                  disabled={loading}
-                >
-                  {m.label}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* UPI ID INPUT */}
-          {paymentMethod === "upi_manual" && (
-            <input
-              type="text"
-              placeholder="Enter UPI ID (e.g., user@okhdfcbank)"
-              value={upiId}
-              onChange={(e) => setUpiId(e.target.value)}
-              disabled={loading}
-              className="co-upi-input"
-            />
-          )}
-
-          {/* PAYMENT BUTTON */}
-          <button
-            className="btn btn-primary co-pay-btn"
-            onClick={handlePayment}
-            disabled={loading || !razorpayLoaded}
-          >
-            {loading ? "Processing..." : `Pay ₹${price}`}
+      <Helmet>
+        <title>Checkout - ARC LABS</title>
+        <meta name="robots" content="noindex, nofollow" />
+      </Helmet>
+      <div className="co-page">
+        <div className="co-card">
+          <button type="button" className="co-back-btn" onClick={() => setConfirmBack(true)}>
+            Back
           </button>
 
-          <p className="co-note">Your payment information is secure and encrypted</p>
+          <div className="co-left">
+            <img src={product?.image} alt={product?.name} className="co-product-img" />
+            <h2>{product?.name || "ARC LABS Kit"}</h2>
+            <div className="co-price">Rs. {Number(price || 0).toLocaleString("en-IN")}</div>
+          </div>
+
+          <form className="co-right" ref={formRef} onSubmit={(e) => e.preventDefault()}>
+            <h3>Enter Your Details</h3>
+
+            <input type="text" placeholder="Full Name *" value={form.name} onChange={(e) => updateField("name", e.target.value)} disabled={loading} required />
+            <input type="email" placeholder="Email Address *" value={form.email} onChange={(e) => updateField("email", e.target.value)} disabled={loading} required />
+            <input type="tel" placeholder="Phone Number *" value={form.phone} onChange={(e) => updateField("phone", e.target.value)} disabled={loading} required pattern="[0-9]{10}" />
+
+            <h4 className="co-section-heading">Shipping / Delivery Address</h4>
+
+            <select value={form.country} onChange={(e) => updateField("country", e.target.value)} disabled={loading} required className="co-select">
+              <option value="India">India</option>
+              <option value="United States">United States</option>
+              <option value="United Kingdom">United Kingdom</option>
+              <option value="United Arab Emirates">United Arab Emirates</option>
+              <option value="Singapore">Singapore</option>
+              <option value="Australia">Australia</option>
+              <option value="Canada">Canada</option>
+              <option value="Other">Other</option>
+            </select>
+
+            <input type="text" placeholder="Street Address (House No., Street, Area) *" value={form.address} onChange={(e) => updateField("address", e.target.value)} disabled={loading} required />
+            <input type="text" placeholder="City *" value={form.city} onChange={(e) => updateField("city", e.target.value)} disabled={loading} required />
+            <input type="text" placeholder="State / Region *" value={form.region} onChange={(e) => updateField("region", e.target.value)} disabled={loading} required />
+            <input type="text" placeholder="ZIP / Postal Code *" value={form.zip} onChange={(e) => updateField("zip", e.target.value)} disabled={loading} required />
+
+            <button className="btn btn-primary co-pay-btn" type="button" onClick={handlePayment} disabled={loading || !razorpayLoaded}>
+              {loading ? "Processing..." : "Make Payment"}
+            </button>
+
+            <p className="co-note">Your payment information is secure and encrypted</p>
+          </form>
         </div>
       </div>
-    </div>
+
+      {notice && (
+        <CheckoutDialog
+          type={notice.type}
+          title={notice.title}
+          message={notice.message}
+          onClose={() => setNotice(null)}
+        />
+      )}
+
+      {confirmBack && (
+        <CheckoutDialog
+          type="info"
+          title="Leave checkout?"
+          message="Your kit is almost ready to order. Going back will keep you in control, but this checkout will close."
+          onClose={() => setConfirmBack(false)}
+        >
+          <button type="button" className="btn btn-secondary" onClick={() => setConfirmBack(false)}>
+            No
+          </button>
+          <button type="button" className="btn btn-primary" onClick={() => navigate(-1)}>
+            Yes
+          </button>
+        </CheckoutDialog>
+      )}
+
+      {receipt && <ReceiptDialog receipt={receipt} onClose={() => setReceipt(null)} />}
     </>
   );
 }

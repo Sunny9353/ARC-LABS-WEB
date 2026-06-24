@@ -1,10 +1,12 @@
 import { Fragment, useState, useEffect, useRef } from "react";
+import { createPortal } from "react-dom";
 import { jsPDF } from "jspdf";
 import { collection, addDoc } from "firebase/firestore";
 import { db } from "../firebase";
 import { Helmet } from "react-helmet-async";
 import RobotPreviewFrame from "../components/RobotPreviewFrame";
 import { buildInternshipTechnologies, INTERNSHIP_DURATIONS } from "../data/internshipCurriculum.js";
+import { useBodyScrollLock, validateRequiredFields } from "../utils/ui";
 /* ─── Page-scoped styles (no global overrides) ─── */
 export const pageStyles = `
   /* Hero */
@@ -23,9 +25,9 @@ export const pageStyles = `
   .prog-hero-panel {
     width: min(1580px, 100%);
     display: grid;
-    grid-template-columns: minmax(380px, 0.86fr) minmax(520px, 1.14fr);
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     align-items: center;
-    gap: clamp(2rem, 6vw, 7rem);
+    gap: clamp(2rem, 4vw, 5rem);
     padding: 0;
     border: 0;
     border-radius: 0;
@@ -55,8 +57,8 @@ export const pageStyles = `
     position: relative;
     z-index: 0;
     width: 100%;
-    min-height: clamp(500px, 62vh, 720px);
-    aspect-ratio: 1.22;
+    min-height: clamp(440px, 58vh, 640px);
+    aspect-ratio: 1;
     border-radius: 0;
     border: 0;
     background: transparent;
@@ -79,7 +81,7 @@ export const pageStyles = `
     border: 0;
     display: block;
     background: transparent;
-    transform: scale(1.24);
+    transform: scale(1);
     transform-origin: center center;
   }
   .prog-robot-status,
@@ -284,10 +286,8 @@ export const pageStyles = `
     margin: 2.1rem auto 2rem;
     border: 1px solid rgba(0,220,130,0.22);
     border-radius: 999px;
-    background:
-      linear-gradient(135deg, rgba(0,220,130,0.11), rgba(255,255,255,0.035)),
-      rgba(9,9,11,0.54);
-    box-shadow: 0 20px 55px rgba(0,0,0,0.26), inset 0 1px 0 rgba(255,255,255,0.06);
+    background: var(--surface);
+    box-shadow: none;
   }
   .track-mode-btn {
     border: 0;
@@ -306,14 +306,14 @@ export const pageStyles = `
     transform: translateY(-1px);
   }
   .track-mode-btn.active {
-    background: linear-gradient(135deg, var(--accent), #22d3ee);
+    background: var(--accent);
     color: #09090b;
-    box-shadow: 0 16px 38px rgba(0,220,130,0.24);
+    box-shadow: none;
   }
   .level-filter-btn {
     --level-color: var(--accent);
-    border: 1px solid color-mix(in srgb, var(--level-color) 34%, var(--border));
-    background: color-mix(in srgb, var(--level-color) 8%, var(--surface));
+    border: 1px solid var(--border-2);
+    background: var(--surface);
     color: var(--text-2);
     border-radius: 999px;
     padding: 0.75rem 1.1rem;
@@ -326,14 +326,14 @@ export const pageStyles = `
     transition: transform .25s cubic-bezier(.25,1,.5,1), background .25s, color .25s, border-color .25s;
   }
   .level-filter-btn:hover {
-    transform: translateY(-2px);
+    transform: translateY(-1px);
     color: var(--text);
   }
   .level-filter-btn.active {
     background: var(--level-color);
     border-color: var(--level-color);
     color: #09090b;
-    box-shadow: 0 16px 42px color-mix(in srgb, var(--level-color) 24%, transparent);
+    box-shadow: none;
   }
 
   /* Tech grid */
@@ -740,13 +740,14 @@ export const pageStyles = `
   .modal-overlay {
     position: fixed;
     inset: 0;
-    z-index: 500;
+    z-index: 1100;
     background: rgba(9,9,11,0.88);
     backdrop-filter: blur(12px);
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
-    padding: 1.5rem;
+    padding: calc(var(--nav-h) + 18px) 5vw 28px;
+    overflow: hidden;
     animation: pgFadeIn 0.2s ease;
   }
   @keyframes pgFadeIn { from{opacity:0} to{opacity:1} }
@@ -756,8 +757,9 @@ export const pageStyles = `
     border-radius: var(--radius-xl);
     width: 100%;
     max-width: 520px;
-    max-height: 90vh;
+    max-height: calc(100svh - var(--nav-h) - 46px);
     overflow-y: auto;
+    margin-top: clamp(0px, calc(var(--modal-anchor-y, 120px) - var(--nav-h) - 18px), 26px);
     animation: pgScaleIn 0.3s cubic-bezier(0.34,1.56,0.64,1);
     position: relative;
   }
@@ -3513,7 +3515,8 @@ const sendLeadEmail = (_lead) => {
 };
 
 // ─── LEAD MODAL ───────────────────────────────────────────────────────────────
-function LeadModal({ tech, duration, onClose }) {
+function LeadModal({ tech, duration, anchorY, onClose }) {
+  useBodyScrollLock(true);
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -3532,6 +3535,7 @@ function LeadModal({ tech, duration, onClose }) {
 
   const submit = async (e) => {
     e.preventDefault();
+    if (!validateRequiredFields(e.currentTarget)) return;
     setLoading(true);
     setError("");
 
@@ -3565,9 +3569,10 @@ function LeadModal({ tech, duration, onClose }) {
     }
   };
 
-  return (
+  const modal = (
     <div
       className="modal-overlay"
+      style={{ "--modal-anchor-y": `${Math.round(anchorY || 120)}px` }}
       onClick={(e) => e.target === e.currentTarget && onClose()}
     >
       <div className="modal">
@@ -3715,12 +3720,15 @@ function LeadModal({ tech, duration, onClose }) {
       </div>
     </div>
   );
+
+  return typeof document === "undefined" ? modal : createPortal(modal, document.body);
 }
 
 // ─── DETAIL PANEL ─────────────────────────────────────────────────────────────
 export function DetailPanel({ tech, onClose, durationOptions = DURATION_OPTIONS }) {
   const [activeDur, setActiveDur] = useState(durationOptions[0].days);
   const [showLead, setShowLead] = useState(false);
+  const [leadAnchorY, setLeadAnchorY] = useState(120);
   const panelRef = useRef(null);
 
   useEffect(() => {
@@ -3835,7 +3843,10 @@ export function DetailPanel({ tech, onClose, durationOptions = DURATION_OPTIONS 
             </button>
             <button
               className="btn btn-primary"
-              onClick={() => setShowLead(true)}
+              onClick={(event) => {
+                setLeadAnchorY(event.currentTarget.getBoundingClientRect().top);
+                setShowLead(true);
+              }}
             >
               Download Curriculum
             </button>
@@ -3847,6 +3858,7 @@ export function DetailPanel({ tech, onClose, durationOptions = DURATION_OPTIONS 
         <LeadModal
           tech={tech}
           duration={activeDur}
+          anchorY={leadAnchorY}
           onClose={() => setShowLead(false)}
         />
       )}
@@ -3856,6 +3868,7 @@ export function DetailPanel({ tech, onClose, durationOptions = DURATION_OPTIONS 
 
 // ─── MAIN PAGE ────────────────────────────────────────────────────────────────
 export const PROGRAM_LEVELS = [
+  { id: "ALL", label: "All", color: "#00DC82" },
   { id: "FOUNDATIONAL", label: "Foundational", color: "#00DC82" },
   { id: "INTERMEDIATE", label: "Intermediate", color: "#22D3EE" },
   { id: "ADVANCED", label: "Advanced", color: "#3B82F6" },
@@ -3872,12 +3885,14 @@ const INTERNSHIP_TECHNOLOGIES = buildInternshipTechnologies(TECHNOLOGIES).filter
 export default function ProgramsPage() {
 
   const [activeTech, setActiveTech] = useState(null);
-  const [activeLevel, setActiveLevel] = useState("FOUNDATIONAL");
+  const [activeLevel, setActiveLevel] = useState("ALL");
   const [trackMode, setTrackMode] = useState("programs");
   const isInternshipMode = trackMode === "internships";
   const visibleTechnologies = isInternshipMode
     ? INTERNSHIP_TECHNOLOGIES
-    : TECHNOLOGIES.filter((tech) => tech.level === activeLevel);
+    : activeLevel === "ALL"
+      ? TECHNOLOGIES
+      : TECHNOLOGIES.filter((tech) => tech.level === activeLevel);
   const durationOptions = isInternshipMode ? INTERNSHIP_DURATIONS : DURATION_OPTIONS;
   const sectionCopy = isInternshipMode
     ? {
@@ -4026,14 +4041,6 @@ export default function ProgramsPage() {
                 >
                   {tech.iconLabel}
                 </div>
-                {!isInternshipMode && (
-                  <span
-                    className="tc-level"
-                    style={{ background: levelMeta.color, color: "#09090b" }}
-                  >
-                    {tech.level}
-                  </span>
-                )}
               </div>
               <h3>
                 {tech.abbr} — {tech.name}

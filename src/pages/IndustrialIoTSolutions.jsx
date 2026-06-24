@@ -3,6 +3,7 @@ import { Helmet } from "react-helmet-async";
 import { motion, AnimatePresence } from "framer-motion";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useBodyScrollLock } from "../utils/ui";
 import {
   Cpu,
   Database,
@@ -192,6 +193,14 @@ function SectorCardViz({ title, accent, points = [] }) {
 }
 
 const factoryFeatureStyles = `
+@keyframes iiotDashboardBackdrop {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes iiotDashboardPanel {
+  from { opacity: 0; transform: translateY(18px) scale(.96); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
 .factory-feature-card {
   position: relative;
   overflow: hidden;
@@ -1569,6 +1578,7 @@ function SectorDashboardBody({ project, channels, values, history, logs }) {
 }
 
 function LiveProjectDashboard({ project, onClose }) {
+  useBodyScrollLock(true);
   // Per-project telemetry channel definitions â€” each project shows
   // realistic-looking variables for the tech stack it represents.
   const PROJECT_TELEMETRY = {
@@ -1701,12 +1711,13 @@ function LiveProjectDashboard({ project, onClose }) {
 
   return (
     <div
-      className="fixed inset-0 z-[9999] flex items-start justify-center px-4 pb-6 pt-28 bg-black/80 backdrop-blur-md"
+      className="fixed inset-0 z-[9999] flex items-center justify-center px-4 bg-black/80 backdrop-blur-md"
+      style={{ animation: "iiotDashboardBackdrop .22s ease both", paddingTop: "calc(var(--nav-h) + 24px)", paddingBottom: 24 }}
       onClick={onClose}
     >
       <div
-        className="w-full max-w-5xl max-h-[calc(100vh-8.5rem)] overflow-y-auto bg-[#0a0a0e] border rounded-2xl shadow-2xl relative"
-        style={{ borderColor: sectorStyle.border, boxShadow: `0 24px 80px ${sectorStyle.dim}` }}
+        className="w-full max-w-5xl overflow-y-auto bg-[#0a0a0e] border rounded-2xl shadow-2xl relative"
+        style={{ maxHeight: "calc(100svh - var(--nav-h) - 48px)", borderColor: sectorStyle.border, boxShadow: `0 24px 80px ${sectorStyle.dim}`, animation: "iiotDashboardPanel .3s cubic-bezier(.2,.8,.2,1) both" }}
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
@@ -3201,6 +3212,7 @@ export default function IndustrialIoTSolutions() {
           {selectedProject && (
             <motion.div
               key="live-dashboard-modal"
+              className="fixed inset-0 z-[9999]"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}

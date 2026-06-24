@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { addDoc, collection } from "firebase/firestore";
 import { db } from "../firebase";
 import { Helmet } from "react-helmet-async";
+import { useBodyScrollLock, validateRequiredFields } from "../utils/ui";
 
 /* ═══════════════════════════════════════════════════════════════════
    SCOPED STYLES — uses global design tokens from global.css
@@ -332,12 +333,22 @@ const pageStyles = `
 .lp-faq-toggle {
   width: 26px; height: 26px; border-radius: 6px; flex-shrink: 0;
   background: var(--surface-3); display: flex; align-items: center; justify-content: center;
-  font-size: .75rem; color: var(--text-3); transition: all .2s;
+  font-size: .75rem; color: var(--text-3);
+  transition: transform .28s cubic-bezier(.2,.8,.2,1), background .2s, color .2s;
 }
-.lp-faq-item.open .lp-faq-toggle { background: var(--tag-bg); color: var(--accent); }
+.lp-faq-item.open .lp-faq-toggle { background: var(--tag-bg); color: var(--accent); transform: rotate(135deg); }
 .lp-faq-a {
-  padding: 0 20px 18px; font-size: .83rem; color: var(--text-3); line-height: 1.7;
-  border-top: 1px solid var(--border-1); animation: lpFadeIn .25s ease;
+  max-height: 0; overflow: hidden; padding: 0 20px;
+  font-size: .83rem; color: var(--text-3); line-height: 1.7;
+  border-top: 1px solid transparent;
+  opacity: 0;
+  transition: max-height .34s cubic-bezier(.2,.8,.2,1), opacity .22s ease, padding .28s ease, border-color .28s ease;
+}
+.lp-faq-item.open .lp-faq-a {
+  max-height: 260px;
+  opacity: 1;
+  padding: 0 20px 18px;
+  border-top-color: var(--border-1);
 }
 @keyframes lpFadeIn { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: translateY(0); } }
 
@@ -362,15 +373,17 @@ const pageStyles = `
 
 /* Modal */
 .lp-modal-overlay {
-  position: fixed; inset: 0; z-index: 500;
+  position: fixed; inset: 0; z-index: 1100;
   background: rgba(9,9,11,.9); backdrop-filter: blur(16px);
-  display: flex; align-items: center; justify-content: center; padding: 1.5rem;
+  display: flex; align-items: center; justify-content: center;
+  padding: calc(var(--nav-h) + 18px) 1.5rem 28px;
+  overflow: hidden;
   animation: lpFadeIn .2s ease;
 }
 .lp-modal {
   background: var(--surface-3); border: 1px solid var(--border-2);
   border-radius: 22px; width: 100%; max-width: 560px;
-  max-height: 92vh; overflow-y: auto; position: relative;
+  max-height: calc(100svh - var(--nav-h) - 46px); overflow-y: auto; position: relative;
   animation: lpModalIn .32s cubic-bezier(.34,1.56,.64,1);
 }
 @keyframes lpModalIn { from{opacity:0;transform:scale(.91)} to{opacity:1;transform:scale(1)} }
@@ -672,6 +685,7 @@ function ROICalculator({ onOpenModal }) {
    LEAD MODAL
 ═══════════════════════════════════════════════════════════════════ */
 function LeadModal({ pkg, audience, onClose }) {
+  useBodyScrollLock(true);
   const [form, setForm] = useState({ name: "", phone: "", email: "", inst: "", role: "", city: "", state: "", students: "", timeline: "", note: "" });
   const [loading, setLoading] = useState(false);
   const [done, setDone] = useState(false);
@@ -679,6 +693,7 @@ function LeadModal({ pkg, audience, onClose }) {
 const submit = async (e) => {
 
   e.preventDefault();
+  if (!validateRequiredFields(e.currentTarget)) return;
 
   setLoading(true);
 
@@ -735,7 +750,7 @@ const submit = async (e) => {
       err
     );
 
-    alert(err.message);
+    console.log(err.message);
 
     setLoading(false);
   }
@@ -1040,7 +1055,7 @@ export default function LabPackagesPage() {
                 <span>{faq.q}</span>
                 <span className="lp-faq-toggle">{openFaq === i ? "−" : "+"}</span>
               </div>
-              {openFaq === i && <div className="lp-faq-a">{faq.a}</div>}
+              <div className="lp-faq-a">{faq.a}</div>
             </div>
           ))}
         </div>

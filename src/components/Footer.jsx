@@ -62,7 +62,10 @@ export default function Footer() {
             India's practical AI, IoT & Robotics lab system for schools and
             colleges. Designed, built & delivered from Hyderabad.
           </p>
-          <div className="footer-msme">MSME Registered &middot; Made in India</div>
+          <div className="footer-msme">
+            GST Number: 36INMPK2340J1ZP<br />
+            MSME Registered &middot; Made in India
+          </div>
         </div>
 
         {/* Link columns */}

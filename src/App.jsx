@@ -6,6 +6,7 @@ import "./styles/App.css";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import ArcLabsChatBot from "./components/ArcLabsChatBot";
+import { installRequiredFieldUX } from "./utils/ui";
 
 // Pages — lazy-loaded
 const Home = lazy(() => import("./pages/Home"));
@@ -130,6 +131,8 @@ function Layout({ children }) {
 }
 
 export default function App() {
+  useEffect(() => installRequiredFieldUX(), []);
+
   return (
     <HelmetProvider>
     <BrowserRouter>

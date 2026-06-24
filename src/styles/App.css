@@ -127,7 +127,7 @@
   position: fixed;
   right: 24px;
   bottom: 96px;
-  z-index: 90;
+  z-index: 1040;
   font-family: var(--font-body);
 }
 .home-intro-shell .arc-chatbot {
@@ -173,18 +173,26 @@ body.home-hero-ready .home-intro-shell .wa-float {
 }
 .arc-chat-panel {
   width: min(390px, calc(100vw - 32px));
-  max-height: min(680px, calc(100vh - 130px));
+  max-height: min(680px, calc(100svh - var(--nav-h) - 176px));
   margin-bottom: 14px;
   border-radius: 18px;
   background:
-    linear-gradient(180deg, rgba(7,13,28,0.96), rgba(5,9,18,0.98)),
-    url("https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=900&q=80");
+    linear-gradient(180deg, rgba(24,24,27,0.96), rgba(9,9,11,0.98));
   background-size: cover;
-  background-blend-mode: multiply;
-  border: 1px solid rgba(255,255,255,0.12);
+  border: 1px solid var(--border-2);
   box-shadow: 0 28px 90px rgba(0,0,0,0.55);
   overflow: hidden;
   backdrop-filter: blur(18px);
+  animation: arcChatPanelIn 0.34s cubic-bezier(.2,.8,.2,1) both;
+  transform-origin: right bottom;
+}
+:root[data-theme="light"] .arc-chat-panel {
+  background: rgba(255,255,255,0.96);
+  box-shadow: 0 24px 80px rgba(9,9,11,0.18);
+}
+@keyframes arcChatPanelIn {
+  from { opacity: 0; transform: translate3d(12px, 18px, 0) scale(.94); }
+  to { opacity: 1; transform: translate3d(0, 0, 0) scale(1); }
 }
 .arc-chat-header {
   display: flex;
@@ -192,7 +200,7 @@ body.home-hero-ready .home-intro-shell .wa-float {
   justify-content: space-between;
   gap: 1rem;
   padding: 18px 18px 14px;
-  border-bottom: 1px solid rgba(255,255,255,0.09);
+  border-bottom: 1px solid var(--border);
 }
 .arc-chat-kicker {
   color: var(--accent);
@@ -204,13 +212,13 @@ body.home-hero-ready .home-intro-shell .wa-float {
 }
 .arc-chat-header h2 {
   margin: 0;
-  color: #fff;
+  color: var(--text);
   font-family: var(--font-heading);
   font-size: 1.12rem;
   line-height: 1.15;
 }
 .arc-chat-close {
-  color: #d4d4d8;
+  color: var(--text-3);
   flex: 0 0 auto;
 }
 .arc-chat-body {
@@ -255,9 +263,9 @@ body.home-hero-ready .home-intro-shell .wa-float {
   white-space: pre-line;
   max-width: 100%;
   border-radius: 14px;
-  background: rgba(255,255,255,0.08);
-  border: 1px solid rgba(255,255,255,0.09);
-  color: #e5e7eb;
+  background: var(--surface-3);
+  border: 1px solid var(--border);
+  color: var(--text);
   padding: 11px 12px;
   font-size: 0.84rem;
   line-height: 1.62;
@@ -276,7 +284,7 @@ body.home-hero-ready .home-intro-shell .wa-float {
   border: 1px solid rgba(0,232,212,0.24);
   border-radius: 999px;
   background: rgba(0,232,212,0.1);
-  color: #dffdf8;
+  color: var(--accent);
   padding: 6px 9px;
   font-size: 0.69rem;
   line-height: 1;
@@ -286,12 +294,12 @@ body.home-hero-ready .home-intro-shell .wa-float {
 .arc-chat-answer-actions a:hover {
   background: rgba(0,232,212,0.18);
   border-color: rgba(0,232,212,0.42);
-  color: #fff;
+  color: var(--text);
 }
 .arc-chat-message--user .arc-chat-bubble {
   background: rgba(0,232,212,0.13);
   border-color: rgba(0,232,212,0.2);
-  color: #f8fafc;
+  color: var(--text);
 }
 .arc-chat-prompts {
   display: flex;
@@ -301,10 +309,10 @@ body.home-hero-ready .home-intro-shell .wa-float {
 }
 .arc-chat-prompts button {
   flex: 0 0 auto;
-  border: 1px solid rgba(255,255,255,0.11);
+  border: 1px solid var(--border);
   border-radius: 999px;
-  background: rgba(0,0,0,0.34);
-  color: #d4d4d8;
+  background: var(--surface-2);
+  color: var(--text-2);
   padding: 8px 11px;
   font-size: 0.72rem;
   display: inline-flex;
@@ -314,13 +322,13 @@ body.home-hero-ready .home-intro-shell .wa-float {
 }
 .arc-chat-prompts button:hover {
   background: rgba(0,232,212,0.12);
-  color: #fff;
+  color: var(--text);
   border-color: rgba(0,232,212,0.22);
 }
 .arc-chat-input-wrap {
   margin: 0 14px 14px;
-  background: rgba(0,0,0,0.46);
-  border: 1px solid rgba(255,255,255,0.13);
+  background: var(--surface);
+  border: 1px solid var(--border-2);
   border-radius: 14px;
   overflow: hidden;
 }
@@ -329,7 +337,7 @@ body.home-hero-ready .home-intro-shell .wa-float {
   border: 0;
   border-radius: 0;
   background: transparent;
-  color: #fff;
+  color: var(--text);
   resize: none;
   padding: 12px 14px 8px;
   box-shadow: none;
@@ -364,7 +372,7 @@ body.home-hero-ready .home-intro-shell .wa-float {
   }
   .arc-chat-panel {
     width: 100%;
-    max-height: calc(100vh - 120px);
+    max-height: calc(100svh - var(--nav-h) - 154px);
   }
   .arc-chat-body {
     height: min(320px, calc(100vh - 390px));

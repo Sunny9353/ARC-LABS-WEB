@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
-import { SplineSceneBasic } from "../components/SplineSceneBasic";
+import { SplineSceneBasic, SplineSceneBasicFallback } from "../components/SplineSceneBasic";
 import { SplineScene } from "../components/ui/splite";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { EffectCoverflow, Autoplay } from "swiper/modules";
@@ -152,18 +152,43 @@ const HOME_HERO_IMAGES = [
 
 function Hero() {
   const [splineLoaded, setSplineLoaded] = useState(false);
-  const [heroReady, setHeroReady] = useState(false);
+  const [renderHeroScene, setRenderHeroScene] = useState(() => {
+    if (typeof window === "undefined") return false;
+    const isCoarsePointer = window.matchMedia("(pointer: coarse)").matches;
+    const saveData = navigator.connection?.saveData;
+    return !isCoarsePointer && !saveData;
+  });
+  const [shouldPlayIntro] = useState(() => {
+    if (typeof window === "undefined") return true;
+    const navEntry = performance.getEntriesByType?.("navigation")?.[0];
+    const isReload = navEntry?.type === "reload";
+    const hasSeenIntro = sessionStorage.getItem("arcHomeIntroSeen") === "true";
+    return isReload || !hasSeenIntro;
+  });
+  const [heroReady, setHeroReady] = useState(!shouldPlayIntro);
   const handleSplineReady = () => setSplineLoaded(true);
 
   useEffect(() => {
-    if (!splineLoaded) return undefined;
+    if (renderHeroScene) return undefined;
+    if (navigator.connection?.saveData) {
+      setSplineLoaded(true);
+      return undefined;
+    }
+
+    const timer = window.setTimeout(() => setRenderHeroScene(true), 900);
+    return () => window.clearTimeout(timer);
+  }, [renderHeroScene]);
+
+  useEffect(() => {
+    if (!shouldPlayIntro) return undefined;
 
     const revealTimer = window.setTimeout(() => {
       setHeroReady(true);
-    }, 4000);
+      sessionStorage.setItem("arcHomeIntroSeen", "true");
+    }, splineLoaded ? 1200 : 1800);
 
     return () => window.clearTimeout(revealTimer);
-  }, [splineLoaded]);
+  }, [splineLoaded, shouldPlayIntro]);
 
   useEffect(() => {
     document.body.classList.toggle("home-hero-loading", !heroReady);
@@ -210,16 +235,6 @@ function Hero() {
 
         {/* LEFT */}
         <div className="hero-left">
-          <div className="hero-badge hero-gst-badge">
-            <span className="hero-badge-dot" />
-            GST Number: 36INMPK2340J1ZP
-          </div>
-
-          <div className="hero-badge">
-            <span className="hero-badge-dot" />
-            MSME Registered &middot; Made in India &middot; Hyderabad
-          </div>
-
           <p className="hero-sub">
             Full lab infrastructure — hardware, curriculum, teacher training, and annual support.
             Designed in Hyderabad. Delivered across India. One partner, zero complexity.
@@ -233,12 +248,16 @@ function Hero() {
         </div>
 
         <div className="hero-lab-preview" aria-hidden="true">
-          <SplineScene
-            scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
-            className="hero-lab-scene"
-            onLoad={handleSplineReady}
-            onError={handleSplineReady}
-          />
+          {renderHeroScene ? (
+            <SplineScene
+              scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
+              className="hero-lab-scene"
+              onLoad={handleSplineReady}
+              onError={handleSplineReady}
+            />
+          ) : (
+            <div className="hero-lab-scene hero-lab-scene-fallback" />
+          )}
         </div>
 
         <div className="hero-image-gallery">
@@ -884,6 +903,43 @@ function HomeFAQ() {
   );
 }
 
+function LazyLabPreview() {
+  const shellRef = useRef(null);
+  const [shouldRender, setShouldRender] = useState(false);
+
+  useEffect(() => {
+    const shell = shellRef.current;
+    if (!shell) return undefined;
+
+    if (!("IntersectionObserver" in window)) {
+      setShouldRender(true);
+      return undefined;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return;
+        setShouldRender(true);
+        observer.disconnect();
+      },
+      { rootMargin: "480px 0px" }
+    );
+
+    observer.observe(shell);
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <section
+      ref={shellRef}
+      className="section spline-showcase-section"
+      aria-label="Interactive 3D STEM lab preview"
+    >
+      {shouldRender ? <SplineSceneBasic /> : <SplineSceneBasicFallback />}
+    </section>
+  );
+}
+
 /* ─── CTA ──────────────────────────────────────────────── */
 function CTASection() {
   return (
@@ -896,7 +952,7 @@ function CTASection() {
         <a href="https://wa.me/917815809412" className="btn btn-secondary" target="_blank" rel="noreferrer">WhatsApp</a>
       </div>
       <p className="cta-address">
-        Plot No : 1EP, Brindavan Meadows, Sahebnagar Kalan, Hyderabad &ndash; 501510 &middot; GST &amp; MSME Registered
+        Plot No : 1EP, Brindavan Meadows, Sahebnagar Kalan, Hyderabad &ndash; 501510
       </p>
     </div>
   );
@@ -936,9 +992,7 @@ export default function Home() {
       </Helmet>
       <Hero />
       <AIReadyIntro />
-      <section className="section spline-showcase-section" aria-label="Interactive 3D STEM lab preview">
-        <SplineSceneBasic />
-      </section>
+      <LazyLabPreview />
       <TrustBar />
       <Services />
       <StatsBand />

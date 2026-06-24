@@ -20,6 +20,26 @@
   max-width: 900px;
   width: 100%;
   backdrop-filter: blur(12px);
+  position: relative;
+}
+
+.co-back-btn {
+  position: absolute;
+  top: 18px;
+  left: 18px;
+  border: 1px solid var(--border-2);
+  background: var(--surface-2);
+  color: var(--text-2);
+  border-radius: 8px;
+  padding: 7px 13px;
+  font-family: var(--font-body);
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.co-back-btn:hover {
+  color: var(--text);
+  border-color: var(--accent);
 }
 
 /* LEFT SIDE — Product */
@@ -80,7 +100,8 @@
   letter-spacing: -0.02em;
 }
 
-.co-right input {
+.co-right input,
+.co-select {
   margin-bottom: 12px;
   padding: 11px 13px;
   border-radius: 8px;
@@ -91,9 +112,11 @@
   font-size: 0.87rem;
   outline: none;
   transition: border-color 0.2s;
+  width: 100%;
 }
 
-.co-right input:focus {
+.co-right input:focus,
+.co-select:focus {
   border-color: var(--accent);
   box-shadow: 0 0 0 3px rgba(0, 212, 170, 0.07);
 }
@@ -106,58 +129,11 @@
   opacity: 0.5;
 }
 
-/* Payment methods */
-.co-methods-section {
-  margin-top: 8px;
-  margin-bottom: 15px;
-}
-
-.co-methods-label {
-  display: block;
-  margin-bottom: 12px;
-  font-weight: 600;
-  font-size: 0.85rem;
-  color: var(--text-3);
-}
-
-.co-method-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
-  gap: 10px;
-}
-
-.co-method-btn {
-  padding: 12px 8px;
-  border: 1px solid var(--border-2);
-  border-radius: 8px;
-  background: var(--surface-2);
-  cursor: pointer;
-  font-weight: 500;
-  font-size: 0.8rem;
-  font-family: var(--font-body);
-  color: var(--text-4);
-  transition: all 0.2s;
-}
-
-.co-method-btn:hover {
-  border-color: rgba(255, 255, 255, 0.18);
-  color: var(--text-3);
-}
-
-.co-method-btn.active {
-  border-color: var(--accent);
-  background: rgba(0, 212, 170, 0.08);
-  color: var(--accent);
+.co-section-heading {
+  margin-top: 1rem;
+  margin-bottom: 0.4rem;
+  font-size: 0.95rem;
   font-weight: 700;
-}
-
-.co-method-btn:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-.co-upi-input {
-  margin-bottom: 15px;
 }
 
 /* Pay button */
@@ -181,6 +157,111 @@
   margin-top: 10px;
   text-align: center;
 }
+
+.co-dialog-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: calc(var(--nav-h) + 20px) 24px 28px;
+  background: rgba(9, 9, 11, 0.72);
+  backdrop-filter: blur(14px);
+  animation: coFadeIn 0.2s ease;
+  overflow: hidden;
+}
+
+.co-dialog {
+  width: min(440px, 100%);
+  max-height: calc(100svh - var(--nav-h) - 48px);
+  overflow-y: auto;
+  background: var(--surface);
+  border: 1px solid var(--border-2);
+  border-radius: 16px;
+  padding: 30px;
+  text-align: center;
+  box-shadow: 0 30px 90px rgba(0,0,0,.44);
+  animation: coPopIn 0.28s cubic-bezier(.2,.8,.2,1);
+}
+
+.co-dialog-icon {
+  width: 60px;
+  height: 60px;
+  margin: 0 auto 16px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-family: var(--font-heading);
+  font-weight: 900;
+  background: var(--accent-dim);
+  color: var(--accent);
+  border: 1px solid rgba(0,220,130,.38);
+}
+
+.co-dialog-danger .co-dialog-icon {
+  background: rgba(239, 68, 68, .12);
+  border-color: rgba(239, 68, 68, .4);
+  color: #ef4444;
+}
+
+.co-dialog h3 {
+  font-size: 1.3rem;
+  margin-bottom: 8px;
+}
+
+.co-dialog p {
+  color: var(--text-3);
+  font-size: .9rem;
+  line-height: 1.65;
+}
+
+.co-dialog-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 20px;
+}
+
+.co-receipt {
+  margin: 20px 0 4px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  text-align: left;
+}
+
+.co-receipt-top {
+  padding: 16px;
+  background: var(--accent);
+  color: #09090b;
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  font-weight: 800;
+}
+
+.co-receipt-row {
+  display: grid;
+  grid-template-columns: 90px 1fr;
+  gap: 12px;
+  padding: 12px 16px;
+  border-top: 1px solid var(--border);
+  font-size: .78rem;
+}
+
+.co-receipt-row span {
+  color: var(--text-3);
+}
+
+.co-receipt-row strong {
+  color: var(--text);
+  font-weight: 700;
+}
+
+@keyframes coFadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes coPopIn { from { opacity: 0; transform: translateY(14px) scale(.94); } to { opacity: 1; transform: none; } }
 
 /* MOBILE RESPONSIVE */
 @media (max-width: 768px) {

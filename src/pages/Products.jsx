@@ -1,7 +1,9 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useRef } from "react";
+import { createPortal } from "react-dom";
 import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { DottedSurface } from "../components/ui/dotted-surface";
+import { useBodyScrollLock } from "../utils/ui";
 
 /* ─── SCOPED STYLES ────────────────────────────────────────────────── */
 const pageStyles = `
@@ -24,7 +26,7 @@ const pageStyles = `
 /* Product grid */
 .products-wrap{padding:0 5vw 80px;position:relative;z-index:1}
 .pg-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:1.4rem;align-items:stretch}
-.pg-grid.focus-mode{display:none}
+.pg-grid.focus-mode{display:grid}
 .pg-grid.focus-mode .pcard:not(.selected){display:none}
 
 /* Product card */
@@ -62,8 +64,10 @@ const pageStyles = `
 .pc-btn-buy:hover{filter:brightness(1.1);transform:translateY(-1px)}
 
 /* Detail drawer */
-.detail-drawer{margin:2rem auto 0;background:var(--surface-2);border:1px solid var(--border-2);border-radius:var(--radius-xl);overflow:hidden;animation:ddIn .35s ease;grid-column:1/-1;width:min(100%,1080px);box-shadow:var(--shadow-lg);scroll-margin-top:calc(var(--nav-h) + 18px);transform-origin:top center}
-@keyframes ddIn{from{opacity:0;transform:translateY(-12px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}}
+.product-detail-overlay{position:fixed;inset:0;z-index:1100;background:rgba(9,9,11,.72);backdrop-filter:blur(14px);display:flex;align-items:flex-start;justify-content:center;padding:calc(var(--nav-h) + 24px) 5vw 28px;animation:productOverlayIn .22s ease;overflow:hidden}
+.detail-drawer{background:var(--surface-2);border:1px solid var(--border-2);border-radius:var(--radius-xl);overflow:hidden;animation:ddIn .42s cubic-bezier(.2,.8,.2,1);width:min(100%,1080px);max-height:calc(100svh - var(--nav-h) - 54px);overflow-y:auto;box-shadow:0 34px 110px rgba(0,0,0,.52);scroll-margin-top:calc(var(--nav-h) + 18px);transform-origin:center;margin-top:clamp(0px,calc(var(--product-anchor-y, 140px) - var(--nav-h) - 24px),22px)}
+@keyframes productOverlayIn{from{opacity:0}to{opacity:1}}
+@keyframes ddIn{from{opacity:0;transform:translateY(18px) scale(.94)}to{opacity:1;transform:translateY(0) scale(1)}}
 
 /* Kit assembly animation */
 .kit-stage{min-height:430px;padding:58px 36px 36px;border-bottom:1px solid var(--border);background:radial-gradient(circle at 50% 42%,rgba(var(--kit-glow),.18),transparent 43%),linear-gradient(180deg,rgba(255,255,255,.03),transparent);position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center}
@@ -206,7 +210,7 @@ const PRODUCTS = [
     name: "ARC LABS IoT Essential Kit",
     short: "IoT essential Kit",
     tagline: "Dual-controller trainer with Raspberry Pi Pico, ESP32, sensors, relays, and display modules.",
-    price: 12000,
+    price: 1,
     oldPrice: 15000,
     color: "var(--accent)",
     glow: "0,220,130",
@@ -607,13 +611,10 @@ function isCompareDash(value) {
   return value === "—" || value === "â€”";
 }
 
-function DetailDrawer({ product, onClose }) {
+function DetailDrawer({ product, anchorY, onClose }) {
+  useBodyScrollLock(true);
   const [tab, setTab] = useState("specs");
   const ref = useRef(null);
-
-  useEffect(() => {
-    setTimeout(() => ref.current?.scrollIntoView({ behavior: "smooth", block: "start" }), 80);
-  }, []);
 
   const TABS = [
     { id: "specs", label: "Specifications" },
@@ -622,7 +623,8 @@ function DetailDrawer({ product, onClose }) {
     { id: "compare", label: "Compare All" },
   ];
 
-  return (
+  const drawer = (
+    <div className="product-detail-overlay" style={{ "--product-anchor-y": `${Math.round(anchorY || 140)}px` }} onClick={onClose}>
     <div
       className="detail-drawer"
       data-open="true"
@@ -631,6 +633,7 @@ function DetailDrawer({ product, onClose }) {
         "--kit-color": product.color,
         "--kit-glow": product.glow,
       }}
+      onClick={(e) => e.stopPropagation()}
     >
       <div className="kit-stage">
         <div className="kit-caption">
@@ -818,7 +821,10 @@ if (row.cat) return <tr className="fct-cat" key={i}><td colSpan={5}>{row.label}<
         </div>
       </div>
     </div>
+    </div>
   );
+
+  return typeof document === "undefined" ? drawer : createPortal(drawer, document.body);
 }
 
 /* ─── PRODUCT CARD ───────────────────────────────────────────────── */
@@ -827,13 +833,13 @@ function ProductCard({ product, isSelected, onSelect }) {
     <div
       className={`pcard${isSelected ? " selected" : ""}`}
       style={{ "--pc-color": product.color }}
-      onClick={() => onSelect(product.id)}
+      onClick={(event) => onSelect(product.id, event)}
       role="button"
       tabIndex={0}
       onKeyDown={(e) => {
         if (e.key === "Enter" || e.key === " ") {
           e.preventDefault();
-          onSelect(product.id);
+          onSelect(product.id, e);
         }
       }}
     >
@@ -872,7 +878,7 @@ function ProductCard({ product, isSelected, onSelect }) {
           className="pc-btn-detail"
           onClick={(e) => {
             e.stopPropagation();
-            onSelect(product.id);
+            onSelect(product.id, e);
           }}
         >
           {isSelected ? "Hide Details" : "Full Specs"}
@@ -895,19 +901,16 @@ function ProductCard({ product, isSelected, onSelect }) {
 /* ─── MAIN PAGE ──────────────────────────────────────────────────── */
 export default function ProductsPage() {
   const [selected, setSelected] = useState(null);
+  const [detailAnchorY, setDetailAnchorY] = useState(140);
   const [filter, setFilter] = useState("all");
-  const filterKitMap = {
-    essential: "essential",
-    beginner: "lite",
-    flagship: "experience",
-    advanced: "pro",
+  const handleSelect = (id, event) => {
+    if (event?.currentTarget) setDetailAnchorY(event.currentTarget.getBoundingClientRect().top);
+    setSelected((prev) => (prev === id ? null : id));
   };
-
-  const handleSelect = (id) => setSelected((prev) => (prev === id ? null : id));
 
   const handleFilter = (id) => {
     setFilter(id);
-    setSelected(filterKitMap[id] || null);
+    setSelected(null);
   };
 
   const filtered = filter === "all" ? PRODUCTS
@@ -916,7 +919,7 @@ export default function ProductsPage() {
     : filter === "flagship" ? PRODUCTS.filter((p) => p.id === "experience")
     : PRODUCTS.filter((p) => p.id === "pro");
 
-  const selectedId = filterKitMap[filter] || selected;
+  const selectedId = selected;
   const selectedProduct = PRODUCTS.find((p) => p.id === selectedId);
 
   const FILTERS = [
@@ -963,7 +966,7 @@ export default function ProductsPage() {
           ))}
         </div>
         {selectedId && selectedProduct && (
-          <DetailDrawer key={selectedId} product={selectedProduct} onClose={() => setSelected(null)} />
+          <DetailDrawer key={selectedId} product={selectedProduct} anchorY={detailAnchorY} onClose={() => setSelected(null)} />
         )}
       </div>
 

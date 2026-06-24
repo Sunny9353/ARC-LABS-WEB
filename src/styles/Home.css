@@ -373,6 +373,14 @@
 .hero-image-gallery {
   display: none;
 }
+.hero-lab-scene-fallback {
+  width: 100%;
+  height: 100%;
+  min-height: 420px;
+  background:
+    radial-gradient(circle at 56% 44%, rgba(0,220,130,0.16), transparent 24%),
+    linear-gradient(135deg, var(--surface-2), var(--bg));
+}
 .homeHeroSwiper {
   width: 100%;
   height: 380px;
@@ -1510,6 +1518,7 @@
   overflow: hidden;
   margin-top: 2.25rem;
   padding: 14px 0 30px;
+  contain: paint;
 }
 
 .testimonial-marquee::before,
@@ -1545,8 +1554,12 @@
   display: flex;
   gap: 1.5rem;
   width: max-content;
-  animation: testimonialScroll 110s linear infinite;
+  animation: testimonialScroll 96s linear infinite;
   align-items: stretch;
+  will-change: transform;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  transform-style: preserve-3d;
 }
 
 .testimonial-marquee:hover .testimonial-track {
@@ -1555,30 +1568,29 @@
 
 @keyframes testimonialScroll {
   from {
-    transform: translateX(0);
+    transform: translate3d(0, 0, 0);
   }
   to {
-    transform: translateX(-50%);
+    transform: translate3d(-50%, 0, 0);
   }
 }
 
 .tcard {
-  width: 600px;
-  height: 320px;
+  width: min(560px, 82vw);
+  min-height: 300px;
   flex-shrink: 0;
+  contain: content;
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: 24px;
+  border-radius: 14px;
   padding: 30px;
-  transition: transform 0.32s cubic-bezier(0.25,1,0.5,1), border-color 0.32s ease, box-shadow 0.32s ease;
+  transition: border-color 0.24s ease;
   display: flex;
   flex-direction: column;
 }
 
 .tcard:hover {
-  transform: translateY(-8px);
   border-color: var(--accent);
-  box-shadow: 0 20px 40px rgba(0,220,130,0.15);
 }
 .tcard {
   background: var(--surface);
@@ -1631,6 +1643,13 @@
 }
 .tcard-author { font-weight: 600; font-size: 0.875rem; color: var(--text); margin-top: auto; }
 .tcard-role   { font-size: 0.8rem; color: var(--text-4); margin-top: 2px; }
+
+.robot-preview-placeholder {
+  min-height: 420px;
+  background:
+    radial-gradient(circle at 50% 42%, rgba(0,220,130,0.13), transparent 28%),
+    linear-gradient(135deg, var(--surface-2), var(--bg));
+}
 
 /* FAQ */
 .home-faq-section {

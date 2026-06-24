@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
+import { useBodyScrollLock, validateRequiredFields } from "../utils/ui";
 
 /* ═══════════════════════════════════════════════════════════════════
    CSR PARTNERS PAGE — Premium dark tech design system
@@ -11,7 +12,7 @@ const pageStyles = `
 /* ── CSR Hero ─────────────────────────────────────── */
 .csr-hero{
   min-height:92vh;display:grid;
-  grid-template-columns:minmax(0,1.55fr) minmax(390px,.75fr);
+  grid-template-columns:minmax(0,1.05fr) minmax(460px,.95fr);
   position:relative;overflow:hidden;
 }
 @media(max-width:1100px){.csr-hero{grid-template-columns:minmax(0,1.25fr) minmax(360px,.9fr)}}
@@ -23,6 +24,7 @@ const pageStyles = `
   display:flex;flex-direction:column;justify-content:center;
   position:relative;z-index:1;
   border-right:1px solid var(--border-1);
+  background:var(--surface);
 }
 @media(max-width:900px){.csr-hero-left{padding:100px 5vw 60px;border-right:none;border-bottom:1px solid var(--border-1)}}
 @media(max-width:640px){.csr-hero-left{padding:84px 6vw 52px}}
@@ -30,7 +32,7 @@ const pageStyles = `
 .csr-hero-left h1{
   font-family:var(--font-heading);font-weight:800;
   max-width:980px;
-  font-size:clamp(3rem,4.7vw,4.65rem);
+  font-size:clamp(2.75rem,4.15vw,4.2rem);
   line-height:1.03;letter-spacing:-.032em;margin-bottom:1.5rem;
   color:var(--text-1);
   text-wrap:balance;
@@ -49,7 +51,7 @@ const pageStyles = `
   display:block;
 }
 .csr-deck{
-  font-size:1.05rem;color:var(--text-3);
+  font-size:1rem;color:var(--text-3);
   max-width:420px;line-height:1.8;margin-bottom:2rem;
   text-wrap:pretty;
 }
@@ -72,7 +74,7 @@ const pageStyles = `
 .csr-hero-right{
   min-width:0;
   display:flex;flex-direction:column;justify-content:center;
-  padding:80px 5vw 80px clamp(40px,4vw,72px);
+  padding:80px 5vw 80px clamp(32px,4vw,68px);
   background:var(--surface);position:relative;
 }
 @media(max-width:900px){.csr-hero-right{padding:56px 5vw 64px}}
@@ -83,19 +85,23 @@ const pageStyles = `
   pointer-events:none;
 }
 .csr-iw-label{
-  font-family:var(--font-mono);font-size:.6rem;
+  font-family:var(--font-body);font-size:.7rem;font-weight:600;
   color:var(--accent);letter-spacing:.14em;text-transform:uppercase;
   margin-bottom:1.5rem;opacity:.7;
   width:100%;
-  max-width:430px;
+  max-width:560px;
   align-self:center;
+  display:flex;align-items:center;gap:8px;
+}
+.csr-iw-label::before{
+  content:'';width:12px;height:1px;background:var(--accent);
 }
 .csr-iw{
   display:grid;grid-template-columns:1fr 1fr;
   gap:1px;background:var(--border-1);border:1px solid var(--border-1);
   border-radius:16px;overflow:hidden;
   width:100%;
-  max-width:430px;
+  max-width:560px;
   align-self:center;
 }
 @media(max-width:900px){.csr-iw{max-width:100%}}
@@ -147,10 +153,12 @@ const pageStyles = `
 
 /* ── Why CSR Grid ────────────────────────────────── */
 .csr-why-grid{
-  display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
+  display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
   gap:1px;margin-top:3rem;
   background:var(--border-1);border:1px solid var(--border-1);border-radius:16px;overflow:hidden;
 }
+@media(max-width:980px){.csr-why-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:640px){.csr-why-grid{grid-template-columns:1fr}}
 .csr-why-card{
   background:var(--surface-2);padding:30px 28px;
   position:relative;overflow:hidden;transition:background .25s;
@@ -259,9 +267,11 @@ const pageStyles = `
 
 /* ── Sector Targeting ────────────────────────────── */
 .csr-sectors-grid{
-  display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
+  display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
   gap:1rem;margin-top:2.8rem;
 }
+@media(max-width:980px){.csr-sectors-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:640px){.csr-sectors-grid{grid-template-columns:1fr}}
 .csr-sector-card{
   background:var(--surface-2);border:1px solid var(--border-1);border-radius:14px;
   padding:22px 20px;cursor:pointer;transition:all .28s;
@@ -542,15 +552,16 @@ const pageStyles = `
 
 /* ── Modal ───────────────────────────────────────── */
 .csr-modal-overlay{
-  position:fixed;inset:0;z-index:500;
+  position:fixed;inset:0;z-index:1100;
   background:rgba(9,9,11,.92);backdrop-filter:blur(18px);
   display:flex;align-items:center;justify-content:center;
-  padding:1.5rem;animation:csrFade .2s;
+  padding:calc(var(--nav-h) + 18px) 1.5rem 28px;animation:csrFade .2s;
+  overflow:hidden;
 }
 .csr-modal{
   background:var(--surface-3);border:1px solid var(--border-2);
   border-radius:22px;width:100%;max-width:580px;
-  max-height:92vh;overflow-y:auto;
+  max-height:calc(100svh - var(--nav-h) - 46px);overflow-y:auto;
   animation:csrModalScale .32s cubic-bezier(.34,1.56,.64,1);position:relative;
 }
 @keyframes csrModalScale{from{opacity:0;transform:scale(.92)}to{opacity:1;transform:scale(1)}}
@@ -707,6 +718,7 @@ const PLATFORMS = [
    MODAL COMPONENT
 ═══════════════════════════════════════════════════════════════════ */
 function CSRModal({ onClose }) {
+  useBodyScrollLock(true);
   const [form, setForm] = useState({
     name: "", title: "", company: "", email: "", phone: "",
     budget: "", sector: "", timeline: "", geography: "", note: "",
@@ -716,6 +728,7 @@ function CSRModal({ onClose }) {
   const h = (e) => setForm((p) => ({ ...p, [e.target.name]: e.target.value }));
   const submit = (e) => {
     e.preventDefault();
+    if (!validateRequiredFields(e.currentTarget)) return;
     setLoading(true);
     setTimeout(() => { setLoading(false); setDone(true); }, 1500);
   };

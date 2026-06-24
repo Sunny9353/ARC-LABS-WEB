@@ -37,3 +37,27 @@ export function SplineSceneBasic() {
     </Card>
   );
 }
+
+export function SplineSceneBasicFallback() {
+  return (
+    <Card className="spline-card spline-card--loading">
+      <div className="spline-layout">
+        <div className="spline-copy">
+          <div className="section-label">Interactive Lab Preview</div>
+          <h2>Interactive 3D lab experiences for modern STEM classrooms.</h2>
+          <p>
+            Bring AI, IoT, and Robotics programs to life with immersive 3D
+            scenes that help schools and colleges understand the lab ecosystem
+            before installation.
+          </p>
+          <div className="spline-points">
+            <span>AI + IoT labs</span>
+            <span>Robotics kits</span>
+            <span>Teacher training</span>
+          </div>
+        </div>
+        <div className="spline-scene robot-preview-scene robot-preview-placeholder" />
+      </div>
+    </Card>
+  );
+}

@@ -1,9 +1,27 @@
 import { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
-import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader.js";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 
 const MODEL_URL = "/robot-preview/robot_model.glb";
+THREE.Cache.enabled = true;
+
+let modelPreloadPromise = null;
+
+function preloadRobotModel() {
+  if (modelPreloadPromise || typeof window === "undefined") return modelPreloadPromise;
+
+  modelPreloadPromise = fetch(MODEL_URL, { cache: "force-cache" })
+    .then((response) => {
+      if (!response.ok) throw new Error(`Unable to preload robot model: ${response.status}`);
+      return response.arrayBuffer();
+    })
+    .catch((error) => {
+      console.warn(error);
+      modelPreloadPromise = null;
+    });
+
+  return modelPreloadPromise;
+}
 
 function readTheme() {
   if (typeof document === "undefined") return "dark";
@@ -14,7 +32,9 @@ function readTheme() {
 
 function getPixelRatio() {
   const isTouch = window.matchMedia("(pointer: coarse)").matches;
-  return Math.min(window.devicePixelRatio || 1, isTouch ? 1.5 : 2);
+  const saveData = navigator.connection?.saveData;
+  if (saveData) return 1;
+  return Math.min(window.devicePixelRatio || 1, isTouch ? 1.05 : 1.55);
 }
 
 function disposeObject(object) {
@@ -45,16 +65,16 @@ function RobotPreviewScene({ theme }) {
     scene.background = new THREE.Color(sceneBackground);
 
     const renderer = new THREE.WebGLRenderer({
-      antialias: true,
+      antialias: !window.matchMedia("(pointer: coarse)").matches,
       alpha: false,
-      powerPreference: "high-performance",
+      powerPreference: window.matchMedia("(pointer: coarse)").matches ? "low-power" : "high-performance",
     });
     renderer.setPixelRatio(getPixelRatio());
     renderer.setSize(mount.clientWidth, mount.clientHeight);
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure = isLightTheme ? 1.12 : 1.28;
-    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.enabled = !window.matchMedia("(pointer: coarse)").matches;
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     renderer.domElement.style.display = "block";
     renderer.domElement.style.width = "100%";
@@ -113,12 +133,19 @@ function RobotPreviewScene({ theme }) {
     };
 
     function updatePointer(event) {
-      const bounds = renderer.domElement.getBoundingClientRect();
+      const viewportWidth = Math.max(1, window.innerWidth || renderer.domElement.clientWidth || 1);
+      const viewportHeight = Math.max(1, window.innerHeight || renderer.domElement.clientHeight || 1);
       pointer.set(
-        THREE.MathUtils.clamp(((event.clientX - bounds.left) / bounds.width) * 2 - 1, -1, 1),
-        THREE.MathUtils.clamp(1 - ((event.clientY - bounds.top) / bounds.height) * 2, -1, 1)
+        THREE.MathUtils.clamp((event.clientX / viewportWidth) * 2 - 1, -1, 1),
+        THREE.MathUtils.clamp(1 - (event.clientY / viewportHeight) * 2, -1, 1)
       );
       hasPointerTarget = true;
+      requestRender();
+    }
+
+    function resetPointer() {
+      hasPointerTarget = false;
+      pointer.set(0, 0);
       requestRender();
     }
 
@@ -170,13 +197,8 @@ function RobotPreviewScene({ theme }) {
       if (needsAnotherFrame) requestRender();
     }
 
-    const dracoLoader = new DRACOLoader();
-    dracoLoader.setDecoderPath("https://unpkg.com/three@0.160.0/examples/jsm/libs/draco/");
-    dracoLoader.setDecoderConfig({ type: "wasm" });
-    dracoLoader.preload();
-
+    preloadRobotModel();
     const loader = new GLTFLoader();
-    loader.setDRACOLoader(dracoLoader);
 
     scene.add(
       new THREE.HemisphereLight(
@@ -221,7 +243,7 @@ function RobotPreviewScene({ theme }) {
           if (child.isLight) {
             if (child.name === "Spot Light") {
               child.castShadow = true;
-              child.shadow.mapSize.set(2048, 2048);
+              child.shadow.mapSize.set(768, 768);
               child.shadow.camera.near = 1;
               child.shadow.camera.far = 2000;
               child.shadow.bias = -0.0001;
@@ -283,13 +305,13 @@ function RobotPreviewScene({ theme }) {
           scene.add(faceFill);
         }
 
-        dracoLoader.dispose();
         updateViewport();
+        requestAnimationFrame(updateViewport);
+        window.setTimeout(updateViewport, 180);
         requestRender();
       },
       undefined,
       (error) => {
-        dracoLoader.dispose();
         // Keep the page usable if the model asset is missing on a deployment.
         console.error("Unable to load robot_model.glb:", error);
       }
@@ -297,8 +319,11 @@ function RobotPreviewScene({ theme }) {
 
     const resizeObserver = new ResizeObserver(updateViewport);
     resizeObserver.observe(mount);
-    renderer.domElement.addEventListener("pointerenter", updatePointer, { passive: true });
-    renderer.domElement.addEventListener("pointermove", updatePointer, { passive: true });
+    window.addEventListener("pointermove", updatePointer, { passive: true });
+    window.addEventListener("pointerdown", updatePointer, { passive: true });
+    window.addEventListener("pointerleave", resetPointer, { passive: true });
+    window.addEventListener("blur", resetPointer, { passive: true });
+    window.addEventListener("load", updateViewport, { passive: true });
 
     const onVisibilityChange = () => {
       if (document.hidden && animationFrameId !== null) {
@@ -315,10 +340,12 @@ function RobotPreviewScene({ theme }) {
       disposed = true;
       resizeObserver.disconnect();
       document.removeEventListener("visibilitychange", onVisibilityChange);
-      renderer.domElement.removeEventListener("pointerenter", updatePointer);
-      renderer.domElement.removeEventListener("pointermove", updatePointer);
+      window.removeEventListener("pointermove", updatePointer);
+      window.removeEventListener("pointerdown", updatePointer);
+      window.removeEventListener("pointerleave", resetPointer);
+      window.removeEventListener("blur", resetPointer);
+      window.removeEventListener("load", updateViewport);
       if (animationFrameId !== null) cancelAnimationFrame(animationFrameId);
-      dracoLoader.dispose();
       if (model) disposeObject(model);
       renderer.dispose();
       renderer.forceContextLoss();
