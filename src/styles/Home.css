@@ -2048,7 +2048,7 @@
   }
 
   .hero-lab-scene {
-    transform: scale(1.08) translate3d(0, 4%, 0);
+    transform: scale(1.03) translate3d(0, 13%, 0);
     transform-origin: center center;
   }
 
@@ -2059,7 +2059,9 @@
     justify-content: center;
     align-items: center;
     padding: 0;
-    font-size: clamp(1.78rem, 8vw, 2.45rem);
+    max-width: 92vw;
+    margin: 0 auto 28svh;
+    font-size: clamp(1.62rem, 7.35vw, 2.22rem);
     line-height: 1.02;
     letter-spacing: 0;
     text-align: center;
@@ -2084,7 +2086,7 @@
     width: 100%;
     pointer-events: auto;
     margin-top: auto;
-    padding-top: 34svh;
+    padding-top: 0;
   }
 
   .hero-sub {
@@ -2097,6 +2099,20 @@
     line-height: 1.65;
     color: rgba(244,244,245,0.82);
     text-shadow: 0 3px 18px rgba(0,0,0,0.72);
+  }
+
+  :root[data-theme="light"] .hero-lab-preview {
+    opacity: 1;
+  }
+
+  :root[data-theme="light"] .hero-bg-tech-text {
+    color: #3f3f46;
+    text-shadow: 0 14px 45px rgba(9,9,11,0.14);
+  }
+
+  :root[data-theme="light"] .hero-sub {
+    color: rgba(39,39,42,0.76);
+    text-shadow: 0 10px 30px rgba(255,255,255,0.9);
   }
 
   .hero-actions {

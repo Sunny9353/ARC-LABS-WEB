@@ -134,7 +134,7 @@ function buildEmailHtml({ customerName, invoiceNumber, amount, productName }) {
                 </tr>
                 <tr>
                   <td style="padding:4px 0; color:#52525b; font-size:13px;">Invoice No.</td>
-                  <td style="padding:4px 0; color:#1a1a1a; font-size:13px; text-align:right; font-family:monospace;">${invoiceNumber}</td>
+                  <td style="padding:4px 0; color:#1a1a1a; font-size:13px; text-align:right; font-family:sans-serif;">${invoiceNumber}</td>
                 </tr>
                 <tr>
                   <td style="padding:4px 0; color:#52525b; font-size:13px;">Amount Paid</td>

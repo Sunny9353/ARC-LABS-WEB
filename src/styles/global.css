@@ -72,7 +72,7 @@
   --border-1:     var(--border);
   --font-heading:  'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   --font-body:     'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-mono:     var(--font-body);
+  --font-sans:     var(--font-body);
 }
 
 :root[data-theme="light"] {
@@ -237,9 +237,7 @@ h1, h2, h3, h4, h5, h6 {
   line-height: 1.1;
 }
 
-.mono {
-  font-family: var(--font-body);
-}
+
 
 /* ── Section Utilities ── */
 .section {

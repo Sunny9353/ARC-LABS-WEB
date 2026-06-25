@@ -65,12 +65,13 @@ const pageStyles = `
 
 /* Detail drawer */
 .product-detail-overlay{position:fixed;inset:0;z-index:1100;background:rgba(9,9,11,.72);backdrop-filter:blur(14px);display:flex;align-items:flex-start;justify-content:center;padding:calc(var(--nav-h) + 10px) 5vw 20px;animation:productOverlayIn .22s ease;overflow:hidden}
-.detail-drawer{background:var(--surface-2);border:1px solid var(--border-2);border-radius:var(--radius-xl);overflow:hidden;animation:ddIn .42s cubic-bezier(.2,.8,.2,1);width:min(100%,1080px);max-height:calc(100svh - var(--nav-h) - 30px);overflow-y:auto;box-shadow:0 34px 110px rgba(0,0,0,.52);scroll-margin-top:calc(var(--nav-h) + 10px);transform-origin:center;margin-top:0}
+.detail-drawer{background:var(--surface-2);border:1px solid var(--border-2);border-radius:var(--radius-xl);overflow:hidden;animation:ddIn .42s cubic-bezier(.2,.8,.2,1);width:min(100%,1080px);max-height:calc(100svh - var(--nav-h) - 30px);overflow-y:auto;box-shadow:0 34px 110px rgba(0,0,0,.52);scroll-margin-top:calc(var(--nav-h) + 10px);transform-origin:center;margin-top:0;position:relative}
+.detail-drawer-close-top{position:sticky;top:12px;float:right;z-index:20;margin:12px 12px -52px 0;border:1px solid rgba(255,111,111,.45);background:rgba(255,111,111,.12);color:#ff6f6f;border-radius:10px;padding:9px 14px;font-size:.76rem;font-weight:800;cursor:pointer;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
 @keyframes productOverlayIn{from{opacity:0}to{opacity:1}}
 @keyframes ddIn{from{opacity:0;transform:translateY(18px) scale(.94)}to{opacity:1;transform:translateY(0) scale(1)}}
 
 /* Kit assembly animation */
-.kit-stage{min-height:360px;padding:56px 32px 28px;border-bottom:1px solid var(--border);background:radial-gradient(circle at 50% 42%,rgba(var(--kit-glow),.18),transparent 43%),linear-gradient(180deg,rgba(255,255,255,.03),transparent);position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center}
+.kit-stage{min-height:310px;padding:42px 32px 22px;border-bottom:1px solid var(--border);background:radial-gradient(circle at 50% 42%,rgba(var(--kit-glow),.18),transparent 43%),linear-gradient(180deg,rgba(255,255,255,.03),transparent);position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center}
 .kit-stage::before{content:'';position:absolute;left:12%;right:12%;bottom:40px;height:26px;background:radial-gradient(ellipse,rgba(0,0,0,.48),transparent 68%);filter:blur(4px);opacity:.65}
 .kit-caption{position:absolute;left:36px;top:28px;font-family:var(--font-heading);font-weight:800;font-size:1rem;letter-spacing:-.01em;color:var(--text);z-index:3}
 .kit-caption span{display:block;margin-top:4px;font-family:var(--font-body);font-size:.72rem;font-weight:500;color:var(--text-3);letter-spacing:0}
@@ -80,7 +81,7 @@ const pageStyles = `
 .kit-thumb:hover,.kit-thumb.active{border-color:var(--kit-color,var(--accent));box-shadow:0 10px 26px rgba(var(--kit-glow),.18);transform:translateX(2px)}
 .kit-thumb img{width:100%;height:100%;display:block;object-fit:contain;object-position:center}
 .kit-board{width:100%;min-height:270px;position:relative;display:flex;align-items:center;justify-content:center}
-.kit-photo-wrap{width:min(620px,100%);aspect-ratio:16/9;border:1px solid rgba(255,255,255,.16);border-radius:18px;background:#fff;box-shadow:0 28px 60px rgba(0,0,0,.36),inset 0 0 0 1px rgba(255,255,255,.06);position:relative;overflow:hidden;animation:kitDrop .72s cubic-bezier(.18,.89,.32,1.22) both;transform-origin:center;cursor:zoom-in}
+.kit-photo-wrap{width:min(560px,100%);aspect-ratio:16/9;border:1px solid rgba(255,255,255,.16);border-radius:18px;background:#fff;box-shadow:0 28px 60px rgba(0,0,0,.36),inset 0 0 0 1px rgba(255,255,255,.06);position:relative;overflow:hidden;animation:kitDrop .72s cubic-bezier(.18,.89,.32,1.22) both;transform-origin:center;cursor:zoom-in;touch-action:none}
 .kit-photo-wrap::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.14),transparent);transform:translateX(-120%);animation:kitShine 1.4s ease .65s both}
 .kit-photo{width:100%;height:100%;object-fit:contain;object-position:center;display:block;transition:transform .18s ease;transform-origin:var(--zoom-x,50%) var(--zoom-y,50%);will-change:transform}
 .kit-photo-wrap.is-zooming .kit-photo{transform:scale(2.1)}
@@ -199,13 +200,14 @@ const pageStyles = `
   .product-dotted-surface{inset:-60px -30% -110px;opacity:.42}
   .product-detail-overlay{padding:calc(var(--nav-h) + 8px) 3vw 14px}
   .detail-drawer{max-height:calc(100svh - var(--nav-h) - 22px);border-radius:16px}
-  .kit-stage{min-height:auto;padding:58px 14px 18px}
+  .detail-drawer-close-top{top:10px;margin:10px 10px -48px 0;padding:8px 12px;border-radius:9px}
+  .kit-stage{min-height:auto;padding:48px 14px 16px}
   .kit-caption{left:20px;top:22px;right:20px}
   .kit-gallery{grid-template-columns:1fr;gap:12px;width:100%;padding-top:38px}
   .kit-thumbs{flex-direction:row;justify-content:flex-start;overflow-x:auto;padding:2px 2px 6px}
   .kit-thumb{width:58px;height:58px;flex:0 0 auto}
   .kit-thumb:hover,.kit-thumb.active{transform:translateY(-2px)}
-  .kit-board{width:100%;min-height:220px}
+  .kit-board{width:100%;min-height:190px}
   .kit-photo-wrap{width:100%}
 
   .dd-header{padding:22px 20px 18px}
@@ -656,6 +658,19 @@ function DetailDrawer({ product, anchorY, onClose }) {
   const [zoomPoint, setZoomPoint] = useState({ active: false, x: 50, y: 50 });
   const ref = useRef(null);
 
+  const updateZoomPoint = (target, clientX, clientY) => {
+    const rect = target.getBoundingClientRect();
+    setZoomPoint({
+      active: true,
+      x: Math.max(0, Math.min(100, ((clientX - rect.left) / rect.width) * 100)),
+      y: Math.max(0, Math.min(100, ((clientY - rect.top) / rect.height) * 100)),
+    });
+  };
+
+  const resetZoomPoint = () => {
+    setZoomPoint((current) => ({ ...current, active: false }));
+  };
+
   const TABS = [
     { id: "specs", label: "Specifications" },
     { id: "inbox", label: "What's Included" },
@@ -675,6 +690,9 @@ function DetailDrawer({ product, anchorY, onClose }) {
       }}
       onClick={(e) => e.stopPropagation()}
     >
+      <button className="detail-drawer-close-top" type="button" onClick={onClose}>
+        Close
+      </button>
       <div className="kit-stage">
         <div className="kit-caption">
           {product.short} assembly
@@ -702,15 +720,18 @@ function DetailDrawer({ product, anchorY, onClose }) {
                 "--zoom-x": `${zoomPoint.x}%`,
                 "--zoom-y": `${zoomPoint.y}%`,
               }}
-              onMouseMove={(event) => {
-                const rect = event.currentTarget.getBoundingClientRect();
-                setZoomPoint({
-                  active: true,
-                  x: ((event.clientX - rect.left) / rect.width) * 100,
-                  y: ((event.clientY - rect.top) / rect.height) * 100,
-                });
+              onMouseMove={(event) => updateZoomPoint(event.currentTarget, event.clientX, event.clientY)}
+              onMouseLeave={resetZoomPoint}
+              onTouchStart={(event) => {
+                const touch = event.touches[0];
+                if (touch) updateZoomPoint(event.currentTarget, touch.clientX, touch.clientY);
               }}
-              onMouseLeave={() => setZoomPoint((current) => ({ ...current, active: false }))}
+              onTouchMove={(event) => {
+                const touch = event.touches[0];
+                if (touch) updateZoomPoint(event.currentTarget, touch.clientX, touch.clientY);
+              }}
+              onTouchEnd={resetZoomPoint}
+              onTouchCancel={resetZoomPoint}
             >
               <img className="kit-photo" src={activeImage.src} alt={activeImage.alt || product.name} />
             </div>
@@ -735,9 +756,6 @@ function DetailDrawer({ product, anchorY, onClose }) {
           <div style={{ textDecoration: "line-through", fontSize: ".8rem", color: "var(--text-4)", textAlign: "right" }}>
             MRP ₹{product.oldPrice.toLocaleString("en-IN")}
           </div>
-          <button className="btn btn-secondary product-detail-close" onClick={onClose} style={{ padding: "6px 14px", fontSize: ".75rem" }}>
-            Close
-          </button>
         </div>
       </div>
 
@@ -1159,9 +1177,9 @@ export default function ProductsPage() {
         <h2>Need help choosing the <span style={{ color: "var(--accent)" }}>right kit?</span></h2>
         <p>Talk to our team. We'll recommend the right board for your lab, budget, and curriculum.</p>
         <div className="pcta-btns">
-          <a href="tel:+918699929532" className="btn btn-primary">Call Us</a>
+          <a href="tel:+918699929532" className="btn btn-primary">+91 86999 29532</a>
           <a href="https://wa.me/918699929532" className="btn btn-secondary" target="_blank" rel="noreferrer">WhatsApp</a>
-          <a href="mailto:hello@arclabs.in" className="btn btn-secondary">Email</a>
+          <a href="mailto:hello@arclabs.in" className="btn btn-secondary">hello@arclabs.in</a>
         </div>
         <p style={{ marginTop: "1.5rem", fontSize: ".85rem", color: "var(--text-3)" }}>
           Need a complete lab? <Link to="/lab-packages" style={{ color: "var(--accent)" }}>See our lab packages &rarr;</Link>

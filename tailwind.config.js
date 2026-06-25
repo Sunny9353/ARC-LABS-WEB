@@ -19,7 +19,6 @@ module.exports = {
         }
       },
       fontFamily: {
-        mono: ["'JetBrains Mono'", "monospace"],
         sans: ["Inter", "sans-serif"],
         syne: ["Syne", "sans-serif"]
       },

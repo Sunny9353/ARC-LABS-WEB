@@ -168,8 +168,7 @@ function Hero() {
   useEffect(() => {
     const canRenderSpline =
       typeof window !== "undefined" &&
-      shouldPlayIntro &&
-      !navigator.connection?.saveData;
+      shouldPlayIntro;
     setCanRenderHeroScene(canRenderSpline);
     if (canRenderSpline) {
       setRenderHeroScene(true);
@@ -184,10 +183,11 @@ function Hero() {
     if (!shouldPlayIntro) return undefined;
 
     const cinematicDuration = canRenderHeroScene ? 4300 : 1450;
+    const waitForSceneDuration = canRenderHeroScene ? 6500 : 1450;
     const revealTimer = window.setTimeout(() => {
       setHeroReady(true);
       sessionStorage.setItem("arcHomeIntroSeen", "true");
-    }, splineLoaded ? cinematicDuration : 2200);
+    }, splineLoaded ? cinematicDuration : waitForSceneDuration);
 
     return () => window.clearTimeout(revealTimer);
   }, [canRenderHeroScene, splineLoaded, shouldPlayIntro]);

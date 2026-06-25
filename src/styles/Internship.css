@@ -6,7 +6,7 @@
 }
 
 .internship-kicker {
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   color: var(--accent);
   font-size: 0.68rem;
   letter-spacing: 0.14em;

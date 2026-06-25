@@ -236,7 +236,7 @@ export const pageStyles = `
   @media (max-width: 768px) {
     .prog-hero {
       min-height: auto;
-      padding: 86px 5vw 58px;
+      padding: 0 5vw 52px;
       align-items: center;
     }
     .prog-hero-panel {
@@ -258,11 +258,11 @@ export const pageStyles = `
     }
     .prog-robot-stage {
       width: 100%;
-      min-height: 220px;
-      opacity: 0.86;
+      min-height: clamp(250px, 58vw, 320px);
+      opacity: 1;
       pointer-events: none;
     }
-    .prog-robot-frame { transform: scale(1.08); }
+    .prog-robot-frame { transform: scale(1.18); }
     .prog-robot-status,
     .prog-robot-readout { display: none; }
     .prog-hero-inner {
@@ -412,10 +412,17 @@ export const pageStyles = `
     }
     .level-filter-btn {
       min-height: 40px;
-      padding: 8px 4px;
-      font-size: clamp(0.48rem, 2.2vw, 0.62rem);
-      letter-spacing: 0.02em;
-      line-height: 1.1;
+      width: 100%;
+      padding: 8px 3px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      white-space: normal;
+      overflow-wrap: anywhere;
+      font-size: clamp(0.43rem, 1.9vw, 0.56rem);
+      letter-spacing: 0;
+      line-height: 1.05;
     }
   }
   .tech-card {
@@ -528,6 +535,7 @@ export const pageStyles = `
     border: 1px solid var(--border-2);
     background: var(--surface-2);
     overflow: hidden;
+    position: relative;
     animation: pgSlideDown 0.4s cubic-bezier(0.4,0,0.2,1);
   }
   .tech-grid .detail-panel {
@@ -1003,24 +1011,56 @@ export const pageStyles = `
 
   /* Close panel button */
   .btn-close-panel {
-    background: none;
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    z-index: 5;
+    width: 38px;
+    height: 38px;
+    background: var(--surface);
     border: 1px solid var(--border);
-    color: var(--text-3);
-    padding: 8px 16px;
-    border-radius: 6px;
-    font-size: 0.78rem;
+    color: var(--text-2);
+    padding: 0;
+    border-radius: 10px;
+    font-size: 0;
     cursor: pointer;
     font-family: var(--font-body);
     transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .btn-close-panel::before,
+  .btn-close-panel::after {
+    content: "";
+    position: absolute;
+    width: 15px;
+    height: 2px;
+    border-radius: 999px;
+    background: currentColor;
+  }
+  .btn-close-panel::before {
+    transform: rotate(45deg);
+  }
+  .btn-close-panel::after {
+    transform: rotate(-45deg);
   }
   .btn-close-panel:hover {
     color: var(--text);
     border-color: var(--border-2);
+    background: var(--surface-2);
   }
 
   /* Responsive */
   @media(max-width:768px) {
-    .dp-header { padding: 24px; }
+    .dp-header { padding: 24px 58px 24px 24px; }
+    .btn-close-panel {
+      top: 14px;
+      right: 14px;
+      width: 36px;
+      height: 36px;
+      border-radius: 9px;
+    }
     .dp-body { padding: 20px 24px; }
     .dp-footer { padding: 16px 24px; }
     .dp-cta-row { justify-content: stretch; }
@@ -4175,7 +4215,7 @@ export default function ProgramsPage() {
         </p>
         <div className="cta-row">
           <a href="tel:+917815809412" className="btn btn-primary">
-            Call Us Now
+            +91 7815809412
           </a>
           <a
             href="https://wa.me/917815809412"
@@ -4186,7 +4226,7 @@ export default function ProgramsPage() {
             WhatsApp
           </a>
           <a href="mailto:hello@arclabs.in" className="btn btn-secondary">
-            Email Us
+            hello@arclabs.in
           </a>
         </div>
       </div>

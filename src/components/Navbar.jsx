@@ -49,8 +49,7 @@ export default function Navbar() {
     <>
       <nav className={`navbar${scrolled ? " scrolled" : ""}${isHome ? " home-intro" : ""}`}>
         <Link to="/" state={linkStateFor("/")} className="navbar-logo">
-          <span className="logo-dot" />
-          ARC LABS
+          <img src="/images/brand/arc-labs-logo-transparent.png" alt="ARC LABS" />
         </Link>
 
         <ul className="navbar-links">
@@ -106,11 +105,20 @@ export default function Navbar() {
 
       <div className={`navbar-mobile${mobileOpen ? " open" : ""}`}>
         {NAV_LINKS.map((link) => (
-          <Link key={link.path} to={link.path} state={linkStateFor(link.path)}>
+          <Link
+            key={link.path}
+            to={link.path}
+            state={linkStateFor(link.path)}
+            className={location.pathname === link.path ? "active" : ""}
+          >
             {link.label}
           </Link>
         ))}
-        <Link to="/lab-packages" className="nav-cta" style={{ textAlign: "center", marginTop: 4 }}>
+        <Link
+          to="/lab-packages"
+          className={`nav-cta${location.pathname === "/lab-packages" ? " active" : ""}`}
+          style={{ textAlign: "center", marginTop: 4 }}
+        >
           Get Started
         </Link>
       </div>

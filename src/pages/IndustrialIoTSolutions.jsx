@@ -1218,7 +1218,7 @@ const factoryFeatureStyles = `
     display: block;
     margin-bottom: 4px;
     color: #71717a;
-    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     font-size: 0.62rem;
     letter-spacing: 0.08em;
     text-transform: uppercase;
@@ -1331,6 +1331,63 @@ const factoryFeatureStyles = `
     height: auto;
   }
 }
+
+.iiot-usecase-detail {
+  scroll-margin-top: calc(var(--nav-h) + 28px);
+}
+
+:root[data-theme="light"] .iiot-page .solution-sector-card {
+  background:
+    linear-gradient(180deg, #ffffff, #f7f7f8),
+    radial-gradient(circle at 18% 0%, rgba(0,220,130,0.08), transparent 48%) !important;
+  border-color: #e4e4e7 !important;
+  color: #09090b !important;
+  box-shadow: 0 16px 40px rgba(9,9,11,0.08) !important;
+}
+
+:root[data-theme="light"] .iiot-page .solution-sector-card h3,
+:root[data-theme="light"] .iiot-page .solution-sector-card strong,
+:root[data-theme="light"] .iiot-dashboard-modal h3,
+:root[data-theme="light"] .iiot-dashboard-modal strong {
+  color: #09090b !important;
+}
+
+:root[data-theme="light"] .iiot-page .solution-sector-card p,
+:root[data-theme="light"] .iiot-dashboard-modal p,
+:root[data-theme="light"] .iiot-dashboard-modal span {
+  color: #52525b !important;
+}
+
+:root[data-theme="light"] .iiot-page .solution-sector-card .sector-viz,
+:root[data-theme="light"] .iiot-page .solution-sector-card .sector-viz-dashboard {
+  background:
+    linear-gradient(180deg, rgba(244,244,245,0.92), rgba(255,255,255,0.88)),
+    repeating-linear-gradient(90deg, transparent 0 44px, rgba(9,9,11,0.04) 44px 45px) !important;
+  border-color: #e4e4e7 !important;
+}
+
+:root[data-theme="light"] .iiot-dashboard-modal {
+  background:
+    linear-gradient(180deg, #ffffff, #f7f7f8),
+    radial-gradient(circle at top left, rgba(0,220,130,0.08), transparent 44%) !important;
+  border-color: #d4d4d8 !important;
+  color: #09090b !important;
+}
+
+:root[data-theme="light"] .iiot-dashboard-header,
+:root[data-theme="light"] .iiot-tech-stack,
+:root[data-theme="light"] .iiot-kpi-card,
+:root[data-theme="light"] .iiot-dashboard-panel {
+  background: #ffffff !important;
+  border-color: #e4e4e7 !important;
+  box-shadow: 0 10px 28px rgba(9,9,11,0.07) !important;
+}
+
+:root[data-theme="light"] .iiot-dashboard-panel .bg-zinc-950,
+:root[data-theme="light"] .iiot-dashboard-panel .bg-zinc-900,
+:root[data-theme="light"] .iiot-dashboard-panel .bg-black {
+  background-color: #f4f4f5 !important;
+}
 `;
 
 const FACTORY_FEATURES = [
@@ -1399,8 +1456,8 @@ function DashboardKpi({ label, value, unit, accent, min = 0, max = 100 }) {
 
   return (
     <div className="iiot-kpi-card bg-zinc-900/45 border border-zinc-800 p-4 rounded-lg">
-      <div className="text-[10px] font-mono text-zinc-500 uppercase tracking-widest mb-1">{label}</div>
-      <div className="text-2xl font-mono font-bold" style={{ color: accent }}>
+      <div className="text-[10px] font-sans text-zinc-500 uppercase tracking-widest mb-1">{label}</div>
+      <div className="text-2xl font-sans font-bold" style={{ color: accent }}>
         {Number.isFinite(numeric) ? value : "--"}{" "}
         <span className="text-xs text-zinc-500 font-normal">{unit}</span>
       </div>
@@ -1420,7 +1477,7 @@ function DashboardPanel({ title, children, accent }) {
   return (
     <div className="iiot-dashboard-panel bg-zinc-900/45 border border-zinc-800 rounded-xl p-4">
       <div className="flex items-center justify-between mb-4">
-        <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-widest">{title}</span>
+        <span className="text-[10px] font-sans text-zinc-500 uppercase tracking-widest">{title}</span>
         <span className="h-1.5 w-1.5 rounded-full" style={{ background: accent, boxShadow: `0 0 16px ${accent}` }} />
       </div>
       {children}
@@ -1439,7 +1496,7 @@ function MachineStatusGauge({ label, value, unit, accent, min, max }) {
   return (
     <div className="rounded-xl border border-zinc-800 bg-black/30 p-4">
       <div className="mb-4 flex items-center justify-between">
-        <span className="text-[10px] font-mono uppercase tracking-widest text-zinc-500">{label}</span>
+        <span className="text-[10px] font-sans uppercase tracking-widest text-zinc-500">{label}</span>
         <span className="h-2 w-2 rounded-full" style={{ background: accent, boxShadow: `0 0 16px ${accent}` }} />
       </div>
       <div className="relative mx-auto h-32 w-32 overflow-hidden">
@@ -1481,8 +1538,8 @@ function MachineStatusGauge({ label, value, unit, accent, min, max }) {
           <circle cx="60" cy="60" r="4" fill={accent} />
         </svg>
         <div className="absolute inset-0 grid place-items-center pt-9 text-center">
-          <strong className="block font-mono text-xl text-white">{Number.isFinite(numeric) ? value : "--"}</strong>
-          <span className="font-mono text-[10px] text-zinc-500">{unit}</span>
+          <strong className="block font-sans text-xl text-white">{Number.isFinite(numeric) ? value : "--"}</strong>
+          <span className="font-sans text-[10px] text-zinc-500">{unit}</span>
         </div>
       </div>
     </div>
@@ -1495,7 +1552,7 @@ function SectorDashboardBody({ project, channels, values, history, logs }) {
 
   const logPanel = (
     <DashboardPanel title="System Event Stream" accent={accent}>
-      <div className="bg-black/50 border border-zinc-900 rounded-lg p-3 font-mono text-[11px] text-zinc-400 max-h-44 overflow-y-auto">
+      <div className="bg-black/50 border border-zinc-900 rounded-lg p-3 font-sans text-[11px] text-zinc-400 max-h-44 overflow-y-auto">
         {logs.length === 0 ? (
           <div className="text-zinc-600">Waiting for telemetry...</div>
         ) : (
@@ -1540,7 +1597,7 @@ function SectorDashboardBody({ project, channels, values, history, logs }) {
                 ["Thermal fatigue", "NORMAL", 45],
               ].map(([label, state, risk]) => (
                 <div key={label}>
-                  <div className="mb-1 flex justify-between text-[10px] font-mono uppercase tracking-widest text-zinc-500">
+                  <div className="mb-1 flex justify-between text-[10px] font-sans uppercase tracking-widest text-zinc-500">
                     <span>{label}</span>
                     <span style={{ color: state === "WATCH" ? STATUS_WARNING : accent }}>{state}</span>
                   </div>
@@ -1564,10 +1621,10 @@ function SectorDashboardBody({ project, channels, values, history, logs }) {
                 ["Replace", "56 days", "rotor"],
               ].map(([action, eta, part], i) => (
                 <div key={action} className="rounded-lg border border-zinc-800 bg-black/25 p-4">
-                  <span className="block text-[10px] font-mono uppercase tracking-widest text-zinc-500">{action}</span>
-                  <strong className="mt-3 block text-2xl font-mono text-white">{eta}</strong>
+                  <span className="block text-[10px] font-sans uppercase tracking-widest text-zinc-500">{action}</span>
+                  <strong className="mt-3 block text-2xl font-sans text-white">{eta}</strong>
                   <div className="mt-4 h-1 rounded-full" style={{ background: i === 0 ? STATUS_WARNING : accent }} />
-                  <span className="mt-2 block text-[10px] font-mono uppercase text-zinc-500">{part}</span>
+                  <span className="mt-2 block text-[10px] font-sans uppercase text-zinc-500">{part}</span>
                 </div>
               ))}
             </div>
@@ -1586,7 +1643,7 @@ function SectorDashboardBody({ project, channels, values, history, logs }) {
           <DashboardPanel title="Three Phase Load Balance" accent={accent}>
             {["L1", "L2", "L3"].map((phase, i) => (
               <div key={phase} className="mb-4 last:mb-0">
-                <div className="mb-1 flex justify-between font-mono text-[10px] text-zinc-500"><span>{phase}</span><span>{82 + i * 4}%</span></div>
+                <div className="mb-1 flex justify-between font-sans text-[10px] text-zinc-500"><span>{phase}</span><span>{82 + i * 4}%</span></div>
                 <div className="h-3 rounded-full bg-zinc-800 overflow-hidden">
                   <motion.div className="h-full rounded-full" style={{ background: accent }} animate={{ width: `${82 + i * 4}%` }} />
                 </div>
@@ -1602,9 +1659,9 @@ function SectorDashboardBody({ project, channels, values, history, logs }) {
                 ["Tariff Slot", "Off-peak", "optimized"],
               ].map(([label, value, state]) => (
                 <div key={label} className="rounded-lg border border-zinc-800 bg-black/25 p-3">
-                  <span className="block text-[10px] font-mono uppercase tracking-widest text-zinc-500">{label}</span>
-                  <strong className="mt-2 block text-lg font-mono text-white">{value}</strong>
-                  <span className="mt-1 block text-[10px] font-mono uppercase" style={{ color: accent }}>{state}</span>
+                  <span className="block text-[10px] font-sans uppercase tracking-widest text-zinc-500">{label}</span>
+                  <strong className="mt-2 block text-lg font-sans text-white">{value}</strong>
+                  <span className="mt-1 block text-[10px] font-sans uppercase" style={{ color: accent }}>{state}</span>
                 </div>
               ))}
             </div>
@@ -1627,9 +1684,9 @@ function SectorDashboardBody({ project, channels, values, history, logs }) {
                   <span className="h-8 w-8 rounded border" style={{ borderColor: accent, background: `${accent}14` }} />
                   <div className="flex-1">
                     <strong className="block text-sm text-white">{label}</strong>
-                    <span className="font-mono text-[10px] uppercase text-zinc-500">{i === 3 ? "queue depth 04" : "handshake stable"}</span>
+                    <span className="font-sans text-[10px] uppercase text-zinc-500">{i === 3 ? "queue depth 04" : "handshake stable"}</span>
                   </div>
-                  <span className="font-mono text-[10px] uppercase" style={{ color: accent }}>online</span>
+                  <span className="font-sans text-[10px] uppercase" style={{ color: accent }}>online</span>
                 </div>
               ))}
             </div>
@@ -1675,8 +1732,8 @@ function SectorDashboardBody({ project, channels, values, history, logs }) {
               ].map(([zone, nodes, state]) => (
                 <div key={zone} className="rounded-lg border border-zinc-800 bg-black/25 p-3">
                   <strong className="block text-sm text-white">{zone}</strong>
-                  <span className="mt-2 block font-mono text-lg" style={{ color: accent }}>{nodes}</span>
-                  <span className="mt-1 block text-[10px] font-mono uppercase text-zinc-500">{state}</span>
+                  <span className="mt-2 block font-sans text-lg" style={{ color: accent }}>{nodes}</span>
+                  <span className="mt-1 block text-[10px] font-sans uppercase text-zinc-500">{state}</span>
                 </div>
               ))}
             </div>
@@ -1700,7 +1757,7 @@ function SectorDashboardBody({ project, channels, values, history, logs }) {
                   className="scan-feed relative h-28 overflow-hidden rounded-lg border border-zinc-800 bg-black/40 p-3"
                   style={{ "--scan-accent": accent }}
                 >
-                  <div className="relative z-10 mb-4 flex justify-between text-[10px] font-mono text-zinc-500">
+                  <div className="relative z-10 mb-4 flex justify-between text-[10px] font-sans text-zinc-500">
                     <span>{cam}</span>
                     <span style={{ color: i === 2 ? accent : ARC_ACCENT }}>{i === 2 ? "SCAN" : "LIVE"}</span>
                   </div>
@@ -1719,7 +1776,7 @@ function SectorDashboardBody({ project, channels, values, history, logs }) {
               {["Helmet", "Vest", "Restricted Zone", "Fall Risk"].map((label, i) => (
                 <div key={label} className="flex items-center justify-between rounded-lg bg-black/30 border border-zinc-800 p-3">
                   <span className="text-sm text-zinc-300">{label}</span>
-                  <span className="font-mono text-sm" style={{ color: i === 2 ? accent : ARC_ACCENT }}>{i === 2 ? "WATCH" : "CLEAR"}</span>
+                  <span className="font-sans text-sm" style={{ color: i === 2 ? accent : ARC_ACCENT }}>{i === 2 ? "WATCH" : "CLEAR"}</span>
                 </div>
               ))}
             </div>
@@ -1739,7 +1796,7 @@ function SectorDashboardBody({ project, channels, values, history, logs }) {
             <div className="grid grid-cols-1 sm:grid-cols-4 gap-3">
               {["Sensor", "Tensor", "Model", "Action"].map((step, i) => (
                 <div key={step} className="rounded-lg border border-zinc-800 bg-black/25 p-4">
-                  <div className="mb-3 text-[10px] font-mono uppercase tracking-widest text-zinc-500">0{i + 1}</div>
+                  <div className="mb-3 text-[10px] font-sans uppercase tracking-widest text-zinc-500">0{i + 1}</div>
                   <div className="text-sm font-bold text-white">{step}</div>
                   <div className="mt-4 h-1 rounded-full" style={{ background: i <= 2 ? accent : "#3f3f46" }} />
                 </div>
@@ -1757,9 +1814,9 @@ function SectorDashboardBody({ project, channels, values, history, logs }) {
                 <div key={label} className="flex items-center justify-between rounded-lg border border-zinc-800 bg-black/25 p-3">
                   <div>
                     <strong className="block text-sm text-white">{label}</strong>
-                    <span className="font-mono text-[10px] uppercase text-zinc-500">{state}</span>
+                    <span className="font-sans text-[10px] uppercase text-zinc-500">{state}</span>
                   </div>
-                  <span className="font-mono text-sm" style={{ color: accent }}>{value}</span>
+                  <span className="font-sans text-sm" style={{ color: accent }}>{value}</span>
                 </div>
               ))}
             </div>
@@ -1786,9 +1843,9 @@ function SectorDashboardBody({ project, channels, values, history, logs }) {
                 ["Users", "12", "online"],
               ].map(([label, value, state]) => (
                 <div key={label} className="rounded-lg border border-zinc-800 bg-black/25 p-3">
-                  <span className="block text-[10px] font-mono uppercase tracking-widest text-zinc-500">{label}</span>
-                  <strong className="mt-2 block font-mono text-base text-white">{value}</strong>
-                  <span className="mt-1 block text-[10px] font-mono uppercase" style={{ color: accent }}>{state}</span>
+                  <span className="block text-[10px] font-sans uppercase tracking-widest text-zinc-500">{label}</span>
+                  <strong className="mt-2 block font-sans text-base text-white">{value}</strong>
+                  <span className="mt-1 block text-[10px] font-sans uppercase" style={{ color: accent }}>{state}</span>
                 </div>
               ))}
             </div>
@@ -1798,7 +1855,7 @@ function SectorDashboardBody({ project, channels, values, history, logs }) {
               {["Shift supervisor", "Maintenance", "Plant manager", "Remote OEM"].map((label, i) => (
                 <div key={label} className="flex items-center justify-between rounded-lg border border-zinc-800 bg-black/25 px-3 py-2">
                   <span className="text-sm text-zinc-300">{label}</span>
-                  <span className="font-mono text-xs" style={{ color: i < 3 ? accent : "#a1a1aa" }}>{i < 3 ? "VIEWING" : "STANDBY"}</span>
+                  <span className="font-sans text-xs" style={{ color: i < 3 ? accent : "#a1a1aa" }}>{i < 3 ? "VIEWING" : "STANDBY"}</span>
                 </div>
               ))}
             </div>
@@ -1818,10 +1875,10 @@ function SectorDashboardBody({ project, channels, values, history, logs }) {
             <div className="space-y-3">
               {["Gateway", "X.509 Auth", "MQTT Broker", "Rules Engine", "Cloud Storage"].map((label, i) => (
                 <div key={label} className="flex items-center gap-3 rounded-lg border border-zinc-800 bg-black/25 p-3">
-                  <span className="grid h-8 w-8 place-items-center rounded border font-mono text-xs" style={{ borderColor: accent, color: accent }}>{i + 1}</span>
+                  <span className="grid h-8 w-8 place-items-center rounded border font-sans text-xs" style={{ borderColor: accent, color: accent }}>{i + 1}</span>
                   <div className="flex-1">
                     <strong className="block text-sm text-white">{label}</strong>
-                    <span className="font-mono text-[10px] uppercase text-zinc-500">{i === 1 ? "certificate valid" : "handshake ok"}</span>
+                    <span className="font-sans text-[10px] uppercase text-zinc-500">{i === 1 ? "certificate valid" : "handshake ok"}</span>
                   </div>
                 </div>
               ))}
@@ -1836,9 +1893,9 @@ function SectorDashboardBody({ project, channels, values, history, logs }) {
                 ["Failover", "armed", "ready"],
               ].map(([label, value, state]) => (
                 <div key={label} className="rounded-lg border border-zinc-800 bg-black/25 p-3">
-                  <span className="block text-[10px] font-mono uppercase tracking-widest text-zinc-500">{label}</span>
-                  <strong className="mt-2 block text-lg font-mono text-white">{value}</strong>
-                  <span className="mt-1 block text-[10px] font-mono uppercase" style={{ color: accent }}>{state}</span>
+                  <span className="block text-[10px] font-sans uppercase tracking-widest text-zinc-500">{label}</span>
+                  <strong className="mt-2 block text-lg font-sans text-white">{value}</strong>
+                  <span className="mt-1 block text-[10px] font-sans uppercase" style={{ color: accent }}>{state}</span>
                 </div>
               ))}
             </div>
@@ -1869,15 +1926,15 @@ function SectorDashboardBody({ project, channels, values, history, logs }) {
           </div>
           <div className="mt-4 rounded-xl border border-zinc-800 bg-black/25 p-4">
             <div className="mb-3 flex items-center justify-between">
-              <span className="text-[10px] font-mono uppercase tracking-widest text-zinc-500">Production Line State</span>
-              <span className="text-[10px] font-mono uppercase" style={{ color: accent }}>Auto mode</span>
+              <span className="text-[10px] font-sans uppercase tracking-widest text-zinc-500">Production Line State</span>
+              <span className="text-[10px] font-sans uppercase" style={{ color: accent }}>Auto mode</span>
             </div>
             <div className="grid grid-cols-4 gap-2">
               {["PLC", "Drive", "Sensor", "MQTT"].map((label, i) => (
                 <div key={label} className="rounded-lg border border-zinc-800 bg-[#0a0a0e] p-3 text-center">
                   <span className="mx-auto mb-2 block h-2 w-2 rounded-full" style={{ background: i === 2 ? STATUS_WARNING : accent }} />
                   <strong className="block text-xs text-white">{label}</strong>
-                  <span className="mt-1 block text-[9px] font-mono uppercase text-zinc-500">{i === 2 ? "watch" : "linked"}</span>
+                  <span className="mt-1 block text-[9px] font-sans uppercase text-zinc-500">{i === 2 ? "watch" : "linked"}</span>
                 </div>
               ))}
             </div>
@@ -1893,10 +1950,10 @@ function SectorDashboardBody({ project, channels, values, history, logs }) {
             ].map(([label, value, state]) => (
               <div key={label} className="flex items-center justify-between rounded-lg border border-zinc-800 bg-black/25 p-3">
                 <div>
-                  <span className="block text-[10px] font-mono uppercase tracking-widest text-zinc-500">{label}</span>
-                  <strong className="mt-1 block font-mono text-sm text-white">{value}</strong>
+                  <span className="block text-[10px] font-sans uppercase tracking-widest text-zinc-500">{label}</span>
+                  <strong className="mt-1 block font-sans text-sm text-white">{value}</strong>
                 </div>
-                <span className="rounded-full border px-2 py-1 text-[10px] font-mono uppercase" style={{ color: accent, borderColor: `${accent}66`, background: `${accent}16` }}>
+                <span className="rounded-full border px-2 py-1 text-[10px] font-sans uppercase" style={{ color: accent, borderColor: `${accent}66`, background: `${accent}16` }}>
                   {state}
                 </span>
               </div>
@@ -2067,15 +2124,15 @@ function LiveProjectDashboard({ project, onClose }) {
             <div>
               <div className="flex items-center gap-2 mb-1">
                 <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping" />
-                <span className="text-[10px] font-mono text-emerald-400 uppercase tracking-widest">LIVE · STREAMING</span>
+                <span className="text-[10px] font-sans text-emerald-400 uppercase tracking-widest">LIVE · STREAMING</span>
               </div>
               <h3 className="text-lg sm:text-xl font-bold text-white font-syne">{project.title}</h3>
-              <p className="text-[11px] font-mono text-zinc-500">Real-time dashboard · tick #{tick}</p>
+              <p className="text-[11px] font-sans text-zinc-500">Real-time dashboard · tick #{tick}</p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="iiot-dashboard-close text-zinc-400 hover:text-white border border-zinc-800 hover:border-zinc-700 rounded px-3 py-1 text-sm font-mono"
+            className="iiot-dashboard-close text-zinc-400 hover:text-white border border-zinc-800 hover:border-zinc-700 rounded px-3 py-1 text-sm font-sans"
             aria-label="Close dashboard"
           >
             × CLOSE
@@ -2084,11 +2141,11 @@ function LiveProjectDashboard({ project, onClose }) {
 
         {/* Tech badges */}
         <div className="iiot-tech-stack px-6 py-4 border-b border-zinc-900 flex flex-wrap items-center gap-2">
-          <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-widest mr-2">Tech Stack:</span>
+          <span className="text-[10px] font-sans text-zinc-500 uppercase tracking-widest mr-2">Tech Stack:</span>
           {(project.tech || []).map((t, i) => (
             <span
               key={i}
-              className="text-[10px] font-mono border px-2.5 py-1 rounded"
+              className="text-[10px] font-sans border px-2.5 py-1 rounded"
               style={{ color: sectorStyle.accent, background: sectorStyle.dim, borderColor: sectorStyle.border }}
             >
               {t}
@@ -2098,7 +2155,7 @@ function LiveProjectDashboard({ project, onClose }) {
 
         <SectorDashboardBody project={project} channels={channels} values={values} history={history} logs={logs} />
 
-        <p className="px-6 pb-6 text-[10px] font-mono text-zinc-600">
+        <p className="px-6 pb-6 text-[10px] font-sans text-zinc-600">
           Simulated values for demonstration. Production gateways push real OPC-UA, Modbus, MQTT, and TLS-secured telemetry.
         </p>
       </div>
@@ -2122,7 +2179,12 @@ export default function IndustrialIoTSolutions() {
   const selectUseCase = (id) => {
     setActiveUseCase(id);
     window.setTimeout(() => {
-      useCaseDetailRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+      const target = useCaseDetailRef.current;
+      if (!target) return;
+      const navHeight = document.querySelector(".navbar")?.getBoundingClientRect().height || 72;
+      const extraOffset = window.matchMedia("(max-width: 720px)").matches ? 16 : 28;
+      const top = target.getBoundingClientRect().top + window.scrollY - navHeight - extraOffset;
+      window.scrollTo({ top: Math.max(0, top), behavior: "smooth" });
     }, 80);
   };
 
@@ -2441,7 +2503,7 @@ export default function IndustrialIoTSolutions() {
             <div className="lg:col-span-7 flex flex-col items-start text-left">
               
               {/* Strategic visual tag communicating enterprise transition */}
-              <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-zinc-900/90 border border-zinc-800 text-[11px] font-mono tracking-wider text-cyan-400 mb-8 uppercase">
+              <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-zinc-900/90 border border-zinc-800 text-[11px] font-sans tracking-wider text-cyan-400 mb-8 uppercase">
                 <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse" />
                 ENTERPRISE SYSTEM DIVISION
               </div>
@@ -2467,7 +2529,7 @@ export default function IndustrialIoTSolutions() {
               </div>
 
               {/* Protocol status bar */}
-              <div className="flex flex-wrap gap-6 items-center border-t border-zinc-900 pt-6 w-full text-zinc-500 font-mono text-[10px] uppercase tracking-wider">
+              <div className="flex flex-wrap gap-6 items-center border-t border-zinc-900 pt-6 w-full text-zinc-500 font-sans text-[10px] uppercase tracking-wider">
                 <span className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-emerald-500" /> Modbus TCP/RTU</span>
                 <span className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-emerald-500" /> OPC-UA</span>
                 <span className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-emerald-500" /> MQTT / LoRaWAN</span>
@@ -2485,36 +2547,36 @@ export default function IndustrialIoTSolutions() {
                 <div className="flex justify-between items-center border-b border-zinc-900 pb-4 mb-4">
                   <div className="flex items-center gap-2">
                     <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping" />
-                    <span className="text-[10px] font-mono text-zinc-400 uppercase tracking-widest">LIVE EDGE TELEMETRY</span>
+                    <span className="text-[10px] font-sans text-zinc-400 uppercase tracking-widest">LIVE EDGE TELEMETRY</span>
                   </div>
-                  <span className="text-[10px] font-mono text-zinc-500">GATEWAY ID: IIOT-GW-841</span>
+                  <span className="text-[10px] font-sans text-zinc-500">GATEWAY ID: IIOT-GW-841</span>
                 </div>
 
                 {/* Simulated variables */}
                 <div className="grid grid-cols-2 gap-4 mb-6">
                   <div className="bg-zinc-900/40 border border-zinc-800/30 p-3.5 rounded flex flex-col items-start">
-                    <span className="text-[10px] text-zinc-500 font-mono">MOTOR DRIVE SPEED</span>
-                    <span className="text-xl font-mono text-cyan-400 mt-1">{sensorValues.rpm} <span className="text-xs text-zinc-500">RPM</span></span>
+                    <span className="text-[10px] text-zinc-500 font-sans">MOTOR DRIVE SPEED</span>
+                    <span className="text-xl font-sans text-cyan-400 mt-1">{sensorValues.rpm} <span className="text-xs text-zinc-500">RPM</span></span>
                   </div>
                   <div className="bg-zinc-900/40 border border-zinc-800/30 p-3.5 rounded flex flex-col items-start">
-                    <span className="text-[10px] text-zinc-500 font-mono">AXIAL VIBRATION</span>
-                    <span className={`text-xl font-mono mt-1 ${sensorValues.vibration > 4 ? "text-amber-400" : "text-emerald-400"}`}>{sensorValues.vibration} <span className="text-xs text-zinc-500">mm/s</span></span>
+                    <span className="text-[10px] text-zinc-500 font-sans">AXIAL VIBRATION</span>
+                    <span className={`text-xl font-sans mt-1 ${sensorValues.vibration > 4 ? "text-amber-400" : "text-emerald-400"}`}>{sensorValues.vibration} <span className="text-xs text-zinc-500">mm/s</span></span>
                   </div>
                   <div className="bg-zinc-900/40 border border-zinc-800/30 p-3.5 rounded flex flex-col items-start">
-                    <span className="text-[10px] text-zinc-500 font-mono">CORE TEMPERATURE</span>
-                    <span className="text-xl font-mono text-zinc-300 mt-1">{sensorValues.temp} <span className="text-xs text-zinc-500">°C</span></span>
+                    <span className="text-[10px] text-zinc-500 font-sans">CORE TEMPERATURE</span>
+                    <span className="text-xl font-sans text-zinc-300 mt-1">{sensorValues.temp} <span className="text-xs text-zinc-500">°C</span></span>
                   </div>
                   <div className="bg-zinc-900/40 border border-zinc-800/30 p-3.5 rounded flex flex-col items-start">
-                    <span className="text-[10px] text-zinc-500 font-mono">ENERGY DEMAND</span>
-                    <span className="text-xl font-mono text-zinc-300 mt-1">{sensorValues.power} <span className="text-xs text-zinc-500">kW</span></span>
+                    <span className="text-[10px] text-zinc-500 font-sans">ENERGY DEMAND</span>
+                    <span className="text-xl font-sans text-zinc-300 mt-1">{sensorValues.power} <span className="text-xs text-zinc-500">kW</span></span>
                   </div>
                 </div>
 
                 {/* Simulated Chart */}
                 <div className="mb-4">
                   <div className="flex justify-between items-center mb-2">
-                    <span className="text-[10px] font-mono text-zinc-500 uppercase">Vibration Trend Pipeline</span>
-                    <span className="text-[9px] font-mono text-zinc-500">1200ms INTERVAL</span>
+                    <span className="text-[10px] font-sans text-zinc-500 uppercase">Vibration Trend Pipeline</span>
+                    <span className="text-[9px] font-sans text-zinc-500">1200ms INTERVAL</span>
                   </div>
                   <div className="bg-zinc-900/60 h-20 rounded border border-zinc-900/80 flex items-center justify-center p-2">
                     <Sparkline points={telemetryHistory} stroke={ARC_ACCENT} animate={false} />
@@ -2540,7 +2602,7 @@ export default function IndustrialIoTSolutions() {
         <section className="py-24 px-6 lg:px-16 border-b border-zinc-900 relative z-10 bg-zinc-950/30">
           <div className="max-w-7xl mx-auto">
             <div className="text-center max-w-2xl mx-auto mb-16 gsap-reveal">
-              <span className="text-cyan-400 font-mono text-xs uppercase tracking-widest">Enterprise Trust</span>
+              <span className="text-cyan-400 font-sans text-xs uppercase tracking-widest">Enterprise Trust</span>
               <h2 className="text-3xl sm:text-4xl font-extrabold text-white font-syne mt-2 mb-4">
                 Engineered for Factory Scales
               </h2>
@@ -2564,19 +2626,19 @@ export default function IndustrialIoTSolutions() {
             {/* Metrics sub-band */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-16 pt-12 border-t border-zinc-900/80 max-w-5xl mx-auto text-center">
               <div>
-                <div className="text-3xl font-mono font-bold text-white">50+</div>
+                <div className="text-3xl font-sans font-bold text-white">50+</div>
                 <div className="text-[10px] text-zinc-500 uppercase tracking-widest mt-1">IoT Deployments</div>
               </div>
               <div>
-                <div className="text-3xl font-mono font-bold text-white">100+</div>
+                <div className="text-3xl font-sans font-bold text-white">100+</div>
                 <div className="text-[10px] text-zinc-500 uppercase tracking-widest mt-1">Systems Designed</div>
               </div>
               <div>
-                <div className="text-3xl font-mono font-bold text-white">20+</div>
+                <div className="text-3xl font-sans font-bold text-white">20+</div>
                 <div className="text-[10px] text-zinc-500 uppercase tracking-widest mt-1">Enterprise Partners</div>
               </div>
               <div>
-                <div className="text-3xl font-mono font-bold text-white">99.98%</div>
+                <div className="text-3xl font-sans font-bold text-white">99.98%</div>
                 <div className="text-[10px] text-zinc-500 uppercase tracking-widest mt-1">Data Transmission SLA</div>
               </div>
             </div>
@@ -2588,7 +2650,7 @@ export default function IndustrialIoTSolutions() {
           <div className="max-w-7xl mx-auto">
             <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gsap-reveal">
               <div>
-                <span className="text-cyan-400 font-mono text-xs uppercase tracking-widest">Target Sectors</span>
+                <span className="text-cyan-400 font-sans text-xs uppercase tracking-widest">Target Sectors</span>
                 <h2 className="text-3xl sm:text-4xl font-extrabold text-white font-syne mt-2">
                   Industries We Transform
                 </h2>
@@ -2617,7 +2679,7 @@ export default function IndustrialIoTSolutions() {
         <section className="py-24 px-6 lg:px-16 border-b border-zinc-900 bg-zinc-950/20 relative z-10" id="solutions">
           <div className="max-w-7xl mx-auto">
             <div className="text-center max-w-2xl mx-auto mb-16 gsap-reveal">
-              <span className="text-cyan-400 font-mono text-xs uppercase tracking-widest">Solutions Suite</span>
+              <span className="text-cyan-400 font-sans text-xs uppercase tracking-widest">Solutions Suite</span>
               <h2 className="text-3xl sm:text-4xl font-extrabold text-white font-syne mt-2 mb-4">
                 Core Engineering Capabilities
               </h2>
@@ -2724,7 +2786,7 @@ export default function IndustrialIoTSolutions() {
                           <sol.icon className="w-6 h-6" />
                         </div>
                         <span
-                          className="text-[10px] font-mono px-2.5 py-1 rounded border tracking-wider uppercase text-right"
+                          className="text-[10px] font-sans px-2.5 py-1 rounded border tracking-wider uppercase text-right"
                           style={{ color: ss.accent, background: ss.dim, borderColor: ss.border }}
                         >
                           {ss.label}
@@ -2740,7 +2802,7 @@ export default function IndustrialIoTSolutions() {
                         {sol.tech.map((t, idx) => (
                           <span
                             key={idx}
-                            className="text-[9px] font-mono text-zinc-400 bg-zinc-950/80 px-2 py-0.5 rounded border border-zinc-800"
+                            className="text-[9px] font-sans text-zinc-400 bg-zinc-950/80 px-2 py-0.5 rounded border border-zinc-800"
                           >
                             {t}
                           </span>
@@ -2750,11 +2812,11 @@ export default function IndustrialIoTSolutions() {
                       <SectorCardViz title={sol.title} accent={ss.accent} points={sol.p} />
 
                       <div className="mt-4 flex items-center justify-between">
-                        <span className="inline-flex items-center gap-1.5 text-[10px] font-mono uppercase tracking-widest" style={{ color: ss.accent }}>
+                        <span className="inline-flex items-center gap-1.5 text-[10px] font-sans uppercase tracking-widest" style={{ color: ss.accent }}>
                           <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ background: ss.accent }} />
                           Live Dashboard
                         </span>
-                        <span className="text-[10px] font-mono text-zinc-500 transition-colors flex items-center gap-1 group-hover:text-zinc-200">
+                        <span className="text-[10px] font-sans text-zinc-500 transition-colors flex items-center gap-1 group-hover:text-zinc-200">
                           Open Telemetry <ArrowRight className="w-3 h-3" />
                         </span>
                       </div>
@@ -2779,9 +2841,9 @@ export default function IndustrialIoTSolutions() {
                 <div className="flex justify-between items-center border-b border-zinc-900 pb-4 mb-6">
                   <div className="flex items-center gap-2">
                     <Cpu className="w-4 h-4 text-emerald-400" />
-                    <span className="text-xs font-mono text-white tracking-widest">ANOMALY MATRIX PARSER</span>
+                    <span className="text-xs font-sans text-white tracking-widest">ANOMALY MATRIX PARSER</span>
                   </div>
-                  <span className="text-[10px] font-mono text-zinc-500 bg-zinc-900 px-2 py-0.5 rounded">MODEL: IIOT-NODE-V4</span>
+                  <span className="text-[10px] font-sans text-zinc-500 bg-zinc-900 px-2 py-0.5 rounded">MODEL: IIOT-NODE-V4</span>
                 </div>
 
                 {/* Neural net nodes simulation using SVGs */}
@@ -2818,11 +2880,11 @@ export default function IndustrialIoTSolutions() {
 
                   <div className="absolute bottom-3 left-3 bg-zinc-950/90 border border-zinc-800 px-3 py-1.5 rounded flex items-center gap-2">
                     <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-ping" />
-                    <span className="text-[9px] font-mono text-zinc-400">DECISION PATHWAY ACTIVE</span>
+                    <span className="text-[9px] font-sans text-zinc-400">DECISION PATHWAY ACTIVE</span>
                   </div>
                 </div>
 
-                <div className="grid grid-cols-2 gap-4 text-xs font-mono">
+                <div className="grid grid-cols-2 gap-4 text-xs font-sans">
                   <div className="bg-zinc-900/60 p-3 rounded border border-zinc-900">
                     <span className="text-zinc-500 block mb-1">INFERENCE VALUE</span>
                     <span className="text-zinc-300 font-bold">0.892 (HIGH DEV)</span>
@@ -2836,7 +2898,7 @@ export default function IndustrialIoTSolutions() {
 
               {/* Right Column: Descriptions */}
               <div className="flex flex-col items-start text-left">
-                <span className="text-cyan-400 font-mono text-xs uppercase tracking-widest">Edge Machine Learning</span>
+                <span className="text-cyan-400 font-sans text-xs uppercase tracking-widest">Edge Machine Learning</span>
                 <h2 className="text-3xl sm:text-4xl font-extrabold text-white font-syne mt-2 mb-6">
                   AI-Powered Industrial Intelligence
                 </h2>
@@ -2873,7 +2935,7 @@ export default function IndustrialIoTSolutions() {
         <section className="py-24 px-6 lg:px-16 border-b border-zinc-900 relative z-10">
           <div className="max-w-7xl mx-auto">
             <div className="text-center max-w-2xl mx-auto mb-16 gsap-reveal">
-              <span className="text-cyan-400 font-mono text-xs uppercase tracking-widest">IIoT Tech Matrix</span>
+              <span className="text-cyan-400 font-sans text-xs uppercase tracking-widest">IIoT Tech Matrix</span>
               <h2 className="text-3xl sm:text-4xl font-extrabold text-white font-syne mt-2 mb-4">
                 Enterprise Industrial Ecosystem
               </h2>
@@ -2902,7 +2964,7 @@ export default function IndustrialIoTSolutions() {
               ].map((tech, idx) => (
                 <div
                   key={idx}
-                  className={`iiot-tech-pill px-5 py-3 rounded-lg border font-mono text-xs transition-all duration-300 flex items-center gap-3 ${
+                  className={`iiot-tech-pill px-5 py-3 rounded-lg border font-sans text-xs transition-all duration-300 flex items-center gap-3 ${
                     tech.type === "hardware"
                       ? "border-zinc-800 bg-zinc-900/30 text-zinc-300 hover:border-cyan-500/40 hover:text-cyan-300"
                       : tech.type === "protocol"
@@ -2933,7 +2995,7 @@ export default function IndustrialIoTSolutions() {
         <section className="py-24 px-6 lg:px-16 border-b border-zinc-900 bg-zinc-950/10 relative z-10">
           <div className="max-w-7xl mx-auto">
             <div className="text-center max-w-2xl mx-auto mb-16 gsap-reveal">
-              <span className="text-cyan-400 font-mono text-xs uppercase tracking-widest">Architectures</span>
+              <span className="text-cyan-400 font-sans text-xs uppercase tracking-widest">Architectures</span>
               <h2 className="text-3xl sm:text-4xl font-extrabold text-white font-syne mt-2 mb-4">
                 Enterprise Deployment Models
               </h2>
@@ -2992,7 +3054,7 @@ export default function IndustrialIoTSolutions() {
                   <div>
                     <div className="flex justify-between items-center mb-6">
                       <model.icon className={`w-6 h-6 ${activeDeployment === model.id ? "text-cyan-400" : "text-zinc-500"}`} />
-                      <span className={`text-[8px] font-mono px-2 py-0.5 rounded ${
+                      <span className={`text-[8px] font-sans px-2 py-0.5 rounded ${
                         activeDeployment === model.id ? "bg-cyan-950 text-cyan-400" : "bg-zinc-900 text-zinc-500"
                       }`}>
                         {model.id.toUpperCase()}
@@ -3004,8 +3066,8 @@ export default function IndustrialIoTSolutions() {
                   </div>
 
                   <div className="pt-4 border-t border-zinc-900">
-                    <span className="text-[8px] font-mono text-zinc-500 block mb-1">SIGNAL ROUTING DIAGRAM</span>
-                    <span className="text-[9px] font-mono text-zinc-400 leading-snug">{model.traffic}</span>
+                    <span className="text-[8px] font-sans text-zinc-500 block mb-1">SIGNAL ROUTING DIAGRAM</span>
+                    <span className="text-[9px] font-sans text-zinc-400 leading-snug">{model.traffic}</span>
                   </div>
                 </div>
               ))}
@@ -3017,7 +3079,7 @@ export default function IndustrialIoTSolutions() {
         <section className="py-24 px-6 lg:px-16 border-b border-zinc-900 relative z-10">
           <div className="max-w-7xl mx-auto">
             <div className="text-center max-w-2xl mx-auto mb-16 gsap-reveal">
-              <span className="text-cyan-400 font-mono text-xs uppercase tracking-widest">Workflow</span>
+              <span className="text-cyan-400 font-sans text-xs uppercase tracking-widest">Workflow</span>
               <h2 className="text-3xl sm:text-4xl font-extrabold text-white font-syne mt-2 mb-4">
                 Structured Deployment Pipeline
               </h2>
@@ -3043,7 +3105,7 @@ export default function IndustrialIoTSolutions() {
               ].map((item, idx) => (
                 <div key={idx} className="iiot-workflow-card bg-zinc-950/60 border border-zinc-900 p-5 rounded-lg text-left relative z-10 flex flex-col justify-between h-[210px] group hover:border-zinc-800 transition-colors duration-300">
                   <div>
-                    <span className="text-xs font-mono text-cyan-400 block mb-3">{item.step}</span>
+                    <span className="text-xs font-sans text-cyan-400 block mb-3">{item.step}</span>
                     <h4 className="text-xs font-bold text-white mb-2 leading-snug group-hover:text-cyan-300 transition-colors duration-300 font-syne">{item.name}</h4>
                     <p className="text-[10px] text-zinc-500 leading-normal font-sans">{item.desc}</p>
                   </div>
@@ -3059,7 +3121,7 @@ export default function IndustrialIoTSolutions() {
           <div className="max-w-7xl mx-auto">
             <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gsap-reveal">
               <div>
-                <span className="text-cyan-400 font-mono text-xs uppercase tracking-widest">Deployments In Action</span>
+                <span className="text-cyan-400 font-sans text-xs uppercase tracking-widest">Deployments In Action</span>
                 <h2 className="text-3xl sm:text-4xl font-extrabold text-white font-syne mt-2">
                   Industrial Use Cases
                 </h2>
@@ -3084,7 +3146,7 @@ export default function IndustrialIoTSolutions() {
                 ].map((uc) => (
                   <button
                     key={uc.id}
-                    className={`iiot-usecase-tab w-full text-left p-4 rounded border transition-all duration-300 font-mono text-xs flex flex-col items-start ${
+                    className={`iiot-usecase-tab w-full text-left p-4 rounded border transition-all duration-300 font-sans text-xs flex flex-col items-start ${
                       activeUseCase === uc.id
                         ? "border-cyan-500 bg-zinc-900/60 text-white"
                         : "border-zinc-900 bg-zinc-900/20 text-zinc-500 hover:border-zinc-800"
@@ -3187,16 +3249,16 @@ export default function IndustrialIoTSolutions() {
                         
                         <div className="space-y-4">
                           <div>
-                            <span className="text-[10px] font-mono text-zinc-500 uppercase block mb-1">THE CHALLENGE</span>
+                            <span className="text-[10px] font-sans text-zinc-500 uppercase block mb-1">THE CHALLENGE</span>
                             <p className="text-xs text-zinc-400 leading-relaxed font-sans">{study.challenge}</p>
                           </div>
                           <div>
-                            <span className="text-[10px] font-mono text-zinc-500 uppercase block mb-1">DEPLOYED ARCHITECTURE</span>
+                            <span className="text-[10px] font-sans text-zinc-500 uppercase block mb-1">DEPLOYED ARCHITECTURE</span>
                             <p className="text-xs text-zinc-400 leading-relaxed font-sans">{study.solution}</p>
                           </div>
                           <div>
-                            <span className="text-[10px] font-mono text-zinc-500 uppercase block mb-1">INTEGRATED TECHNOLOGIES</span>
-                            <p className="text-xs font-mono text-cyan-400">{study.tech}</p>
+                            <span className="text-[10px] font-sans text-zinc-500 uppercase block mb-1">INTEGRATED TECHNOLOGIES</span>
+                            <p className="text-xs font-sans text-cyan-400">{study.tech}</p>
                           </div>
                         </div>
                       </div>
@@ -3204,12 +3266,12 @@ export default function IndustrialIoTSolutions() {
                       <div className="pt-6 border-t border-zinc-900 flex flex-wrap justify-between items-center gap-4">
                         <div className="flex gap-8">
                           <div>
-                            <span className="text-[8px] font-mono text-zinc-500 uppercase block mb-0.5">DEPLOYMENT IMPACT</span>
-                            <span className="text-base font-mono font-bold text-emerald-400">{study.metrics.val}</span>
+                            <span className="text-[8px] font-sans text-zinc-500 uppercase block mb-0.5">DEPLOYMENT IMPACT</span>
+                            <span className="text-base font-sans font-bold text-emerald-400">{study.metrics.val}</span>
                           </div>
                           <div>
-                            <span className="text-[8px] font-mono text-zinc-500 uppercase block mb-0.5">NETWORK SLA RATE</span>
-                            <span className="text-base font-mono font-bold text-cyan-400">{study.metrics.rate}</span>
+                            <span className="text-[8px] font-sans text-zinc-500 uppercase block mb-0.5">NETWORK SLA RATE</span>
+                            <span className="text-base font-sans font-bold text-cyan-400">{study.metrics.rate}</span>
                           </div>
                         </div>
                         <a href="#contact" className="px-5 py-2.5 rounded bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-zinc-300 hover:text-white font-semibold text-xs transition-colors duration-300 flex items-center gap-2">
@@ -3228,7 +3290,7 @@ export default function IndustrialIoTSolutions() {
         <section className="py-24 px-6 lg:px-16 border-b border-zinc-900 relative z-10">
           <div className="max-w-7xl mx-auto">
             <div className="text-center max-w-2xl mx-auto mb-16 gsap-reveal">
-              <span className="text-cyan-400 font-mono text-xs uppercase tracking-widest">Interactive Console</span>
+              <span className="text-cyan-400 font-sans text-xs uppercase tracking-widest">Interactive Console</span>
               <h2 className="text-3xl sm:text-4xl font-extrabold text-white font-syne mt-2 mb-4">
                 Operational Telemetry Dashboard
               </h2>
@@ -3244,15 +3306,15 @@ export default function IndustrialIoTSolutions() {
               <div className="bg-zinc-950 px-6 py-4 border-b border-zinc-900 flex flex-wrap justify-between items-center gap-4">
                 <div className="flex items-center gap-3">
                   <div className="w-2.5 h-2.5 rounded-full bg-cyan-400 animate-pulse" />
-                  <span className="font-mono text-xs font-bold text-white uppercase tracking-wider">LIVE TELEMETRY STREAM</span>
+                  <span className="font-sans text-xs font-bold text-white uppercase tracking-wider">LIVE TELEMETRY STREAM</span>
                 </div>
                 
                 {/* Simulation Buttons */}
                 <div className="flex items-center gap-2">
-                  <span className="text-[10px] font-mono text-zinc-500 mr-2 uppercase">SIMULATE FAULTS:</span>
+                  <span className="text-[10px] font-sans text-zinc-500 mr-2 uppercase">SIMULATE FAULTS:</span>
                   <button
                     onClick={() => triggerSimulation("nominal")}
-                    className={`px-3 py-1.5 rounded font-mono text-[10px] font-semibold border transition-all duration-300 ${
+                    className={`px-3 py-1.5 rounded font-sans text-[10px] font-semibold border transition-all duration-300 ${
                       dashboardStatus === "NOMINAL"
                         ? "bg-emerald-950/40 border-emerald-500/60 text-emerald-400 shadow-sm"
                         : "bg-zinc-900/40 border-zinc-800 text-zinc-500 hover:text-zinc-300"
@@ -3262,7 +3324,7 @@ export default function IndustrialIoTSolutions() {
                   </button>
                   <button
                     onClick={() => triggerSimulation("warning")}
-                    className={`px-3 py-1.5 rounded font-mono text-[10px] font-semibold border transition-all duration-300 ${
+                    className={`px-3 py-1.5 rounded font-sans text-[10px] font-semibold border transition-all duration-300 ${
                       dashboardStatus === "WARNING"
                         ? "bg-amber-950/40 border-amber-500/60 text-amber-400 shadow-sm"
                         : "bg-zinc-900/40 border-zinc-800 text-zinc-500 hover:text-zinc-300"
@@ -3272,7 +3334,7 @@ export default function IndustrialIoTSolutions() {
                   </button>
                   <button
                     onClick={() => triggerSimulation("alert")}
-                    className={`px-3 py-1.5 rounded font-mono text-[10px] font-semibold border transition-all duration-300 ${
+                    className={`px-3 py-1.5 rounded font-sans text-[10px] font-semibold border transition-all duration-300 ${
                       dashboardStatus === "ALERT"
                         ? "bg-rose-950/40 border-rose-500/60 text-rose-400 shadow-sm"
                         : "bg-zinc-900/40 border-zinc-800 text-zinc-500 hover:text-zinc-300"
@@ -3307,37 +3369,37 @@ export default function IndustrialIoTSolutions() {
                         </div>
                       </div>
                     </div>
-                    <span className="font-mono text-xs">Uptime: {sensorValues.h}h {sensorValues.m}m</span>
+                    <span className="font-sans text-xs">Uptime: {sensorValues.h}h {sensorValues.m}m</span>
                   </div>
 
                   {/* Core variables grid */}
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
                     <div className="bg-zinc-950/80 border border-zinc-800 p-4 rounded">
-                      <span className="text-[10px] text-zinc-500 font-mono block">MOTOR DRIVE SPEED</span>
-                      <span className="text-2xl font-mono font-bold text-white mt-1 block">{sensorValues.rpm} <span className="text-xs text-zinc-500">RPM</span></span>
-                      <span className="text-[9px] font-mono text-zinc-500 mt-2 block">LIMIT: 1800 RPM MAX</span>
+                      <span className="text-[10px] text-zinc-500 font-sans block">MOTOR DRIVE SPEED</span>
+                      <span className="text-2xl font-sans font-bold text-white mt-1 block">{sensorValues.rpm} <span className="text-xs text-zinc-500">RPM</span></span>
+                      <span className="text-[9px] font-sans text-zinc-500 mt-2 block">LIMIT: 1800 RPM MAX</span>
                     </div>
                     <div className="bg-zinc-950/80 border border-zinc-800 p-4 rounded">
-                      <span className="text-[10px] text-zinc-500 font-mono block">VIBRATION MATRIX</span>
-                      <span className={`text-2xl font-mono font-bold mt-1 block ${
+                      <span className="text-[10px] text-zinc-500 font-sans block">VIBRATION MATRIX</span>
+                      <span className={`text-2xl font-sans font-bold mt-1 block ${
                         sensorValues.vibration > 7 ? "text-rose-400" : sensorValues.vibration > 3 ? "text-amber-400" : "text-emerald-400"
                       }`}>
                         {sensorValues.vibration} <span className="text-xs text-zinc-500">mm/s</span>
                       </span>
-                      <span className="text-[9px] font-mono text-zinc-500 mt-2 block">LIMIT: 3.5 mm/s MAX</span>
+                      <span className="text-[9px] font-sans text-zinc-500 mt-2 block">LIMIT: 3.5 mm/s MAX</span>
                     </div>
                     <div className="bg-zinc-950/80 border border-zinc-800 p-4 rounded">
-                      <span className="text-[10px] text-zinc-500 font-mono block">OPERATIONAL TEMP</span>
-                      <span className="text-2xl font-mono font-bold text-white mt-1 block">{sensorValues.temp} <span className="text-xs text-zinc-500">°C</span></span>
-                      <span className="text-[9px] font-mono text-zinc-500 mt-2 block">LIMIT: 85.0°C MAX</span>
+                      <span className="text-[10px] text-zinc-500 font-sans block">OPERATIONAL TEMP</span>
+                      <span className="text-2xl font-sans font-bold text-white mt-1 block">{sensorValues.temp} <span className="text-xs text-zinc-500">°C</span></span>
+                      <span className="text-[9px] font-sans text-zinc-500 mt-2 block">LIMIT: 85.0°C MAX</span>
                     </div>
                   </div>
 
                   {/* High fidelity telemetry chart */}
                   <div className="bg-zinc-950/80 border border-zinc-800 p-5 rounded">
                     <div className="flex justify-between items-center mb-4 border-b border-zinc-900 pb-3">
-                      <span className="text-[10px] font-mono text-zinc-400 uppercase tracking-wider">High Frequency Jitter Pipeline</span>
-                      <span className="text-[10px] font-mono text-zinc-500 uppercase">Parameter: Acceleration (mm/s)</span>
+                      <span className="text-[10px] font-sans text-zinc-400 uppercase tracking-wider">High Frequency Jitter Pipeline</span>
+                      <span className="text-[10px] font-sans text-zinc-500 uppercase">Parameter: Acceleration (mm/s)</span>
                     </div>
                     
                     <div className="iiot-telemetry-chart h-44 w-full flex items-center justify-center relative bg-[#09090b]/80 rounded border border-zinc-900 p-4">
@@ -3356,12 +3418,12 @@ export default function IndustrialIoTSolutions() {
                   <div>
                     <div className="flex items-center gap-2 mb-4">
                       <Activity className="w-4 h-4 text-cyan-400" />
-                      <span className="text-xs font-mono font-bold text-white uppercase tracking-wider">DIAGNOSTIC ALARM LOG</span>
+                      <span className="text-xs font-sans font-bold text-white uppercase tracking-wider">DIAGNOSTIC ALARM LOG</span>
                     </div>
                     
                     <div className="space-y-3 max-h-[300px] overflow-y-auto pr-1">
                       {alarmLogs.map((log, i) => (
-                        <div key={i} className="p-3 bg-zinc-950 border border-zinc-900 rounded font-mono text-[10px] leading-relaxed">
+                        <div key={i} className="p-3 bg-zinc-950 border border-zinc-900 rounded font-sans text-[10px] leading-relaxed">
                           <div className="flex justify-between items-center mb-1 text-zinc-500">
                             <span>{log.time}</span>
                             <span className={`px-1.5 py-0.5 rounded text-[8px] font-bold ${
@@ -3383,11 +3445,11 @@ export default function IndustrialIoTSolutions() {
                   </div>
 
                   <div className="mt-6 pt-4 border-t border-zinc-900">
-                    <div className="text-[9px] font-mono text-zinc-500 block mb-2 uppercase">CONNECTED PLCS:</div>
+                    <div className="text-[9px] font-sans text-zinc-500 block mb-2 uppercase">CONNECTED PLCS:</div>
                     <div className="flex gap-2">
-                      <span className="text-[8px] font-mono bg-zinc-900 border border-zinc-800 text-emerald-400 px-2 py-1 rounded">PLC-01: OK</span>
-                      <span className="text-[8px] font-mono bg-zinc-900 border border-zinc-800 text-emerald-400 px-2 py-1 rounded">PLC-02: OK</span>
-                      <span className="text-[8px] font-mono bg-zinc-900 border border-zinc-800 text-emerald-400 px-2 py-1 rounded">PLC-04: OK</span>
+                      <span className="text-[8px] font-sans bg-zinc-900 border border-zinc-800 text-emerald-400 px-2 py-1 rounded">PLC-01: OK</span>
+                      <span className="text-[8px] font-sans bg-zinc-900 border border-zinc-800 text-emerald-400 px-2 py-1 rounded">PLC-02: OK</span>
+                      <span className="text-[8px] font-sans bg-zinc-900 border border-zinc-800 text-emerald-400 px-2 py-1 rounded">PLC-04: OK</span>
                     </div>
                   </div>
                 </div>
@@ -3401,7 +3463,7 @@ export default function IndustrialIoTSolutions() {
         <section className="py-24 px-6 lg:px-16 border-b border-zinc-900 relative z-10 bg-zinc-950/20">
           <div className="max-w-7xl mx-auto">
             <div className="text-center max-w-2xl mx-auto mb-16 gsap-reveal">
-              <span className="text-cyan-400 font-mono text-xs uppercase tracking-widest">Capabilities</span>
+              <span className="text-cyan-400 font-sans text-xs uppercase tracking-widest">Capabilities</span>
               <h2 className="text-3xl sm:text-4xl font-extrabold text-white font-syne mt-2 mb-4">
                 Engineering Capability Matrix
               </h2>
@@ -3413,7 +3475,7 @@ export default function IndustrialIoTSolutions() {
             {/* Matrix Table */}
             <div className="iiot-capability-matrix max-w-4xl mx-auto border border-zinc-800 rounded-xl overflow-hidden shadow-xl bg-zinc-950/60 backdrop-blur-md">
               <div className="iiot-capability-wrap overflow-x-auto">
-                <table className="iiot-capability-table w-full text-left font-mono text-xs border-collapse">
+                <table className="iiot-capability-table w-full text-left font-sans text-xs border-collapse">
                   <thead>
                     <tr className="bg-zinc-950 border-b border-zinc-800 text-zinc-400 uppercase tracking-widest text-[10px]">
                       <th className="p-5 font-bold">CAPABILITY SPECIFICATION</th>
@@ -3450,7 +3512,7 @@ export default function IndustrialIoTSolutions() {
         <section className="py-24 px-6 lg:px-16 border-b border-zinc-900 relative z-10">
           <div className="max-w-3xl mx-auto">
             <div className="text-center mb-16 gsap-reveal">
-              <span className="text-cyan-400 font-mono text-xs uppercase tracking-widest">Q&amp;A</span>
+              <span className="text-cyan-400 font-sans text-xs uppercase tracking-widest">Q&amp;A</span>
               <h2 className="text-3xl sm:text-4xl font-extrabold text-white font-syne mt-2 mb-4">
                 Frequently Answered Parameters
               </h2>
@@ -3530,7 +3592,7 @@ export default function IndustrialIoTSolutions() {
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom,rgba(6,182,212,0.06),rgba(0,0,0,0))]" />
           
           <div className="max-w-4xl mx-auto text-center relative z-20 gsap-reveal">
-            <span className="text-cyan-400 font-mono text-xs uppercase tracking-widest block mb-4">Partner with ARC LABS</span>
+            <span className="text-cyan-400 font-sans text-xs uppercase tracking-widest block mb-4">Partner with ARC LABS</span>
             
             <h2 className="text-4xl sm:text-5xl font-extrabold text-white font-syne mb-6 leading-tight">
               Ready to Build the Future <br />
@@ -3551,7 +3613,7 @@ export default function IndustrialIoTSolutions() {
             </div>
 
             {/* Address Footer details */}
-            <div className="border-t border-zinc-900 pt-10 text-[10px] font-mono text-zinc-500 tracking-wider space-y-2">
+            <div className="border-t border-zinc-900 pt-10 text-[10px] font-sans text-zinc-500 tracking-wider space-y-2">
               <p>Arc Labs Systems Division &middot; Hyderabad, Telangana &middot; GST &amp; MSME Registered</p>
               <p className="text-zinc-600">4-7-138/1, Narendra Nagar, Habsiguda, Hyderabad &ndash; 500007</p>
             </div>

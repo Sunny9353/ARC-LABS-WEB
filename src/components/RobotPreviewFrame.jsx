@@ -34,7 +34,7 @@ function getPixelRatio() {
   const isTouch = window.matchMedia("(pointer: coarse)").matches;
   const saveData = navigator.connection?.saveData;
   if (saveData) return 1;
-  return Math.min(window.devicePixelRatio || 1, isTouch ? 1.05 : 1.55);
+  return Math.min(window.devicePixelRatio || 1, isTouch ? 1.65 : 1.9);
 }
 
 function disposeObject(object) {

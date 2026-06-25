@@ -411,7 +411,10 @@
   .about-gallery {
     height: 360px !important;
     margin: 32px auto 18px !important;
-    padding: 0 16px !important;
+    padding: 0 !important;
+    background: transparent !important;
+    border: 0 !important;
+    box-shadow: none !important;
     overflow: hidden !important;
   }
 
@@ -423,7 +426,11 @@
   .aboutSwiper .swiper-slide {
     width: min(86vw, 360px) !important;
     height: 300px !important;
-    border-radius: 14px !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    overflow: visible !important;
     opacity: 0.58 !important;
     filter: none !important;
     transform: scale(0.92) !important;
@@ -438,8 +445,9 @@
   .aboutSwiper .swiper-slide img {
     object-fit: contain !important;
     object-position: center !important;
-    background: #050506;
-    border-radius: 14px !important;
+    background: transparent !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
   }
 
   .about-gallery::before,

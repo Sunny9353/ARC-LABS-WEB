@@ -177,7 +177,7 @@ body.home-hero-ready .home-intro-shell .wa-float {
 }
 .arc-chat-panel {
   width: min(390px, calc(100vw - 32px));
-  max-height: min(680px, calc(100svh - var(--nav-h) - 132px));
+  max-height: min(620px, calc(100svh - var(--nav-h) - 190px));
   margin-bottom: 14px;
   border-radius: 18px;
   background:
