@@ -173,3 +173,4 @@ export const SAMPLE_CERTIFICATES = {
     status: "ACTIVE",
   },
 };
+

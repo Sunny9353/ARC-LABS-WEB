@@ -68,7 +68,7 @@ function Layout({ children }) {
       ".pcta-section",
       ".checkout-section",
       ".not-found",
-      ".iiot-page section",
+      ".IIoT-page section",
       ".gsap-reveal",
     ].join(",");
 
@@ -175,3 +175,4 @@ export default function App() {
     </HelmetProvider>
   );
 }
+

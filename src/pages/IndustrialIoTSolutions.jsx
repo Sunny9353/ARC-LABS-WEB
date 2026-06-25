@@ -56,7 +56,7 @@ function Sparkline({ points, stroke = ARC_ACCENT, animate = true, w = 160, h = 4
       height="100%"
       viewBox={`0 0 ${width} ${height}`}
       preserveAspectRatio="none"
-      className="iiot-sparkline"
+      className="IIoT-sparkline"
     >
       {animate ? (
         <motion.polyline
@@ -199,11 +199,11 @@ function SectorCardViz({ title, accent, points = [] }) {
 }
 
 const factoryFeatureStyles = `
-@keyframes iiotDashboardBackdrop {
+@keyframes IIoTDashboardBackdrop {
   from { opacity: 0; }
   to { opacity: 1; }
 }
-@keyframes iiotDashboardPanel {
+@keyframes IIoTDashboardPanel {
   from { opacity: 0; transform: translateY(18px) scale(.96); }
   to { opacity: 1; transform: translateY(0) scale(1); }
 }
@@ -695,174 +695,174 @@ const factoryFeatureStyles = `
   background: var(--sector-accent, #00DC82);
 }
 :root {
-  --iiot-track: #27272A;
-  --iiot-track-strong: #3F3F46;
+  --IIoT-track: #27272A;
+  --IIoT-track-strong: #3F3F46;
 }
-.iiot-page {
-  --iiot-bg: #09090B;
-  --iiot-surface: #18181B;
-  --iiot-border: #27272A;
-  --iiot-text: #FAFAFA;
-  --iiot-muted: #A1A1AA;
+.IIoT-page {
+  --IIoT-bg: #09090B;
+  --IIoT-surface: #18181B;
+  --IIoT-border: #27272A;
+  --IIoT-text: #FAFAFA;
+  --IIoT-muted: #A1A1AA;
 }
 :root[data-theme="light"] {
-  --iiot-track: #E4E4E7;
-  --iiot-track-strong: #D4D4D8;
+  --IIoT-track: #E4E4E7;
+  --IIoT-track-strong: #D4D4D8;
 }
-:root[data-theme="light"] .iiot-page {
-  --iiot-bg: #FAFAFA;
-  --iiot-surface: #FFFFFF;
-  --iiot-border: #E4E4E7;
-  --iiot-text: #09090B;
-  --iiot-muted: #52525B;
+:root[data-theme="light"] .IIoT-page {
+  --IIoT-bg: #FAFAFA;
+  --IIoT-surface: #FFFFFF;
+  --IIoT-border: #E4E4E7;
+  --IIoT-text: #09090B;
+  --IIoT-muted: #52525B;
   background: #FAFAFA !important;
   color: #09090B !important;
 }
-:root[data-theme="light"] .iiot-page section,
-:root[data-theme="light"] .iiot-page [class*="bg-[#070"],
-:root[data-theme="light"] .iiot-page [class*="bg-[#090"],
-:root[data-theme="light"] .iiot-page [class*="bg-[#0a"],
-:root[data-theme="light"] .iiot-page [class*="bg-zinc-9"],
-:root[data-theme="light"] .iiot-page [class*="bg-black"] {
+:root[data-theme="light"] .IIoT-page section,
+:root[data-theme="light"] .IIoT-page [class*="bg-[#070"],
+:root[data-theme="light"] .IIoT-page [class*="bg-[#090"],
+:root[data-theme="light"] .IIoT-page [class*="bg-[#0a"],
+:root[data-theme="light"] .IIoT-page [class*="bg-zinc-9"],
+:root[data-theme="light"] .IIoT-page [class*="bg-black"] {
   background-color: #FAFAFA !important;
 }
-:root[data-theme="light"] .iiot-page article,
-:root[data-theme="light"] .iiot-page [class*="bg-zinc-950"],
-:root[data-theme="light"] .iiot-page [class*="bg-zinc-900"],
-:root[data-theme="light"] .iiot-page .factory-feature-card,
-:root[data-theme="light"] .iiot-page .industry-sector-card,
-:root[data-theme="light"] .iiot-page .solution-sector-card,
-:root[data-theme="light"] .iiot-page .rounded-xl,
-:root[data-theme="light"] .iiot-page .rounded-2xl {
+:root[data-theme="light"] .IIoT-page article,
+:root[data-theme="light"] .IIoT-page [class*="bg-zinc-950"],
+:root[data-theme="light"] .IIoT-page [class*="bg-zinc-900"],
+:root[data-theme="light"] .IIoT-page .factory-feature-card,
+:root[data-theme="light"] .IIoT-page .industry-sector-card,
+:root[data-theme="light"] .IIoT-page .solution-sector-card,
+:root[data-theme="light"] .IIoT-page .rounded-xl,
+:root[data-theme="light"] .IIoT-page .rounded-2xl {
   background-color: #FFFFFF !important;
   border-color: #E4E4E7 !important;
   box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
 }
-:root[data-theme="light"] .iiot-page .text-white,
-:root[data-theme="light"] .iiot-page .text-zinc-100,
-:root[data-theme="light"] .iiot-page .text-zinc-200,
-:root[data-theme="light"] .iiot-page h1,
-:root[data-theme="light"] .iiot-page h2,
-:root[data-theme="light"] .iiot-page h3,
-:root[data-theme="light"] .iiot-page h4,
-:root[data-theme="light"] .iiot-page strong {
+:root[data-theme="light"] .IIoT-page .text-white,
+:root[data-theme="light"] .IIoT-page .text-zinc-100,
+:root[data-theme="light"] .IIoT-page .text-zinc-200,
+:root[data-theme="light"] .IIoT-page h1,
+:root[data-theme="light"] .IIoT-page h2,
+:root[data-theme="light"] .IIoT-page h3,
+:root[data-theme="light"] .IIoT-page h4,
+:root[data-theme="light"] .IIoT-page strong {
   color: #09090B !important;
 }
-:root[data-theme="light"] .iiot-page .text-zinc-300,
-:root[data-theme="light"] .iiot-page .text-zinc-400,
-:root[data-theme="light"] .iiot-page .text-zinc-500,
-:root[data-theme="light"] .iiot-page p,
-:root[data-theme="light"] .iiot-page td,
-:root[data-theme="light"] .iiot-page li {
+:root[data-theme="light"] .IIoT-page .text-zinc-300,
+:root[data-theme="light"] .IIoT-page .text-zinc-400,
+:root[data-theme="light"] .IIoT-page .text-zinc-500,
+:root[data-theme="light"] .IIoT-page p,
+:root[data-theme="light"] .IIoT-page td,
+:root[data-theme="light"] .IIoT-page li {
   color: #52525B !important;
 }
-:root[data-theme="light"] .iiot-page .border-zinc-900,
-:root[data-theme="light"] .iiot-page .border-zinc-800,
-:root[data-theme="light"] .iiot-page .border-zinc-700 {
+:root[data-theme="light"] .IIoT-page .border-zinc-900,
+:root[data-theme="light"] .IIoT-page .border-zinc-800,
+:root[data-theme="light"] .IIoT-page .border-zinc-700 {
   border-color: #E4E4E7 !important;
 }
-:root[data-theme="light"] .iiot-page .bg-cyan-500,
-:root[data-theme="light"] .iiot-page .bg-cyan-400,
-:root[data-theme="light"] .iiot-page .bg-emerald-500,
-:root[data-theme="light"] .iiot-page .bg-emerald-400 {
+:root[data-theme="light"] .IIoT-page .bg-cyan-500,
+:root[data-theme="light"] .IIoT-page .bg-cyan-400,
+:root[data-theme="light"] .IIoT-page .bg-emerald-500,
+:root[data-theme="light"] .IIoT-page .bg-emerald-400 {
   background-color: #00DC82 !important;
 }
-:root[data-theme="light"] .iiot-page .text-cyan-400,
-:root[data-theme="light"] .iiot-page .text-cyan-300,
-:root[data-theme="light"] .iiot-page .text-emerald-400,
-:root[data-theme="light"] .iiot-page .text-emerald-300 {
+:root[data-theme="light"] .IIoT-page .text-cyan-400,
+:root[data-theme="light"] .IIoT-page .text-cyan-300,
+:root[data-theme="light"] .IIoT-page .text-emerald-400,
+:root[data-theme="light"] .IIoT-page .text-emerald-300 {
   color: #00DC82 !important;
 }
-:root[data-theme="light"] .iiot-page .text-amber-400,
-:root[data-theme="light"] .iiot-page .text-amber-300 {
+:root[data-theme="light"] .IIoT-page .text-amber-400,
+:root[data-theme="light"] .IIoT-page .text-amber-300 {
   color: #F59E0B !important;
 }
-:root[data-theme="light"] .iiot-page .text-rose-400,
-:root[data-theme="light"] .iiot-page .text-rose-300 {
+:root[data-theme="light"] .IIoT-page .text-rose-400,
+:root[data-theme="light"] .IIoT-page .text-rose-300 {
   color: #EF4444 !important;
 }
-:root[data-theme="light"] .iiot-page .solution-sector-icon,
-:root[data-theme="light"] .iiot-page .sector-viz-mesh span,
-:root[data-theme="light"] .iiot-page .scan-feed,
-:root[data-theme="light"] .iiot-page .sector-viz-pipeline span,
-:root[data-theme="light"] .iiot-page .sector-viz-cloud span,
-:root[data-theme="light"] .iiot-page .sector-viz-dashboard span {
+:root[data-theme="light"] .IIoT-page .solution-sector-icon,
+:root[data-theme="light"] .IIoT-page .sector-viz-mesh span,
+:root[data-theme="light"] .IIoT-page .scan-feed,
+:root[data-theme="light"] .IIoT-page .sector-viz-pipeline span,
+:root[data-theme="light"] .IIoT-page .sector-viz-cloud span,
+:root[data-theme="light"] .IIoT-page .sector-viz-dashboard span {
   background-color: #F4F4F5 !important;
 }
-.iiot-usecases {
+.IIoT-usecases {
   scroll-margin-top: calc(var(--nav-h) + 18px);
 }
-.iiot-usecase-list {
+.IIoT-usecase-list {
   display: grid;
   gap: 0.8rem;
 }
-.iiot-usecase-tab {
+.IIoT-usecase-tab {
   min-height: 82px;
   border-color: var(--border) !important;
   background: var(--surface) !important;
   color: var(--text-2) !important;
   box-shadow: var(--shadow-sm);
 }
-.iiot-usecase-tab:hover,
-.iiot-usecase-tab[class*="border-cyan"] {
+.IIoT-usecase-tab:hover,
+.IIoT-usecase-tab[class*="border-cyan"] {
   border-color: rgba(0,220,130,0.42) !important;
   color: var(--text) !important;
   background:
     linear-gradient(135deg, rgba(0,220,130,0.08), transparent 56%),
     var(--surface) !important;
 }
-.iiot-usecase-tab span:first-child {
+.IIoT-usecase-tab span:first-child {
   color: var(--text) !important;
 }
-.iiot-usecase-detail {
+.IIoT-usecase-detail {
   background:
     linear-gradient(135deg, rgba(0,220,130,0.055), transparent 48%),
     var(--surface) !important;
   border-color: var(--border) !important;
   box-shadow: var(--shadow-sm);
 }
-:root[data-theme="light"] .iiot-usecases {
+:root[data-theme="light"] .IIoT-usecases {
   background: transparent !important;
   border-color: var(--border) !important;
 }
-:root[data-theme="light"] .iiot-usecases h2,
-:root[data-theme="light"] .iiot-usecase-detail h3 {
+:root[data-theme="light"] .IIoT-usecases h2,
+:root[data-theme="light"] .IIoT-usecase-detail h3 {
   color: var(--text) !important;
 }
-:root[data-theme="light"] .iiot-usecases p,
-:root[data-theme="light"] .iiot-usecase-detail p {
+:root[data-theme="light"] .IIoT-usecases p,
+:root[data-theme="light"] .IIoT-usecase-detail p {
   color: var(--text-2) !important;
 }
-:root[data-theme="light"] .iiot-usecase-detail .border-zinc-900 {
+:root[data-theme="light"] .IIoT-usecase-detail .border-zinc-900 {
   border-color: var(--border) !important;
 }
 
-.iiot-page section {
+.IIoT-page section {
   padding-top: clamp(3.75rem, 7vh, 6rem) !important;
   padding-bottom: clamp(3.75rem, 7vh, 6rem) !important;
 }
 
-.iiot-page .max-w-7xl {
+.IIoT-page .max-w-7xl {
   max-width: min(1500px, 90vw) !important;
 }
 
-.iiot-page .max-w-6xl,
-.iiot-page .max-w-5xl {
+.IIoT-page .max-w-6xl,
+.IIoT-page .max-w-5xl {
   max-width: min(1280px, 90vw) !important;
 }
 
-.iiot-hero {
+.IIoT-hero {
   min-height: clamp(680px, 92svh, 900px) !important;
   padding-top: clamp(5rem, 9vh, 7rem) !important;
   padding-bottom: clamp(3rem, 5vh, 5rem) !important;
   overflow: hidden !important;
 }
 
-.iiot-hero > .max-w-7xl {
+.IIoT-hero > .max-w-7xl {
   align-items: center !important;
 }
 
-.iiot-feature-grid {
+.IIoT-feature-grid {
   align-items: stretch !important;
 }
 
@@ -885,27 +885,27 @@ const factoryFeatureStyles = `
     gap: clamp(1rem, 1.5vw, 1.5rem) !important;
   }
 
-  .iiot-usecase-shell {
+  .IIoT-usecase-shell {
     display: grid !important;
     grid-template-columns: minmax(300px, 420px) minmax(0, 1fr) !important;
     gap: clamp(1.25rem, 2vw, 2rem) !important;
     align-items: stretch !important;
   }
 
-  .iiot-usecase-list,
-  .iiot-usecase-detail {
+  .IIoT-usecase-list,
+  .IIoT-usecase-detail {
     grid-column: auto !important;
   }
 }
 
 @media (min-width: 1440px) {
-  .iiot-usecase-shell {
+  .IIoT-usecase-shell {
     max-width: min(1280px, 82vw);
     margin-inline: auto;
   }
 }
 
-.iiot-usecase-list {
+.IIoT-usecase-list {
   max-height: min(68vh, 680px);
   overflow-y: auto;
   padding-right: 0.25rem;
@@ -913,132 +913,132 @@ const factoryFeatureStyles = `
   scrollbar-color: rgba(0,220,130,0.35) transparent;
 }
 
-.iiot-usecase-tab {
+.IIoT-usecase-tab {
   min-height: clamp(68px, 7vh, 92px) !important;
   justify-content: center;
 }
 
-.iiot-usecase-detail {
+.IIoT-usecase-detail {
   min-height: clamp(360px, 42vh, 500px) !important;
   justify-content: center !important;
 }
 
-.iiot-usecase-detail > div {
+.IIoT-usecase-detail > div {
   width: 100%;
 }
 
 @media (min-width: 1700px) {
-  .iiot-page section {
+  .IIoT-page section {
     padding-top: 5rem !important;
     padding-bottom: 5rem !important;
   }
 
-  .iiot-hero {
+  .IIoT-hero {
     min-height: 820px !important;
   }
 }
 
-.iiot-page section:not(.iiot-hero) {
+.IIoT-page section:not(.IIoT-hero) {
   min-height: auto !important;
 }
 
-.iiot-page .py-24 {
+.IIoT-page .py-24 {
   padding-top: clamp(3rem, 6vh, 5rem) !important;
   padding-bottom: clamp(3rem, 6vh, 5rem) !important;
 }
 
-.iiot-page .mb-16 {
+.IIoT-page .mb-16 {
   margin-bottom: clamp(2rem, 4vh, 3.5rem) !important;
 }
 
-.iiot-page .mt-16 {
+.IIoT-page .mt-16 {
   margin-top: clamp(2rem, 4vh, 3.5rem) !important;
 }
 
-.iiot-page .gap-12 {
+.IIoT-page .gap-12 {
   gap: clamp(1.75rem, 3vw, 3rem) !important;
 }
 
-.iiot-page .gap-8 {
+.IIoT-page .gap-8 {
   gap: clamp(1.25rem, 2vw, 2rem) !important;
 }
 
-.iiot-hero .max-w-7xl {
+.IIoT-hero .max-w-7xl {
   display: grid !important;
   grid-template-columns: minmax(0, 1.08fr) minmax(360px, 0.72fr) !important;
   gap: clamp(2rem, 4vw, 4.5rem) !important;
   max-width: min(1360px, 88vw) !important;
 }
 
-.iiot-hero h1 {
+.IIoT-hero h1 {
   font-size: clamp(3rem, 5.4vw, 5.6rem) !important;
 }
 
-.iiot-hero p {
+.IIoT-hero p {
   font-size: clamp(1rem, 1.2vw, 1.2rem) !important;
 }
 
-.iiot-hero .lg\\:col-span-5 > div {
+.IIoT-hero .lg\\:col-span-5 > div {
   max-width: clamp(390px, 31vw, 500px) !important;
 }
 
 @media (max-width: 1023px) {
-  .iiot-hero .max-w-7xl {
+  .IIoT-hero .max-w-7xl {
     grid-template-columns: 1fr !important;
   }
 }
 
 @media (min-width: 1024px) {
-  .iiot-hero .lg\\:col-span-7,
-  .iiot-hero .lg\\:col-span-5 {
+  .IIoT-hero .lg\\:col-span-7,
+  .IIoT-hero .lg\\:col-span-5 {
     grid-column: auto / span 1 !important;
   }
 }
 
 @media (max-width: 1320px) and (min-width: 1024px) {
-  .iiot-hero h1 {
+  .IIoT-hero h1 {
     font-size: clamp(2.8rem, 4.6vw, 4.5rem) !important;
   }
 
-  .iiot-hero .max-w-7xl {
+  .IIoT-hero .max-w-7xl {
     grid-template-columns: minmax(0, 1fr) minmax(340px, 0.68fr) !important;
     max-width: min(1220px, 90vw) !important;
   }
 }
 
 @media (max-width: 720px) {
-  .iiot-page section {
+  .IIoT-page section {
     padding-inline: 16px !important;
   }
 
-  .iiot-hero {
+  .IIoT-hero {
     min-height: auto !important;
     padding-top: calc(var(--nav-h) + 34px) !important;
     padding-bottom: 42px !important;
   }
 
-  .iiot-hero .max-w-7xl,
-  .iiot-page .max-w-7xl,
-  .iiot-page .max-w-6xl,
-  .iiot-page .max-w-5xl {
+  .IIoT-hero .max-w-7xl,
+  .IIoT-page .max-w-7xl,
+  .IIoT-page .max-w-6xl,
+  .IIoT-page .max-w-5xl {
     max-width: 100% !important;
   }
 
-  .iiot-hero h1 {
+  .IIoT-hero h1 {
     font-size: clamp(2.25rem, 12vw, 3.35rem) !important;
     line-height: 0.95 !important;
   }
 
-  .iiot-hero p,
-  .iiot-page p {
+  .IIoT-hero p,
+  .IIoT-page p {
     line-height: 1.7 !important;
   }
 
-  .iiot-page .grid {
+  .IIoT-page .grid {
     min-width: 0;
   }
 
-  .iiot-feature-grid,
+  .IIoT-feature-grid,
   .solution-suite-grid {
     gap: 16px !important;
   }
@@ -1046,8 +1046,8 @@ const factoryFeatureStyles = `
   .factory-feature-card,
   .industry-sector-card,
   .solution-sector-card,
-  .iiot-usecase-detail,
-  .iiot-usecase-tab {
+  .IIoT-usecase-detail,
+  .IIoT-usecase-tab {
     border-radius: 14px !important;
   }
 
@@ -1091,14 +1091,14 @@ const factoryFeatureStyles = `
     border-radius: 8px;
   }
 
-  .iiot-tech-matrix {
+  .IIoT-tech-matrix {
     display: grid !important;
     grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
     gap: 8px !important;
     max-width: 100% !important;
   }
 
-  .iiot-tech-pill {
+  .IIoT-tech-pill {
     min-height: 48px;
     justify-content: flex-start;
     padding: 10px 11px !important;
@@ -1108,11 +1108,11 @@ const factoryFeatureStyles = `
     white-space: normal;
   }
 
-  .iiot-tech-pill span {
+  .IIoT-tech-pill span {
     flex: 0 0 auto;
   }
 
-  .iiot-workflow-card {
+  .IIoT-workflow-card {
     height: auto !important;
     min-height: 132px;
     padding: 18px !important;
@@ -1120,100 +1120,100 @@ const factoryFeatureStyles = `
     gap: 14px;
   }
 
-  .iiot-workflow-card .w-1\\.5 {
+  .IIoT-workflow-card .w-1\\.5 {
     margin-top: 2px !important;
   }
 
-  .iiot-usecase-shell {
+  .IIoT-usecase-shell {
     gap: 16px !important;
   }
 
-  .iiot-usecase-list {
+  .IIoT-usecase-list {
     max-height: none;
     padding-right: 0;
   }
 
-  .iiot-usecase-detail {
+  .IIoT-usecase-detail {
     min-height: auto !important;
     padding: 18px !important;
     scroll-margin-top: calc(var(--nav-h) + 16px);
   }
 
-  .iiot-usecase-detail .flex.gap-8 {
+  .IIoT-usecase-detail .flex.gap-8 {
     display: grid !important;
     grid-template-columns: 1fr !important;
     gap: 12px !important;
   }
 
-  .iiot-usecase-detail a {
+  .IIoT-usecase-detail a {
     width: 100%;
     justify-content: center;
   }
 
-  .iiot-console {
+  .IIoT-console {
     border-radius: 14px !important;
   }
 
-  .iiot-console .p-6 {
+  .IIoT-console .p-6 {
     padding: 16px !important;
   }
 
-  .iiot-console .flex.justify-between {
+  .IIoT-console .flex.justify-between {
     align-items: flex-start !important;
   }
 
-  .iiot-telemetry-chart {
+  .IIoT-telemetry-chart {
     height: 180px !important;
     padding: 12px !important;
     overflow: hidden !important;
   }
 
-  .iiot-sparkline {
+  .IIoT-sparkline {
     display: block;
     width: 100% !important;
     height: 100% !important;
     overflow: hidden;
   }
 
-  .iiot-capability-wrap {
+  .IIoT-capability-wrap {
     overflow: visible !important;
   }
 
-  .iiot-capability-table,
-  .iiot-capability-table thead,
-  .iiot-capability-table tbody,
-  .iiot-capability-table tr,
-  .iiot-capability-table td {
+  .IIoT-capability-table,
+  .IIoT-capability-table thead,
+  .IIoT-capability-table tbody,
+  .IIoT-capability-table tr,
+  .IIoT-capability-table td {
     display: block !important;
     width: 100% !important;
   }
 
-  .iiot-capability-table thead {
+  .IIoT-capability-table thead {
     display: none !important;
   }
 
-  .iiot-capability-table tr {
+  .IIoT-capability-table tr {
     padding: 16px !important;
     border-bottom: 1px solid rgba(39,39,42,0.82);
     background: rgba(9,9,11,0.34);
   }
 
-  .iiot-capability-table tr:last-child {
+  .IIoT-capability-table tr:last-child {
     border-bottom: 0;
   }
 
-  .iiot-capability-table td {
+  .IIoT-capability-table td {
     padding: 0 !important;
     border: 0 !important;
     text-align: left !important;
     white-space: normal !important;
   }
 
-  .iiot-capability-table td + td {
+  .IIoT-capability-table td + td {
     margin-top: 12px;
   }
 
-  .iiot-capability-table td::before {
+  .IIoT-capability-table td::before {
     content: attr(data-label);
     display: block;
     margin-bottom: 4px;
@@ -1224,7 +1224,7 @@ const factoryFeatureStyles = `
     text-transform: uppercase;
   }
 
-  .iiot-dashboard-overlay {
+  .IIoT-dashboard-overlay {
     align-items: flex-start !important;
     justify-content: center !important;
     padding: calc(var(--nav-h) + 10px) 12px 14px !important;
@@ -1232,7 +1232,7 @@ const factoryFeatureStyles = `
     -webkit-backdrop-filter: none !important;
   }
 
-  .iiot-dashboard-modal {
+  .IIoT-dashboard-modal {
     max-height: calc(100svh - var(--nav-h) - 24px) !important;
     border-radius: 18px !important;
     background:
@@ -1241,7 +1241,7 @@ const factoryFeatureStyles = `
     box-shadow: 0 18px 58px rgba(0,0,0,0.46) !important;
   }
 
-  .iiot-dashboard-header {
+  .IIoT-dashboard-header {
     display: grid !important;
     grid-template-columns: minmax(0, 1fr) auto !important;
     align-items: start !important;
@@ -1249,94 +1249,94 @@ const factoryFeatureStyles = `
     padding: 16px !important;
   }
 
-  .iiot-dashboard-title-row {
+  .IIoT-dashboard-title-row {
     min-width: 0;
     gap: 12px !important;
   }
 
-  .iiot-dashboard-title-row h3 {
+  .IIoT-dashboard-title-row h3 {
     font-size: 1.05rem !important;
     line-height: 1.25 !important;
   }
 
-  .iiot-dashboard-title-row p {
+  .IIoT-dashboard-title-row p {
     font-size: 0.68rem !important;
   }
 
-  .iiot-dashboard-close {
+  .IIoT-dashboard-close {
     min-height: 38px !important;
     padding: 0 12px !important;
     border-radius: 10px !important;
     font-size: 0 !important;
   }
 
-  .iiot-dashboard-close::before {
+  .IIoT-dashboard-close::before {
     content: "Close";
     font-size: 0.72rem;
     letter-spacing: 0.08em;
     text-transform: uppercase;
   }
 
-  .iiot-tech-stack {
+  .IIoT-tech-stack {
     padding: 12px 16px !important;
     gap: 8px !important;
   }
 
-  .iiot-tech-stack > span:first-child {
+  .IIoT-tech-stack > span:first-child {
     width: 100%;
     margin-right: 0 !important;
   }
 
-  .iiot-dashboard-body {
+  .IIoT-dashboard-body {
     padding: 16px !important;
     gap: 14px !important;
   }
 
-  .iiot-kpi-grid {
+  .IIoT-kpi-grid {
     grid-template-columns: 1fr 1fr !important;
     gap: 10px !important;
   }
 
-  .iiot-kpi-card,
-  .iiot-dashboard-panel {
+  .IIoT-kpi-card,
+  .IIoT-dashboard-panel {
     border-radius: 12px !important;
     background: rgba(24,24,27,0.68) !important;
     box-shadow: inset 0 1px 0 rgba(255,255,255,0.045);
   }
 
-  .iiot-kpi-card {
+  .IIoT-kpi-card {
     padding: 13px !important;
     min-height: 104px;
   }
 
-  .iiot-kpi-card .text-2xl {
+  .IIoT-kpi-card .text-2xl {
     font-size: 1.55rem !important;
     line-height: 1.1 !important;
   }
 
-  .iiot-dashboard-panel {
+  .IIoT-dashboard-panel {
     padding: 14px !important;
     overflow: hidden;
   }
 
-  .iiot-dashboard-panel .grid-cols-2,
-  .iiot-dashboard-panel .grid-cols-3,
-  .iiot-dashboard-panel .sm\\:grid-cols-3,
-  .iiot-dashboard-panel .sm\\:grid-cols-4 {
+  .IIoT-dashboard-panel .grid-cols-2,
+  .IIoT-dashboard-panel .grid-cols-3,
+  .IIoT-dashboard-panel .sm\\:grid-cols-3,
+  .IIoT-dashboard-panel .sm\\:grid-cols-4 {
     grid-template-columns: 1fr !important;
   }
 
-  .iiot-dashboard-panel svg {
+  .IIoT-dashboard-panel svg {
     max-width: 100%;
     height: auto;
   }
 }
 
-.iiot-usecase-detail {
+.IIoT-usecase-detail {
   scroll-margin-top: calc(var(--nav-h) + 28px);
 }
 
-:root[data-theme="light"] .iiot-page .solution-sector-card {
+:root[data-theme="light"] .IIoT-page .solution-sector-card {
   background:
     linear-gradient(180deg, #ffffff, #f7f7f8),
     radial-gradient(circle at 18% 0%, rgba(0,220,130,0.08), transparent 48%) !important;
@@ -1345,28 +1345,28 @@ const factoryFeatureStyles = `
   box-shadow: 0 16px 40px rgba(9,9,11,0.08) !important;
 }
 
-:root[data-theme="light"] .iiot-page .solution-sector-card h3,
-:root[data-theme="light"] .iiot-page .solution-sector-card strong,
-:root[data-theme="light"] .iiot-dashboard-modal h3,
-:root[data-theme="light"] .iiot-dashboard-modal strong {
+:root[data-theme="light"] .IIoT-page .solution-sector-card h3,
+:root[data-theme="light"] .IIoT-page .solution-sector-card strong,
+:root[data-theme="light"] .IIoT-dashboard-modal h3,
+:root[data-theme="light"] .IIoT-dashboard-modal strong {
   color: #09090b !important;
 }
 
-:root[data-theme="light"] .iiot-page .solution-sector-card p,
-:root[data-theme="light"] .iiot-dashboard-modal p,
-:root[data-theme="light"] .iiot-dashboard-modal span {
+:root[data-theme="light"] .IIoT-page .solution-sector-card p,
+:root[data-theme="light"] .IIoT-dashboard-modal p,
+:root[data-theme="light"] .IIoT-dashboard-modal span {
   color: #52525b !important;
 }
 
-:root[data-theme="light"] .iiot-page .solution-sector-card .sector-viz,
-:root[data-theme="light"] .iiot-page .solution-sector-card .sector-viz-dashboard {
+:root[data-theme="light"] .IIoT-page .solution-sector-card .sector-viz,
+:root[data-theme="light"] .IIoT-page .solution-sector-card .sector-viz-dashboard {
   background:
     linear-gradient(180deg, rgba(244,244,245,0.92), rgba(255,255,255,0.88)),
     repeating-linear-gradient(90deg, transparent 0 44px, rgba(9,9,11,0.04) 44px 45px) !important;
   border-color: #e4e4e7 !important;
 }
 
-:root[data-theme="light"] .iiot-dashboard-modal {
+:root[data-theme="light"] .IIoT-dashboard-modal {
   background:
     linear-gradient(180deg, #ffffff, #f7f7f8),
     radial-gradient(circle at top left, rgba(0,220,130,0.08), transparent 44%) !important;
@@ -1374,18 +1374,18 @@ const factoryFeatureStyles = `
   color: #09090b !important;
 }
 
-:root[data-theme="light"] .iiot-dashboard-header,
-:root[data-theme="light"] .iiot-tech-stack,
-:root[data-theme="light"] .iiot-kpi-card,
-:root[data-theme="light"] .iiot-dashboard-panel {
+:root[data-theme="light"] .IIoT-dashboard-header,
+:root[data-theme="light"] .IIoT-tech-stack,
+:root[data-theme="light"] .IIoT-kpi-card,
+:root[data-theme="light"] .IIoT-dashboard-panel {
   background: #ffffff !important;
   border-color: #e4e4e7 !important;
   box-shadow: 0 10px 28px rgba(9,9,11,0.07) !important;
 }
 
-:root[data-theme="light"] .iiot-dashboard-panel .bg-zinc-950,
-:root[data-theme="light"] .iiot-dashboard-panel .bg-zinc-900,
-:root[data-theme="light"] .iiot-dashboard-panel .bg-black {
+:root[data-theme="light"] .IIoT-dashboard-panel .bg-zinc-950,
+:root[data-theme="light"] .IIoT-dashboard-panel .bg-zinc-900,
+:root[data-theme="light"] .IIoT-dashboard-panel .bg-black {
   background-color: #f4f4f5 !important;
 }
 `;
@@ -1455,7 +1455,7 @@ function DashboardKpi({ label, value, unit, accent, min = 0, max = 100 }) {
     : 0;
 
   return (
-    <div className="iiot-kpi-card bg-zinc-900/45 border border-zinc-800 p-4 rounded-lg">
+    <div className="IIoT-kpi-card bg-zinc-900/45 border border-zinc-800 p-4 rounded-lg">
       <div className="text-[10px] font-sans text-zinc-500 uppercase tracking-widest mb-1">{label}</div>
       <div className="text-2xl font-sans font-bold" style={{ color: accent }}>
         {Number.isFinite(numeric) ? value : "--"}{" "}
@@ -1475,7 +1475,7 @@ function DashboardKpi({ label, value, unit, accent, min = 0, max = 100 }) {
 
 function DashboardPanel({ title, children, accent }) {
   return (
-    <div className="iiot-dashboard-panel bg-zinc-900/45 border border-zinc-800 rounded-xl p-4">
+    <div className="IIoT-dashboard-panel bg-zinc-900/45 border border-zinc-800 rounded-xl p-4">
       <div className="flex items-center justify-between mb-4">
         <span className="text-[10px] font-sans text-zinc-500 uppercase tracking-widest">{title}</span>
         <span className="h-1.5 w-1.5 rounded-full" style={{ background: accent, boxShadow: `0 0 16px ${accent}` }} />
@@ -1568,7 +1568,7 @@ function SectorDashboardBody({ project, channels, values, history, logs }) {
   );
 
   const kpiGrid = (
-    <div className="iiot-kpi-grid grid grid-cols-2 lg:grid-cols-4 gap-3">
+    <div className="IIoT-kpi-grid grid grid-cols-2 lg:grid-cols-4 gap-3">
       {channels.map((c) => (
         <DashboardKpi
           key={c.key}
@@ -1585,7 +1585,7 @@ function SectorDashboardBody({ project, channels, values, history, logs }) {
 
   if (project?.title === "Predictive Maintenance Systems") {
     return (
-      <div className="iiot-dashboard-body px-6 py-5 space-y-4">
+      <div className="IIoT-dashboard-body px-6 py-5 space-y-4">
         {kpiGrid}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
           <DashboardPanel title="Failure Risk Analyzer" accent={accent}>
@@ -1637,7 +1637,7 @@ function SectorDashboardBody({ project, channels, values, history, logs }) {
 
   if (project?.title === "Smart Energy Monitoring") {
     return (
-      <div className="iiot-dashboard-body px-6 py-5 space-y-4">
+      <div className="IIoT-dashboard-body px-6 py-5 space-y-4">
         {kpiGrid}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
           <DashboardPanel title="Three Phase Load Balance" accent={accent}>
@@ -1674,7 +1674,7 @@ function SectorDashboardBody({ project, channels, values, history, logs }) {
 
   if (project?.title === "Industrial Telemetry Systems") {
     return (
-      <div className="iiot-dashboard-body px-6 py-5 space-y-4">
+      <div className="IIoT-dashboard-body px-6 py-5 space-y-4">
         {kpiGrid}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
           <DashboardPanel title="RF Gateway Rack" accent={accent}>
@@ -1706,7 +1706,7 @@ function SectorDashboardBody({ project, channels, values, history, logs }) {
 
   if (project?.title === "Smart Sensor Networks") {
     return (
-      <div className="iiot-dashboard-body px-6 py-5 space-y-4">
+      <div className="IIoT-dashboard-body px-6 py-5 space-y-4">
         {kpiGrid}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
           <DashboardPanel title="Self-Healing Mesh Map" accent={accent}>
@@ -1746,7 +1746,7 @@ function SectorDashboardBody({ project, channels, values, history, logs }) {
 
   if (project?.title === "AI-Based Surveillance") {
     return (
-      <div className="iiot-dashboard-body px-6 py-5 space-y-4">
+      <div className="IIoT-dashboard-body px-6 py-5 space-y-4">
         {kpiGrid}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
           <DashboardPanel title="Camera Inference Grid" accent={accent}>
@@ -1789,7 +1789,7 @@ function SectorDashboardBody({ project, channels, values, history, logs }) {
 
   if (project?.title === "Edge AI Infrastructure") {
     return (
-      <div className="iiot-dashboard-body px-6 py-5 space-y-4">
+      <div className="IIoT-dashboard-body px-6 py-5 space-y-4">
         {kpiGrid}
         <div className="grid grid-cols-1 lg:grid-cols-[0.9fr_1.1fr] gap-4">
           <DashboardPanel title="Inference Pipeline" accent={accent}>
@@ -1829,7 +1829,7 @@ function SectorDashboardBody({ project, channels, values, history, logs }) {
 
   if (project?.title === "Industrial Dashboard Systems") {
     return (
-      <div className="iiot-dashboard-body px-6 py-5 space-y-4">
+      <div className="IIoT-dashboard-body px-6 py-5 space-y-4">
         {kpiGrid}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
           <DashboardPanel title="Operator View Throughput" accent={accent}>
@@ -1868,7 +1868,7 @@ function SectorDashboardBody({ project, channels, values, history, logs }) {
 
   if (project?.title === "Cloud + Edge IoT Integration") {
     return (
-      <div className="iiot-dashboard-body px-6 py-5 space-y-4">
+      <div className="IIoT-dashboard-body px-6 py-5 space-y-4">
         {kpiGrid}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
           <DashboardPanel title="Secure Ingestion Pipeline" accent={accent}>
@@ -1907,7 +1907,7 @@ function SectorDashboardBody({ project, channels, values, history, logs }) {
   }
 
   return (
-      <div className="iiot-dashboard-body px-6 py-5 space-y-4">
+      <div className="IIoT-dashboard-body px-6 py-5 space-y-4">
       {kpiGrid}
       <div className="grid grid-cols-1 xl:grid-cols-[1.15fr_0.85fr] gap-4">
         <DashboardPanel title="Machine Cell Overview" accent={accent}>
@@ -1945,7 +1945,7 @@ function SectorDashboardBody({ project, channels, values, history, logs }) {
             {[
               ["Cycle Time", "18.4 sec", "within takt"],
               ["Reject Rate", "0.42%", "stable"],
-              ["Gateway", "IIOT-GW-656", "locked"],
+              ["Gateway", "IIoT-GW-656", "locked"],
               ["Safety Relay", "Closed", "safe"],
             ].map(([label, value, state]) => (
               <div key={label} className="flex items-center justify-between rounded-lg border border-zinc-800 bg-black/25 p-3">
@@ -2056,7 +2056,7 @@ function LiveProjectDashboard({ project, onClose }) {
     setHistory(Array.from({ length: 30 }, () => rand(channels[0].min, channels[0].max, channels[0].decimals)));
     setLogs([
       { t: new Date().toLocaleTimeString(), msg: `Stream initialised for ${project?.title || "project"}` },
-      { t: new Date().toLocaleTimeString(), msg: `Gateway IIOT-GW-${Math.floor(100 + Math.random() * 900)} acquired lock` },
+      { t: new Date().toLocaleTimeString(), msg: `Gateway IIoT-GW-${Math.floor(100 + Math.random() * 900)} acquired lock` },
     ]);
     setTick(0);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -2100,21 +2100,21 @@ function LiveProjectDashboard({ project, onClose }) {
 
   return (
     <div
-      className="iiot-dashboard-overlay fixed inset-0 z-[9999] flex items-center justify-center px-4 bg-black/80 backdrop-blur-md"
-      style={{ animation: "iiotDashboardBackdrop .22s ease both", paddingTop: "calc(var(--nav-h) + 24px)", paddingBottom: 24 }}
+      className="IIoT-dashboard-overlay fixed inset-0 z-[9999] flex items-center justify-center px-4 bg-black/80 backdrop-blur-md"
+      style={{ animation: "IIoTDashboardBackdrop .22s ease both", paddingTop: "calc(var(--nav-h) + 24px)", paddingBottom: 24 }}
       onClick={onClose}
     >
       <div
-        className="iiot-dashboard-modal w-full max-w-5xl overflow-y-auto bg-[#0a0a0e] border rounded-2xl shadow-2xl relative"
-        style={{ maxHeight: "calc(100svh - var(--nav-h) - 48px)", borderColor: sectorStyle.border, boxShadow: `0 24px 80px ${sectorStyle.dim}`, animation: "iiotDashboardPanel .3s cubic-bezier(.2,.8,.2,1) both" }}
+        className="IIoT-dashboard-modal w-full max-w-5xl overflow-y-auto bg-[#0a0a0e] border rounded-2xl shadow-2xl relative"
+        style={{ maxHeight: "calc(100svh - var(--nav-h) - 48px)", borderColor: sectorStyle.border, boxShadow: `0 24px 80px ${sectorStyle.dim}`, animation: "IIoTDashboardPanel .3s cubic-bezier(.2,.8,.2,1) both" }}
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
         <div
-          className="iiot-dashboard-header flex items-start justify-between gap-4 px-6 py-5 border-b border-zinc-900"
+          className="IIoT-dashboard-header flex items-start justify-between gap-4 px-6 py-5 border-b border-zinc-900"
           style={{ background: `linear-gradient(90deg, ${sectorStyle.dim}, transparent)` }}
         >
-          <div className="iiot-dashboard-title-row flex items-center gap-4">
+          <div className="IIoT-dashboard-title-row flex items-center gap-4">
             <div
               className="p-3 bg-zinc-900 border rounded"
               style={{ color: sectorStyle.accent, borderColor: sectorStyle.border }}
@@ -2132,7 +2132,7 @@ function LiveProjectDashboard({ project, onClose }) {
           </div>
           <button
             onClick={onClose}
-            className="iiot-dashboard-close text-zinc-400 hover:text-white border border-zinc-800 hover:border-zinc-700 rounded px-3 py-1 text-sm font-sans"
+            className="IIoT-dashboard-close text-zinc-400 hover:text-white border border-zinc-800 hover:border-zinc-700 rounded px-3 py-1 text-sm font-sans"
             aria-label="Close dashboard"
           >
             × CLOSE
@@ -2140,7 +2140,7 @@ function LiveProjectDashboard({ project, onClose }) {
         </div>
 
         {/* Tech badges */}
-        <div className="iiot-tech-stack px-6 py-4 border-b border-zinc-900 flex flex-wrap items-center gap-2">
+        <div className="IIoT-tech-stack px-6 py-4 border-b border-zinc-900 flex flex-wrap items-center gap-2">
           <span className="text-[10px] font-sans text-zinc-500 uppercase tracking-widest mr-2">Tech Stack:</span>
           {(project.tech || []).map((t, i) => (
             <span
@@ -2489,13 +2489,13 @@ export default function IndustrialIoTSolutions() {
       <style>{factoryFeatureStyles}</style>
 
       {/* Global Wrapper (Dark Matte theme) */}
-      <div className="iiot-page bg-[#09090b] text-[#f4f4f5] min-h-screen font-sans selection:bg-cyan-500 selection:text-[#09090b] relative overflow-hidden" ref={containerRef}>
+      <div className="IIoT-page bg-[#09090b] text-[#f4f4f5] min-h-screen font-sans selection:bg-cyan-500 selection:text-[#09090b] relative overflow-hidden" ref={containerRef}>
         
         {/* Subtle grid background globally */}
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(6,182,212,0.06),rgba(255,255,255,0))]" />
         
         {/* SECTION 1 â€” CINEMATIC HERO */}
-        <section className="iiot-hero relative min-h-screen flex items-center pt-24 pb-12 px-6 lg:px-16 border-b border-zinc-900 z-10">
+        <section className="IIoT-hero relative min-h-screen flex items-center pt-24 pb-12 px-6 lg:px-16 border-b border-zinc-900 z-10">
           <canvas id="particles-canvas" className="absolute inset-0 w-full h-full pointer-events-none" />
           
           <div className="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-12 items-center relative z-20">
@@ -2549,7 +2549,7 @@ export default function IndustrialIoTSolutions() {
                     <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping" />
                     <span className="text-[10px] font-sans text-zinc-400 uppercase tracking-widest">LIVE EDGE TELEMETRY</span>
                   </div>
-                  <span className="text-[10px] font-sans text-zinc-500">GATEWAY ID: IIOT-GW-841</span>
+                  <span className="text-[10px] font-sans text-zinc-500">GATEWAY ID: IIoT-GW-841</span>
                 </div>
 
                 {/* Simulated variables */}
@@ -2611,7 +2611,7 @@ export default function IndustrialIoTSolutions() {
               </p>
             </div>
 
-            <div className="iiot-feature-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-5">
+            <div className="IIoT-feature-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-5">
               {FACTORY_FEATURES.map((item) => (
                 <FactoryFeatureCard
                   key={item.title}
@@ -2660,7 +2660,7 @@ export default function IndustrialIoTSolutions() {
               </p>
             </div>
 
-            <div className="iiot-feature-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-5">
+            <div className="IIoT-feature-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-5">
               {INDUSTRY_SECTORS.map((sector) => (
                 <IndustrySectorCard
                   key={sector.id}
@@ -2843,7 +2843,7 @@ export default function IndustrialIoTSolutions() {
                     <Cpu className="w-4 h-4 text-emerald-400" />
                     <span className="text-xs font-sans text-white tracking-widest">ANOMALY MATRIX PARSER</span>
                   </div>
-                  <span className="text-[10px] font-sans text-zinc-500 bg-zinc-900 px-2 py-0.5 rounded">MODEL: IIOT-NODE-V4</span>
+                  <span className="text-[10px] font-sans text-zinc-500 bg-zinc-900 px-2 py-0.5 rounded">MODEL: IIoT-NODE-V4</span>
                 </div>
 
                 {/* Neural net nodes simulation using SVGs */}
@@ -2944,7 +2944,7 @@ export default function IndustrialIoTSolutions() {
               </p>
             </div>
 
-            <div className="iiot-tech-matrix flex flex-wrap justify-center gap-4 max-w-4xl mx-auto">
+            <div className="IIoT-tech-matrix flex flex-wrap justify-center gap-4 max-w-4xl mx-auto">
               {[
                 { name: "ESP32 Microcontrollers", type: "hardware" },
                 { name: "STM32 Architectures", type: "hardware" },
@@ -2964,7 +2964,7 @@ export default function IndustrialIoTSolutions() {
               ].map((tech, idx) => (
                 <div
                   key={idx}
-                  className={`iiot-tech-pill px-5 py-3 rounded-lg border font-sans text-xs transition-all duration-300 flex items-center gap-3 ${
+                  className={`IIoT-tech-pill px-5 py-3 rounded-lg border font-sans text-xs transition-all duration-300 flex items-center gap-3 ${
                     tech.type === "hardware"
                       ? "border-zinc-800 bg-zinc-900/30 text-zinc-300 hover:border-cyan-500/40 hover:text-cyan-300"
                       : tech.type === "protocol"
@@ -3103,7 +3103,7 @@ export default function IndustrialIoTSolutions() {
                 { step: "07", name: "Deployment", desc: "Install sensor channels, configure gateways, and establish client loops." },
                 { step: "08", name: "Support Audit", desc: "Perform periodic checks, calibration tests, and firmware updates." }
               ].map((item, idx) => (
-                <div key={idx} className="iiot-workflow-card bg-zinc-950/60 border border-zinc-900 p-5 rounded-lg text-left relative z-10 flex flex-col justify-between h-[210px] group hover:border-zinc-800 transition-colors duration-300">
+                <div key={idx} className="IIoT-workflow-card bg-zinc-950/60 border border-zinc-900 p-5 rounded-lg text-left relative z-10 flex flex-col justify-between h-[210px] group hover:border-zinc-800 transition-colors duration-300">
                   <div>
                     <span className="text-xs font-sans text-cyan-400 block mb-3">{item.step}</span>
                     <h4 className="text-xs font-bold text-white mb-2 leading-snug group-hover:text-cyan-300 transition-colors duration-300 font-syne">{item.name}</h4>
@@ -3117,7 +3117,7 @@ export default function IndustrialIoTSolutions() {
         </section>
 
         {/* SECTION 9 â€” INDUSTRIAL USE CASES */}
-        <section className="iiot-usecases py-24 px-6 lg:px-16 border-b border-zinc-900 bg-zinc-950/20 relative z-10">
+        <section className="IIoT-usecases py-24 px-6 lg:px-16 border-b border-zinc-900 bg-zinc-950/20 relative z-10">
           <div className="max-w-7xl mx-auto">
             <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gsap-reveal">
               <div>
@@ -3131,9 +3131,9 @@ export default function IndustrialIoTSolutions() {
               </p>
             </div>
 
-            <div className="iiot-usecase-shell grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+            <div className="IIoT-usecase-shell grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
               {/* Left Column: Use cases switcher */}
-              <div className="iiot-usecase-list lg:col-span-4 space-y-3">
+              <div className="IIoT-usecase-list lg:col-span-4 space-y-3">
                 {[
                   { id: 0, title: "Smart Dustbin Telemetry", client: "Municipal Smart City Grid" },
                   { id: 1, title: "Factory Machine Monitoring", client: "Automotive Parts Assembly" },
@@ -3146,7 +3146,7 @@ export default function IndustrialIoTSolutions() {
                 ].map((uc) => (
                   <button
                     key={uc.id}
-                    className={`iiot-usecase-tab w-full text-left p-4 rounded border transition-all duration-300 font-sans text-xs flex flex-col items-start ${
+                    className={`IIoT-usecase-tab w-full text-left p-4 rounded border transition-all duration-300 font-sans text-xs flex flex-col items-start ${
                       activeUseCase === uc.id
                         ? "border-cyan-500 bg-zinc-900/60 text-white"
                         : "border-zinc-900 bg-zinc-900/20 text-zinc-500 hover:border-zinc-800"
@@ -3160,7 +3160,7 @@ export default function IndustrialIoTSolutions() {
               </div>
 
               {/* Right Column: Case study details */}
-              <div ref={useCaseDetailRef} className="iiot-usecase-detail lg:col-span-8 bg-zinc-950/80 border border-zinc-800 p-8 rounded-xl relative min-h-[420px] flex flex-col justify-between">
+              <div ref={useCaseDetailRef} className="IIoT-usecase-detail lg:col-span-8 bg-zinc-950/80 border border-zinc-800 p-8 rounded-xl relative min-h-[420px] flex flex-col justify-between">
                 <AnimatePresence mode="wait">
                   {[
                     {
@@ -3300,7 +3300,7 @@ export default function IndustrialIoTSolutions() {
             </div>
 
             {/* Dashboard Console Container */}
-            <div className="iiot-console bg-[#0c0c10] border border-zinc-800 rounded-xl overflow-hidden shadow-2xl max-w-5xl mx-auto">
+            <div className="IIoT-console bg-[#0c0c10] border border-zinc-800 rounded-xl overflow-hidden shadow-2xl max-w-5xl mx-auto">
               
               {/* Top Controls Bar */}
               <div className="bg-zinc-950 px-6 py-4 border-b border-zinc-900 flex flex-wrap justify-between items-center gap-4">
@@ -3402,7 +3402,7 @@ export default function IndustrialIoTSolutions() {
                       <span className="text-[10px] font-sans text-zinc-500 uppercase">Parameter: Acceleration (mm/s)</span>
                     </div>
                     
-                    <div className="iiot-telemetry-chart h-44 w-full flex items-center justify-center relative bg-[#09090b]/80 rounded border border-zinc-900 p-4">
+                    <div className="IIoT-telemetry-chart h-44 w-full flex items-center justify-center relative bg-[#09090b]/80 rounded border border-zinc-900 p-4">
                       {/* Grid background lines */}
                       <div className="absolute inset-0 grid grid-rows-4 grid-cols-6 pointer-events-none opacity-[0.03]">
                         {Array(24).fill(0).map((_, i) => <div key={i} className="border border-white" />)}
@@ -3473,9 +3473,9 @@ export default function IndustrialIoTSolutions() {
             </div>
 
             {/* Matrix Table */}
-            <div className="iiot-capability-matrix max-w-4xl mx-auto border border-zinc-800 rounded-xl overflow-hidden shadow-xl bg-zinc-950/60 backdrop-blur-md">
-              <div className="iiot-capability-wrap overflow-x-auto">
-                <table className="iiot-capability-table w-full text-left font-sans text-xs border-collapse">
+            <div className="IIoT-capability-matrix max-w-4xl mx-auto border border-zinc-800 rounded-xl overflow-hidden shadow-xl bg-zinc-950/60 backdrop-blur-md">
+              <div className="IIoT-capability-wrap overflow-x-auto">
+                <table className="IIoT-capability-table w-full text-left font-sans text-xs border-collapse">
                   <thead>
                     <tr className="bg-zinc-950 border-b border-zinc-800 text-zinc-400 uppercase tracking-widest text-[10px]">
                       <th className="p-5 font-bold">CAPABILITY SPECIFICATION</th>
@@ -3644,3 +3644,4 @@ export default function IndustrialIoTSolutions() {
     </>
   );
 }
+

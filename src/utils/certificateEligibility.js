@@ -146,7 +146,7 @@ function normalizeTechnology(value) {
   if (normalized.includes("aiort")) return "AIoRT";
   if (normalized.includes("aiot")) return "AIoT";
   if (normalized.includes("iort")) return "IoRT";
-  if (normalized.includes("iiot") || normalized.includes("industrial iot")) return "IIoT";
+  if (normalized.includes("IIoT") || normalized.includes("industrial iot")) return "IIoT";
   if (normalized.includes("embedded")) return "Embedded";
   if (normalized.includes("robotics")) return "Robotics";
   if (normalized.includes("iot")) return "IoT";
@@ -170,3 +170,4 @@ function normalizeExcelDate(value) {
 
   return text;
 }
+

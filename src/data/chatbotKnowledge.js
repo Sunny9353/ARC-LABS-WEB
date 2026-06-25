@@ -12,7 +12,7 @@ const PAGE_ACTIONS = {
   products: [{ label: "Compare IoT kits", to: "/products" }],
   programs: [{ label: "View programs", to: "/programs" }],
   csr: [{ label: "CSR partners", to: "/csr-partners" }],
-  iiot: [{ label: "IIoT solutions", to: "/industrial-iot-solutions" }],
+  IIoT: [{ label: "IIoT solutions", to: "/industrial-iot-solutions" }],
   verify: [{ label: "Verify certificate", to: "/verify" }],
   checkout: [{ label: "Products checkout", to: "/products" }],
 };
@@ -100,7 +100,7 @@ const PROGRAMS = [
   },
   {
     name: "Industrial IoT",
-    aliases: ["iiot", "industrial iot", "plc", "scada", "modbus", "opc", "opc-ua", "rs485", "factory"],
+    aliases: ["IIoT", "industrial iot", "plc", "scada", "modbus", "opc", "opc-ua", "rs485", "factory"],
     level: "Industrial specialization",
     tools: ["PLC basics", "Modbus TCP/RTU", "RS485", "OPC-UA", "SCADA", "edge gateways"],
     audience: "instrumentation, manufacturing, automation, and Industry 4.0 learners",
@@ -236,10 +236,10 @@ const KNOWLEDGE_TOPICS = [
   },
   {
     title: "Industrial IoT",
-    keywords: ["industrial", "iiot", "factory", "automation", "plc", "scada", "modbus", "opc-ua", "predictive maintenance", "dashboard"],
+    keywords: ["industrial", "IIoT", "factory", "automation", "plc", "scada", "modbus", "opc-ua", "predictive maintenance", "dashboard"],
     answer:
       "ARC LABS delivers Industrial IoT and smart automation systems: sensor retrofits, Modbus TCP/RTU, RS485, OPC-UA, MQTT, LoRaWAN, PLC mapping, predictive maintenance dashboards, edge AI, energy monitoring, telemetry gateways, and local/cloud dashboards.",
-    actions: [...PAGE_ACTIONS.iiot, ...CONTACT_ACTIONS],
+    actions: [...PAGE_ACTIONS.IIoT, ...CONTACT_ACTIONS],
   },
   {
     title: "Certificates",
@@ -491,24 +491,24 @@ function csrAnswer(normalizedQuestion) {
   );
 }
 
-function iiotAnswer(normalizedQuestion) {
+function IIoTAnswer(normalizedQuestion) {
   if (hasAny(normalizedQuestion, ["protocol", "modbus", "opc", "mqtt", "rs485", "lorawan", "gsm", "4g"])) {
     return answer(
       "ARC LABS IIoT systems support Modbus TCP, Modbus RTU, RS485, OPC-UA, MQTT, LoRaWAN, GSM/4G, BLE tags, ESP-NOW mesh, and secure cloud or local server pipelines. These are used for telemetry gateways, PLC mapping, SCADA overlays, and factory dashboards.",
-      [...PAGE_ACTIONS.iiot, ...CONTACT_ACTIONS]
+      [...PAGE_ACTIONS.IIoT, ...CONTACT_ACTIONS]
     );
   }
 
   if (hasAny(normalizedQuestion, ["legacy", "old machine", "old machines", "retrofit", "cnc", "pump", "molding", "lathe"])) {
     return answer(
       "Yes. ARC LABS can retrofit legacy machinery by adding external current transducers, vibration probes, temperature sensors, flow/level sensors, gateway hardware, and Modbus/MQTT bridges. Older CNC, injection molding, pump, utility, and process equipment can be connected to dashboards without replacing the entire machine.",
-      [...PAGE_ACTIONS.iiot, ...CONTACT_ACTIONS]
+      [...PAGE_ACTIONS.IIoT, ...CONTACT_ACTIONS]
     );
   }
 
   return answer(
     "ARC LABS Industrial IoT solutions include predictive maintenance, energy monitoring, industrial telemetry, AI safety monitoring, edge computing gateways, smart sensor networks, industrial dashboards, secure cloud sync, and local/air-gapped deployments. Useful industries include manufacturing, cold storage, automation, smart agriculture, water systems, and energy-heavy plants.",
-    [...PAGE_ACTIONS.iiot, ...CONTACT_ACTIONS]
+    [...PAGE_ACTIONS.IIoT, ...CONTACT_ACTIONS]
   );
 }
 
@@ -673,8 +673,8 @@ export function getSmartBotAnswer(rawQuestion) {
     return csrAnswer(q);
   }
 
-  if (hasAny(q, ["industrial", "iiot", "factory", "automation", "plc", "scada", "modbus", "opc-ua", "predictive maintenance", "telemetry", "legacy machine", "legacy machines", "old machine", "old machines", "cnc", "energy monitoring"])) {
-    return iiotAnswer(q);
+  if (hasAny(q, ["industrial", "IIoT", "factory", "automation", "plc", "scada", "modbus", "opc-ua", "predictive maintenance", "telemetry", "legacy machine", "legacy machines", "old machine", "old machines", "cnc", "energy monitoring"])) {
+    return IIoTAnswer(q);
   }
 
   const program = findProgram(q);
@@ -704,3 +704,4 @@ export function getSmartBotAnswer(rawQuestion) {
 
   return fallbackAnswer(q);
 }
+

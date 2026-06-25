@@ -1470,7 +1470,7 @@ export const TECHNOLOGIES = [
     },
   },
   {
-    id: "iiot",
+    id: "IIoT",
     name: "Industrial IoT",
     abbr: "IIoT",
     color: "var(--tag-text)",
@@ -4233,3 +4233,4 @@ export default function ProgramsPage() {
     </>
   );
 }
+

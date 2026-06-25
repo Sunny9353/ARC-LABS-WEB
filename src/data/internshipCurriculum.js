@@ -28,7 +28,7 @@ const META = {
       "Earn an ARC LABS Embedded Internship Certificate"
     ]
   },
-  "iiot": {
+  "IIoT": {
     "certBase": "Industrial IoT",
     "audience": "Engineering students & working professionals",
     "outcomes": [
@@ -507,7 +507,7 @@ const PLANS = {
       ]
     }
   ],
-  "iiot": [
+  "IIoT": [
     {
       "title": "OT meets IT",
       "desc": "See how factories go digital.",
@@ -1777,3 +1777,4 @@ export const buildInternshipTechnologies = (technologies) => technologies.filter
     },
   };
 });
+
