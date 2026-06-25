@@ -64,13 +64,13 @@ const pageStyles = `
 .pc-btn-buy:hover{filter:brightness(1.1);transform:translateY(-1px)}
 
 /* Detail drawer */
-.product-detail-overlay{position:fixed;inset:0;z-index:1100;background:rgba(9,9,11,.72);backdrop-filter:blur(14px);display:flex;align-items:flex-start;justify-content:center;padding:calc(var(--nav-h) + 24px) 5vw 28px;animation:productOverlayIn .22s ease;overflow:hidden}
-.detail-drawer{background:var(--surface-2);border:1px solid var(--border-2);border-radius:var(--radius-xl);overflow:hidden;animation:ddIn .42s cubic-bezier(.2,.8,.2,1);width:min(100%,1080px);max-height:calc(100svh - var(--nav-h) - 54px);overflow-y:auto;box-shadow:0 34px 110px rgba(0,0,0,.52);scroll-margin-top:calc(var(--nav-h) + 18px);transform-origin:center;margin-top:clamp(0px,calc(var(--product-anchor-y, 140px) - var(--nav-h) - 24px),22px)}
+.product-detail-overlay{position:fixed;inset:0;z-index:1100;background:rgba(9,9,11,.72);backdrop-filter:blur(14px);display:flex;align-items:flex-start;justify-content:center;padding:calc(var(--nav-h) + 10px) 5vw 20px;animation:productOverlayIn .22s ease;overflow:hidden}
+.detail-drawer{background:var(--surface-2);border:1px solid var(--border-2);border-radius:var(--radius-xl);overflow:hidden;animation:ddIn .42s cubic-bezier(.2,.8,.2,1);width:min(100%,1080px);max-height:calc(100svh - var(--nav-h) - 30px);overflow-y:auto;box-shadow:0 34px 110px rgba(0,0,0,.52);scroll-margin-top:calc(var(--nav-h) + 10px);transform-origin:center;margin-top:0}
 @keyframes productOverlayIn{from{opacity:0}to{opacity:1}}
 @keyframes ddIn{from{opacity:0;transform:translateY(18px) scale(.94)}to{opacity:1;transform:translateY(0) scale(1)}}
 
 /* Kit assembly animation */
-.kit-stage{min-height:430px;padding:58px 36px 36px;border-bottom:1px solid var(--border);background:radial-gradient(circle at 50% 42%,rgba(var(--kit-glow),.18),transparent 43%),linear-gradient(180deg,rgba(255,255,255,.03),transparent);position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center}
+.kit-stage{min-height:360px;padding:56px 32px 28px;border-bottom:1px solid var(--border);background:radial-gradient(circle at 50% 42%,rgba(var(--kit-glow),.18),transparent 43%),linear-gradient(180deg,rgba(255,255,255,.03),transparent);position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center}
 .kit-stage::before{content:'';position:absolute;left:12%;right:12%;bottom:40px;height:26px;background:radial-gradient(ellipse,rgba(0,0,0,.48),transparent 68%);filter:blur(4px);opacity:.65}
 .kit-caption{position:absolute;left:36px;top:28px;font-family:var(--font-heading);font-weight:800;font-size:1rem;letter-spacing:-.01em;color:var(--text);z-index:3}
 .kit-caption span{display:block;margin-top:4px;font-family:var(--font-body);font-size:.72rem;font-weight:500;color:var(--text-3);letter-spacing:0}
@@ -79,8 +79,8 @@ const pageStyles = `
 .kit-thumb{width:66px;height:66px;border:1px solid var(--border-2);border-radius:8px;background:#fff;padding:5px;cursor:pointer;transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease}
 .kit-thumb:hover,.kit-thumb.active{border-color:var(--kit-color,var(--accent));box-shadow:0 10px 26px rgba(var(--kit-glow),.18);transform:translateX(2px)}
 .kit-thumb img{width:100%;height:100%;display:block;object-fit:contain;object-position:center}
-.kit-board{width:100%;min-height:330px;position:relative;display:flex;align-items:center;justify-content:center}
-.kit-photo-wrap{width:min(620px,100%);aspect-ratio:3/2;border:1px solid rgba(255,255,255,.16);border-radius:18px;background:#fff;box-shadow:0 28px 60px rgba(0,0,0,.36),inset 0 0 0 1px rgba(255,255,255,.06);position:relative;overflow:hidden;animation:kitDrop .72s cubic-bezier(.18,.89,.32,1.22) both;transform-origin:center;cursor:zoom-in}
+.kit-board{width:100%;min-height:270px;position:relative;display:flex;align-items:center;justify-content:center}
+.kit-photo-wrap{width:min(620px,100%);aspect-ratio:16/9;border:1px solid rgba(255,255,255,.16);border-radius:18px;background:#fff;box-shadow:0 28px 60px rgba(0,0,0,.36),inset 0 0 0 1px rgba(255,255,255,.06);position:relative;overflow:hidden;animation:kitDrop .72s cubic-bezier(.18,.89,.32,1.22) both;transform-origin:center;cursor:zoom-in}
 .kit-photo-wrap::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.14),transparent);transform:translateX(-120%);animation:kitShine 1.4s ease .65s both}
 .kit-photo{width:100%;height:100%;object-fit:contain;object-position:center;display:block;transition:transform .18s ease;transform-origin:var(--zoom-x,50%) var(--zoom-y,50%);will-change:transform}
 .kit-photo-wrap.is-zooming .kit-photo{transform:scale(2.1)}
@@ -186,7 +186,7 @@ const pageStyles = `
     radial-gradient(ellipse, rgba(0,220,130,0.06) 0%, rgba(0,220,130,0.03) 34%, transparent 68%);
 }
 .detail-drawer{
-  scroll-margin-top:calc(var(--nav-h) + 18px);
+  scroll-margin-top:calc(var(--nav-h) + 10px);
 }
 .detail-drawer[data-open="true"]{
   animation:ddIn .42s cubic-bezier(.25,1,.5,1);
@@ -194,14 +194,18 @@ const pageStyles = `
 
 @media(max-width:768px){
   .ph-hero{min-height:390px;padding:92px 5vw 58px}
+  .filter-bar{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px;padding:0 4vw 34px}
+  .filter-btn{min-height:40px;justify-content:center;padding:8px 4px;font-size:clamp(.54rem,2.45vw,.7rem);line-height:1.12;white-space:normal;text-align:center}
   .product-dotted-surface{inset:-60px -30% -110px;opacity:.42}
-  .kit-stage{min-height:430px;padding:84px 18px 24px}
+  .product-detail-overlay{padding:calc(var(--nav-h) + 8px) 3vw 14px}
+  .detail-drawer{max-height:calc(100svh - var(--nav-h) - 22px);border-radius:16px}
+  .kit-stage{min-height:auto;padding:58px 14px 18px}
   .kit-caption{left:20px;top:22px;right:20px}
   .kit-gallery{grid-template-columns:1fr;gap:12px;width:100%;padding-top:38px}
   .kit-thumbs{flex-direction:row;justify-content:flex-start;overflow-x:auto;padding:2px 2px 6px}
   .kit-thumb{width:58px;height:58px;flex:0 0 auto}
   .kit-thumb:hover,.kit-thumb.active{transform:translateY(-2px)}
-  .kit-board{width:100%;min-height:300px}
+  .kit-board{width:100%;min-height:220px}
   .kit-photo-wrap{width:100%}
 
   .dd-header{padding:22px 20px 18px}
@@ -265,6 +269,7 @@ const PRODUCTS = [
     glow: "0,220,130",
     image: "/images/products/lite-kit.jpg",
     galleryImages: [
+      { src: "/images/products/lite-kit.jpg", alt: "ARC LABS IoT Lite Kit main product image" },
       { src: "/images/products/gallery/lite-kit-1.jpg", alt: "ARC LABS IoT Lite Kit product image 1" },
       { src: "/images/products/gallery/lite-kit-2.jpg", alt: "ARC LABS IoT Lite Kit product image 2" },
       { src: "/images/products/gallery/lite-kit-3.jpg", alt: "ARC LABS IoT Lite Kit product image 3" },
@@ -304,6 +309,11 @@ const PRODUCTS = [
     color: "var(--accent)",
     glow: "0,220,130",
     image: "/images/products/experience-kit.jpg",
+    galleryImages: [
+      { src: "/images/products/experience-kit.jpg", alt: "ARC LABS IoT Experience Kit main product image" },
+      { src: "/images/products/gallery/experience-kit-1.jpg", alt: "ARC LABS IoT Experience Kit board top view" },
+      { src: "/images/products/gallery/experience-kit-2.jpg", alt: "ARC LABS IoT Experience Kit close-up view" },
+    ],
     badge: "BEST SELLER",
     badgeBg: "var(--accent-dim)",
     badgeColor: "var(--accent)",
@@ -342,6 +352,11 @@ const PRODUCTS = [
     color: "var(--accent)",
     glow: "0,220,130",
     image: "/images/products/pro-kit.jpg",
+    galleryImages: [
+      { src: "/images/products/pro-kit.jpg", alt: "ARC LABS IoT Pro Kit main product image" },
+      { src: "/images/products/gallery/pro-kit-1.jpg", alt: "ARC LABS IoT Pro Kit board top view" },
+      { src: "/images/products/gallery/pro-kit-2.jpg", alt: "ARC LABS IoT Pro Kit detailed view" },
+    ],
     badge: "ADVANCED",
     badgeBg: "var(--accent-dim)",
     badgeColor: "var(--accent)",

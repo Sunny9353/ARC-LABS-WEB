@@ -152,43 +152,45 @@ const HOME_HERO_IMAGES = [
 
 function Hero() {
   const [splineLoaded, setSplineLoaded] = useState(false);
-  const [renderHeroScene, setRenderHeroScene] = useState(() => {
-    if (typeof window === "undefined") return false;
-    const isCoarsePointer = window.matchMedia("(pointer: coarse)").matches;
-    const saveData = navigator.connection?.saveData;
-    return !isCoarsePointer && !saveData;
-  });
+  const [renderHeroScene, setRenderHeroScene] = useState(false);
+  const [canRenderHeroScene, setCanRenderHeroScene] = useState(false);
   const [shouldPlayIntro] = useState(() => {
     if (typeof window === "undefined") return true;
     const navEntry = performance.getEntriesByType?.("navigation")?.[0];
-    const isReload = navEntry?.type === "reload";
+    const isHomeDocumentReload =
+      navEntry?.type === "reload" && window.__ARC_DOCUMENT_START_PATH__ === "/";
     const hasSeenIntro = sessionStorage.getItem("arcHomeIntroSeen") === "true";
-    return isReload || !hasSeenIntro;
+    return isHomeDocumentReload || !hasSeenIntro;
   });
   const [heroReady, setHeroReady] = useState(!shouldPlayIntro);
   const handleSplineReady = () => setSplineLoaded(true);
 
   useEffect(() => {
-    if (renderHeroScene) return undefined;
-    if (navigator.connection?.saveData) {
+    const canRenderSpline =
+      typeof window !== "undefined" &&
+      shouldPlayIntro &&
+      !navigator.connection?.saveData;
+    setCanRenderHeroScene(canRenderSpline);
+    if (canRenderSpline) {
+      setRenderHeroScene(true);
+      return undefined;
+    } else {
       setSplineLoaded(true);
       return undefined;
     }
-
-    const timer = window.setTimeout(() => setRenderHeroScene(true), 900);
-    return () => window.clearTimeout(timer);
-  }, [renderHeroScene]);
+  }, [shouldPlayIntro]);
 
   useEffect(() => {
     if (!shouldPlayIntro) return undefined;
 
+    const cinematicDuration = canRenderHeroScene ? 4300 : 1450;
     const revealTimer = window.setTimeout(() => {
       setHeroReady(true);
       sessionStorage.setItem("arcHomeIntroSeen", "true");
-    }, splineLoaded ? 1200 : 1800);
+    }, splineLoaded ? cinematicDuration : 2200);
 
     return () => window.clearTimeout(revealTimer);
-  }, [splineLoaded, shouldPlayIntro]);
+  }, [canRenderHeroScene, splineLoaded, shouldPlayIntro]);
 
   useLayoutEffect(() => {
     if (!shouldPlayIntro) {
@@ -206,25 +208,8 @@ function Hero() {
 
   return (
     <section
-      className={`hero ${splineLoaded ? "hero-scene-loaded" : "hero-scene-loading"} ${heroReady ? "hero-ready" : "hero-waiting"}`}
+      className={`hero ${splineLoaded ? "hero-scene-loaded" : "hero-scene-loading"} ${heroReady ? "hero-ready" : "hero-waiting"}${shouldPlayIntro ? "" : " hero-skip-intro"}`}
     >
-      {!heroReady && (
-        <div className={`hero-boot-loader${splineLoaded ? " is-settling" : ""}`} aria-live="polite">
-          <div className="hero-loader-core" aria-hidden="true">
-            <span className="hero-loader-ring hero-loader-ring-outer" />
-            <span className="hero-loader-ring hero-loader-ring-inner" />
-            <span className="hero-loader-orbit" />
-            <span className="hero-loader-pulse" />
-          </div>
-          <div className="hero-loader-copy">
-            <span>{splineLoaded ? "Robot scene locked" : "Initializing ARC lab system"}</span>
-            <strong>{splineLoaded ? "Running cinematic intro" : "Loading Spline robotics layer"}</strong>
-          </div>
-          <div className="hero-loader-progress" aria-hidden="true">
-            <span />
-          </div>
-        </div>
-      )}
       <div className="hero-glow" />
       <div className="hero-inner">
         <div className="hero-bg-tech-text" aria-hidden="true">
@@ -253,7 +238,7 @@ function Hero() {
         </div>
 
         <div className="hero-lab-preview" aria-hidden="true">
-          {renderHeroScene ? (
+          {renderHeroScene && shouldPlayIntro ? (
             <SplineScene
               scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
               className="hero-lab-scene"
@@ -287,9 +272,9 @@ function Hero() {
             modules={[EffectCoverflow, Autoplay]}
             className="homeHeroSwiper"
           >
-            {HOME_HERO_IMAGES.map((image) => (
+            {HOME_HERO_IMAGES.map((image, i) => (
               <SwiperSlide key={image.src}>
-                <img src={image.src} alt={image.alt} />
+                <img src={image.src} alt={image.alt || `ARC LABS project showcase ${i + 1}`} loading="lazy" />
               </SwiperSlide>
             ))}
           </Swiper>
@@ -911,8 +896,16 @@ function HomeFAQ() {
 function LazyLabPreview() {
   const shellRef = useRef(null);
   const [shouldRender, setShouldRender] = useState(false);
+  const [allowInteractivePreview, setAllowInteractivePreview] = useState(false);
 
   useEffect(() => {
+    const canRenderPreview =
+      !window.matchMedia("(pointer: coarse)").matches &&
+      !window.matchMedia("(max-width: 760px)").matches &&
+      !navigator.connection?.saveData;
+    setAllowInteractivePreview(canRenderPreview);
+    if (!canRenderPreview) return undefined;
+
     const shell = shellRef.current;
     if (!shell) return undefined;
 
@@ -940,7 +933,7 @@ function LazyLabPreview() {
       className="section spline-showcase-section"
       aria-label="Interactive 3D STEM lab preview"
     >
-      {shouldRender ? <SplineSceneBasic /> : <SplineSceneBasicFallback />}
+      {allowInteractivePreview && shouldRender ? <SplineSceneBasic /> : <SplineSceneBasicFallback />}
     </section>
   );
 }

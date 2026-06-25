@@ -9,6 +9,10 @@ import ArcLabsChatBot from "./components/ArcLabsChatBot";
 import { installRequiredFieldUX } from "./utils/ui";
 
 // Pages — lazy-loaded
+if (typeof window !== "undefined" && !window.__ARC_DOCUMENT_START_PATH__) {
+  window.__ARC_DOCUMENT_START_PATH__ = window.location.pathname;
+}
+
 const Home = lazy(() => import("./pages/Home"));
 const AboutUs = lazy(() => import("./pages/AboutUs"));
 const Programs = lazy(() => import("./pages/Programs"));

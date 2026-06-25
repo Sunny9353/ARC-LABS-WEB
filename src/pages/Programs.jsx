@@ -93,6 +93,14 @@ export const pageStyles = `
     min-height: 100%;
     display: block;
   }
+  .prog-robot-frame--static {
+    min-height: 100%;
+    border-radius: 32px;
+    background:
+      radial-gradient(circle at 50% 38%, rgba(0,220,130,0.18), transparent 34%),
+      radial-gradient(circle at 34% 58%, rgba(255,255,255,0.08), transparent 22%),
+      linear-gradient(145deg, rgba(255,255,255,0.06), rgba(0,220,130,0.05) 42%, transparent);
+  }
   .prog-robot-stage:not(.is-ready) .prog-robot-frame {
     opacity: 0.01;
   }
@@ -250,7 +258,7 @@ export const pageStyles = `
     }
     .prog-robot-stage {
       width: 100%;
-      min-height: 360px;
+      min-height: 220px;
       opacity: 0.86;
       pointer-events: none;
     }
@@ -383,7 +391,31 @@ export const pageStyles = `
       grid-template-columns: 1fr;
     }
     .track-mode-switch {
-      grid-template-columns: 1fr;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      width: 100%;
+      gap: 6px;
+      padding: 6px;
+      border-radius: 14px;
+      margin: 1.4rem auto 1.3rem;
+    }
+    .track-mode-btn {
+      min-height: 42px;
+      padding: 10px 8px;
+      font-size: 0.74rem;
+      line-height: 1.15;
+    }
+    .level-filter {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 6px;
+      width: 100%;
+    }
+    .level-filter-btn {
+      min-height: 40px;
+      padding: 8px 4px;
+      font-size: clamp(0.48rem, 2.2vw, 0.62rem);
+      letter-spacing: 0.02em;
+      line-height: 1.1;
     }
   }
   .tech-card {
@@ -3916,6 +3948,7 @@ export default function ProgramsPage() {
   const [activeLevel, setActiveLevel] = useState("ALL");
   const [trackMode, setTrackMode] = useState("programs");
   const [robotReady, setRobotReady] = useState(false);
+  const [allowHeroRobot, setAllowHeroRobot] = useState(false);
   const handleRobotReady = useCallback(() => setRobotReady(true), []);
   const isInternshipMode = trackMode === "internships";
   const visibleTechnologies = isInternshipMode
@@ -3950,6 +3983,18 @@ export default function ProgramsPage() {
     setTrackMode(mode);
     setActiveTech(null);
   };
+
+  useEffect(() => {
+    const updateRobotPermission = () => {
+      const canRenderRobot = !navigator.connection?.saveData;
+      setAllowHeroRobot(canRenderRobot);
+      if (!canRenderRobot) setRobotReady(true);
+    };
+
+    updateRobotPermission();
+    window.addEventListener("resize", updateRobotPermission, { passive: true });
+    return () => window.removeEventListener("resize", updateRobotPermission);
+  }, []);
 
   return (
     <>
@@ -3996,13 +4041,17 @@ export default function ProgramsPage() {
 
           <div className="prog-hero-system">
             <div className={`prog-robot-stage${robotReady ? " is-ready" : ""}`}>
-              <RobotPreviewFrame
-                className="prog-robot-frame"
-                title="Interactive ARC LABS training robot"
-                loading="eager"
-                view="programs"
-                onReady={handleRobotReady}
-              />
+              {allowHeroRobot ? (
+                <RobotPreviewFrame
+                  className="prog-robot-frame"
+                  title="Interactive ARC LABS training robot"
+                  loading="eager"
+                  view="programs"
+                  onReady={handleRobotReady}
+                />
+              ) : (
+                <div className="prog-robot-frame prog-robot-frame--static" aria-hidden="true" />
+              )}
               <i className="prog-robot-corner prog-robot-corner-tl" aria-hidden="true" />
               <i className="prog-robot-corner prog-robot-corner-br" aria-hidden="true" />
             </div>

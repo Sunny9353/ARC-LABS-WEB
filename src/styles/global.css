@@ -141,6 +141,20 @@ body {
 }
 
 body.arc-scroll-locked {
+  width: 100%;
+  overscroll-behavior: none;
+  touch-action: none;
+}
+
+body.arc-scroll-locked .product-detail-overlay,
+body.arc-scroll-locked .modal-overlay,
+body.arc-scroll-locked .co-dialog-overlay,
+body.arc-scroll-locked .csr-modal-overlay {
+  touch-action: auto;
+  overscroll-behavior: contain;
+}
+
+body.arc-scroll-locked {
   overflow: hidden !important;
 }
 
@@ -480,6 +494,117 @@ h1, h2, h3, h4, h5, h6 {
 
 /* -- Responsive -- */
 @media (max-width: 768px) {
-  .section { padding: 72px 5vw; }
+  .section { padding: 64px 5vw; }
   .section-heading { font-size: clamp(1.6rem, 6vw, 2.2rem); }
+
+  html,
+  body,
+  #root {
+    max-width: 100%;
+    overflow-x: hidden;
+    scroll-behavior: auto;
+  }
+
+  body::before {
+    display: none;
+  }
+
+  img,
+  video,
+  svg,
+  canvas {
+    max-width: 100%;
+  }
+
+  .btn,
+  button,
+  [role="button"] {
+    min-height: 42px;
+    touch-action: manipulation;
+  }
+
+  .btn {
+    white-space: normal;
+    text-align: center;
+    line-height: 1.25;
+  }
+
+  section,
+  main,
+  article,
+  aside,
+  form,
+  fieldset,
+  .section,
+  .container,
+  [class*="grid"],
+  [class*="flex"] {
+    min-width: 0;
+  }
+
+  .container,
+  .section > .container,
+  .max-w-7xl,
+  .max-w-6xl,
+  .max-w-5xl,
+  .max-w-4xl {
+    max-width: 100% !important;
+  }
+
+  .card,
+  .ui-card,
+  [class*="-card"],
+  [class*="_card"],
+  [class*="rounded-xl"],
+  [class*="rounded-2xl"] {
+    max-width: 100%;
+  }
+
+  input,
+  select,
+  textarea {
+    max-width: 100%;
+    font-size: 16px;
+  }
+
+  textarea {
+    min-height: 112px;
+  }
+
+  .modal,
+  .dialog,
+  [role="dialog"] {
+    max-width: calc(100vw - 24px);
+  }
+
+  .product-dotted-surface,
+  #particles-canvas {
+    display: none !important;
+  }
+
+  table {
+    max-width: 100%;
+  }
+
+  .overflow-x-auto,
+  [style*="overflow-x"] {
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .modal-overlay,
+  .product-detail-overlay,
+  .co-dialog-overlay,
+  .csr-modal-overlay {
+    z-index: 1400 !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  .wa-float {
+    width: 48px;
+    height: 48px;
+    right: 16px;
+    bottom: 16px;
+    box-shadow: 0 8px 22px rgba(0, 220, 130, 0.18);
+  }
 }

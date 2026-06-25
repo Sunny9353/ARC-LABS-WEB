@@ -66,12 +66,15 @@ const pageStyles = `
 /* Audience switcher */
 .lp-audience-bar { display: flex; justify-content: center; gap: .5rem; padding: 0 5vw 52px; }
 .lp-aud-btn {
-  display: flex; align-items: center; gap: 8px;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px;
   padding: 10px 24px; border-radius: 9px;
   border: 1px solid var(--border-2); background: var(--surface);
   color: var(--text-3); font-size: .85rem; font-weight: 500;
   cursor: pointer; transition: all .25s; font-family: inherit;
 }
+.lp-aud-btn strong { color: inherit; font-size: .86rem; line-height: 1.1; }
+.lp-aud-btn span { display: none; }
+.lp-aud-btn::after { content: attr(data-sub); color: var(--text-4); font-size: .72rem; line-height: 1.2; }
 .lp-aud-btn.active {
   background: var(--tag-bg); border-color: var(--accent); color: var(--accent);
 }
@@ -248,6 +251,10 @@ const pageStyles = `
 }
 @media(max-width:640px) {
   .lp-proc-grid { grid-template-columns: 1fr; }
+  .lp-audience-bar { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding: 0 4vw 38px; }
+  .lp-aud-btn { min-height: 64px; padding: 10px 8px; }
+  .lp-aud-btn strong { font-size: .78rem; }
+  .lp-aud-btn span { font-size: .62rem; }
 }
 
 /* ROI Calculator */
@@ -909,8 +916,8 @@ export default function LabPackagesPage() {
           { id: "school", label: "For Schools", sub: "Classes 6–12" },
           { id: "college", label: "For Colleges & Universities", sub: "Diploma, B.Tech, M.Tech, R&D" },
         ].map((a) => (
-          <button key={a.id} className={`lp-aud-btn${audience === a.id ? " active" : ""}`} onClick={() => setAudience(a.id)}>
-            {a.label}
+          <button key={a.id} data-sub={a.sub} className={`lp-aud-btn${audience === a.id ? " active" : ""}`} onClick={() => setAudience(a.id)}>
+            <strong>{a.label}</strong>
             <span style={{ fontSize: ".72rem", color: "var(--text-4)", marginLeft: "4px" }}>— {a.sub}</span>
           </button>
         ))}

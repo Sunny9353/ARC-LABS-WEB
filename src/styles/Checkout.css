@@ -273,7 +273,16 @@
   .co-card {
     flex-direction: column;
     gap: 20px;
-    padding: 20px;
+    padding: 64px 20px 20px;
+  }
+
+  .co-back-btn {
+    top: 16px;
+    left: 20px;
+    min-height: 38px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .co-left {

@@ -7,6 +7,12 @@ export function DottedSurface({ className, ...props }) {
   const sceneRef = useRef(null);
 
   useEffect(() => {
+    const isMobileLike =
+      window.matchMedia("(max-width: 768px)").matches ||
+      window.matchMedia("(pointer: coarse)").matches ||
+      navigator.connection?.saveData;
+    if (isMobileLike) return undefined;
+
     const container = containerRef.current;
     if (!container) return undefined;
 

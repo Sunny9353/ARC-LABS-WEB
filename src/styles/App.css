@@ -3,6 +3,10 @@
 ═══════════════════════════════════════ */
 
 /* Page loader */
+.app-shell:not(.home-intro-shell) main {
+  padding-top: var(--nav-h);
+}
+
 .page-loader {
   min-height: 60vh;
   display: flex;
@@ -380,10 +384,18 @@ body.home-hero-ready .home-intro-shell .wa-float {
     display: flex;
     flex-direction: column;
     align-items: flex-end;
+    z-index: 1300;
+    pointer-events: none;
+  }
+  .arc-chatbot .arc-chat-launcher,
+  .arc-chatbot .arc-chat-panel {
+    pointer-events: auto;
   }
   .arc-chat-panel {
     width: 100%;
     max-height: calc(100svh - var(--nav-h) - 118px);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
   }
   .arc-chat-body {
     min-height: 120px;

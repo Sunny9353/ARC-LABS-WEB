@@ -51,7 +51,13 @@ function Sparkline({ points, stroke = ARC_ACCENT, animate = true, w = 160, h = 4
   }).join(" ");
 
   return (
-    <svg width={width} height={height} className="overflow-visible">
+    <svg
+      width="100%"
+      height="100%"
+      viewBox={`0 0 ${width} ${height}`}
+      preserveAspectRatio="none"
+      className="iiot-sparkline"
+    >
       {animate ? (
         <motion.polyline
           fill="none"
@@ -67,8 +73,8 @@ function Sparkline({ points, stroke = ARC_ACCENT, animate = true, w = 160, h = 4
         <polyline fill="none" stroke={stroke} strokeWidth="2" points={mappedPoints} />
       )}
       <circle
-        cx={(points.length - 1) * (width / (points.length - 1))}
-        cy={height - ((points[points.length - 1] - min) / range) * height}
+        cx={width - padding}
+        cy={height - ((points[points.length - 1] - min) / range) * (height - padding * 2) - padding}
         r="3"
         fill={stroke}
         className="animate-ping"
@@ -999,6 +1005,332 @@ const factoryFeatureStyles = `
     max-width: min(1220px, 90vw) !important;
   }
 }
+
+@media (max-width: 720px) {
+  .iiot-page section {
+    padding-inline: 16px !important;
+  }
+
+  .iiot-hero {
+    min-height: auto !important;
+    padding-top: calc(var(--nav-h) + 34px) !important;
+    padding-bottom: 42px !important;
+  }
+
+  .iiot-hero .max-w-7xl,
+  .iiot-page .max-w-7xl,
+  .iiot-page .max-w-6xl,
+  .iiot-page .max-w-5xl {
+    max-width: 100% !important;
+  }
+
+  .iiot-hero h1 {
+    font-size: clamp(2.25rem, 12vw, 3.35rem) !important;
+    line-height: 0.95 !important;
+  }
+
+  .iiot-hero p,
+  .iiot-page p {
+    line-height: 1.7 !important;
+  }
+
+  .iiot-page .grid {
+    min-width: 0;
+  }
+
+  .iiot-feature-grid,
+  .solution-suite-grid {
+    gap: 16px !important;
+  }
+
+  .factory-feature-card,
+  .industry-sector-card,
+  .solution-sector-card,
+  .iiot-usecase-detail,
+  .iiot-usecase-tab {
+    border-radius: 14px !important;
+  }
+
+  .factory-feature-card,
+  .industry-sector-card {
+    min-height: auto !important;
+    padding: 18px !important;
+  }
+
+  .solution-sector-card {
+    min-height: auto !important;
+    padding: 18px !important;
+    background:
+      linear-gradient(180deg, rgba(24,24,27,0.94), rgba(9,9,11,0.96)),
+      radial-gradient(circle at 18% 0%, var(--sector-dim), transparent 48%) !important;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.05), 0 18px 44px rgba(0,0,0,0.18) !important;
+  }
+
+  .solution-sector-card h3 {
+    font-size: 1.05rem !important;
+    line-height: 1.2 !important;
+  }
+
+  .solution-sector-card p {
+    font-size: 0.78rem !important;
+    line-height: 1.65 !important;
+  }
+
+  .sector-viz-dashboard {
+    min-height: 112px;
+    border: 1px solid rgba(63,63,70,0.8);
+    border-radius: 12px;
+    background:
+      linear-gradient(180deg, rgba(39,39,42,0.38), rgba(9,9,11,0.42)),
+      repeating-linear-gradient(90deg, transparent 0 44px, rgba(255,255,255,0.025) 44px 45px);
+    padding: 10px;
+  }
+
+  .sector-viz-dashboard span,
+  .sector-viz-dashboard strong {
+    border-radius: 8px;
+  }
+
+  .iiot-tech-matrix {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 8px !important;
+    max-width: 100% !important;
+  }
+
+  .iiot-tech-pill {
+    min-height: 48px;
+    justify-content: flex-start;
+    padding: 10px 11px !important;
+    border-radius: 10px !important;
+    font-size: clamp(0.62rem, 2.7vw, 0.72rem) !important;
+    line-height: 1.25 !important;
+    white-space: normal;
+  }
+
+  .iiot-tech-pill span {
+    flex: 0 0 auto;
+  }
+
+  .iiot-workflow-card {
+    height: auto !important;
+    min-height: 132px;
+    padding: 18px !important;
+    justify-content: flex-start !important;
+    gap: 14px;
+  }
+
+  .iiot-workflow-card .w-1\\.5 {
+    margin-top: 2px !important;
+  }
+
+  .iiot-usecase-shell {
+    gap: 16px !important;
+  }
+
+  .iiot-usecase-list {
+    max-height: none;
+    padding-right: 0;
+  }
+
+  .iiot-usecase-detail {
+    min-height: auto !important;
+    padding: 18px !important;
+    scroll-margin-top: calc(var(--nav-h) + 16px);
+  }
+
+  .iiot-usecase-detail .flex.gap-8 {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+  }
+
+  .iiot-usecase-detail a {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .iiot-console {
+    border-radius: 14px !important;
+  }
+
+  .iiot-console .p-6 {
+    padding: 16px !important;
+  }
+
+  .iiot-console .flex.justify-between {
+    align-items: flex-start !important;
+  }
+
+  .iiot-telemetry-chart {
+    height: 180px !important;
+    padding: 12px !important;
+    overflow: hidden !important;
+  }
+
+  .iiot-sparkline {
+    display: block;
+    width: 100% !important;
+    height: 100% !important;
+    overflow: hidden;
+  }
+
+  .iiot-capability-wrap {
+    overflow: visible !important;
+  }
+
+  .iiot-capability-table,
+  .iiot-capability-table thead,
+  .iiot-capability-table tbody,
+  .iiot-capability-table tr,
+  .iiot-capability-table td {
+    display: block !important;
+    width: 100% !important;
+  }
+
+  .iiot-capability-table thead {
+    display: none !important;
+  }
+
+  .iiot-capability-table tr {
+    padding: 16px !important;
+    border-bottom: 1px solid rgba(39,39,42,0.82);
+    background: rgba(9,9,11,0.34);
+  }
+
+  .iiot-capability-table tr:last-child {
+    border-bottom: 0;
+  }
+
+  .iiot-capability-table td {
+    padding: 0 !important;
+    border: 0 !important;
+    text-align: left !important;
+    white-space: normal !important;
+  }
+
+  .iiot-capability-table td + td {
+    margin-top: 12px;
+  }
+
+  .iiot-capability-table td::before {
+    content: attr(data-label);
+    display: block;
+    margin-bottom: 4px;
+    color: #71717a;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .iiot-dashboard-overlay {
+    align-items: flex-start !important;
+    justify-content: center !important;
+    padding: calc(var(--nav-h) + 10px) 12px 14px !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  .iiot-dashboard-modal {
+    max-height: calc(100svh - var(--nav-h) - 24px) !important;
+    border-radius: 18px !important;
+    background:
+      linear-gradient(180deg, rgba(14,14,18,0.98), rgba(5,5,7,0.98)),
+      radial-gradient(circle at top left, rgba(0,220,130,0.1), transparent 44%) !important;
+    box-shadow: 0 18px 58px rgba(0,0,0,0.46) !important;
+  }
+
+  .iiot-dashboard-header {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) auto !important;
+    align-items: start !important;
+    gap: 12px !important;
+    padding: 16px !important;
+  }
+
+  .iiot-dashboard-title-row {
+    min-width: 0;
+    gap: 12px !important;
+  }
+
+  .iiot-dashboard-title-row h3 {
+    font-size: 1.05rem !important;
+    line-height: 1.25 !important;
+  }
+
+  .iiot-dashboard-title-row p {
+    font-size: 0.68rem !important;
+  }
+
+  .iiot-dashboard-close {
+    min-height: 38px !important;
+    padding: 0 12px !important;
+    border-radius: 10px !important;
+    font-size: 0 !important;
+  }
+
+  .iiot-dashboard-close::before {
+    content: "Close";
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .iiot-tech-stack {
+    padding: 12px 16px !important;
+    gap: 8px !important;
+  }
+
+  .iiot-tech-stack > span:first-child {
+    width: 100%;
+    margin-right: 0 !important;
+  }
+
+  .iiot-dashboard-body {
+    padding: 16px !important;
+    gap: 14px !important;
+  }
+
+  .iiot-kpi-grid {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 10px !important;
+  }
+
+  .iiot-kpi-card,
+  .iiot-dashboard-panel {
+    border-radius: 12px !important;
+    background: rgba(24,24,27,0.68) !important;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.045);
+  }
+
+  .iiot-kpi-card {
+    padding: 13px !important;
+    min-height: 104px;
+  }
+
+  .iiot-kpi-card .text-2xl {
+    font-size: 1.55rem !important;
+    line-height: 1.1 !important;
+  }
+
+  .iiot-dashboard-panel {
+    padding: 14px !important;
+    overflow: hidden;
+  }
+
+  .iiot-dashboard-panel .grid-cols-2,
+  .iiot-dashboard-panel .grid-cols-3,
+  .iiot-dashboard-panel .sm\\:grid-cols-3,
+  .iiot-dashboard-panel .sm\\:grid-cols-4 {
+    grid-template-columns: 1fr !important;
+  }
+
+  .iiot-dashboard-panel svg {
+    max-width: 100%;
+    height: auto;
+  }
+}
 `;
 
 const FACTORY_FEATURES = [
@@ -1066,7 +1398,7 @@ function DashboardKpi({ label, value, unit, accent, min = 0, max = 100 }) {
     : 0;
 
   return (
-    <div className="bg-zinc-900/45 border border-zinc-800 p-4 rounded-lg">
+    <div className="iiot-kpi-card bg-zinc-900/45 border border-zinc-800 p-4 rounded-lg">
       <div className="text-[10px] font-mono text-zinc-500 uppercase tracking-widest mb-1">{label}</div>
       <div className="text-2xl font-mono font-bold" style={{ color: accent }}>
         {Number.isFinite(numeric) ? value : "--"}{" "}
@@ -1086,7 +1418,7 @@ function DashboardKpi({ label, value, unit, accent, min = 0, max = 100 }) {
 
 function DashboardPanel({ title, children, accent }) {
   return (
-    <div className="bg-zinc-900/45 border border-zinc-800 rounded-xl p-4">
+    <div className="iiot-dashboard-panel bg-zinc-900/45 border border-zinc-800 rounded-xl p-4">
       <div className="flex items-center justify-between mb-4">
         <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-widest">{title}</span>
         <span className="h-1.5 w-1.5 rounded-full" style={{ background: accent, boxShadow: `0 0 16px ${accent}` }} />
@@ -1179,7 +1511,7 @@ function SectorDashboardBody({ project, channels, values, history, logs }) {
   );
 
   const kpiGrid = (
-    <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+    <div className="iiot-kpi-grid grid grid-cols-2 lg:grid-cols-4 gap-3">
       {channels.map((c) => (
         <DashboardKpi
           key={c.key}
@@ -1196,7 +1528,7 @@ function SectorDashboardBody({ project, channels, values, history, logs }) {
 
   if (project?.title === "Predictive Maintenance Systems") {
     return (
-      <div className="px-6 py-5 space-y-4">
+      <div className="iiot-dashboard-body px-6 py-5 space-y-4">
         {kpiGrid}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
           <DashboardPanel title="Failure Risk Analyzer" accent={accent}>
@@ -1248,7 +1580,7 @@ function SectorDashboardBody({ project, channels, values, history, logs }) {
 
   if (project?.title === "Smart Energy Monitoring") {
     return (
-      <div className="px-6 py-5 space-y-4">
+      <div className="iiot-dashboard-body px-6 py-5 space-y-4">
         {kpiGrid}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
           <DashboardPanel title="Three Phase Load Balance" accent={accent}>
@@ -1285,7 +1617,7 @@ function SectorDashboardBody({ project, channels, values, history, logs }) {
 
   if (project?.title === "Industrial Telemetry Systems") {
     return (
-      <div className="px-6 py-5 space-y-4">
+      <div className="iiot-dashboard-body px-6 py-5 space-y-4">
         {kpiGrid}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
           <DashboardPanel title="RF Gateway Rack" accent={accent}>
@@ -1317,7 +1649,7 @@ function SectorDashboardBody({ project, channels, values, history, logs }) {
 
   if (project?.title === "Smart Sensor Networks") {
     return (
-      <div className="px-6 py-5 space-y-4">
+      <div className="iiot-dashboard-body px-6 py-5 space-y-4">
         {kpiGrid}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
           <DashboardPanel title="Self-Healing Mesh Map" accent={accent}>
@@ -1357,7 +1689,7 @@ function SectorDashboardBody({ project, channels, values, history, logs }) {
 
   if (project?.title === "AI-Based Surveillance") {
     return (
-      <div className="px-6 py-5 space-y-4">
+      <div className="iiot-dashboard-body px-6 py-5 space-y-4">
         {kpiGrid}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
           <DashboardPanel title="Camera Inference Grid" accent={accent}>
@@ -1400,7 +1732,7 @@ function SectorDashboardBody({ project, channels, values, history, logs }) {
 
   if (project?.title === "Edge AI Infrastructure") {
     return (
-      <div className="px-6 py-5 space-y-4">
+      <div className="iiot-dashboard-body px-6 py-5 space-y-4">
         {kpiGrid}
         <div className="grid grid-cols-1 lg:grid-cols-[0.9fr_1.1fr] gap-4">
           <DashboardPanel title="Inference Pipeline" accent={accent}>
@@ -1440,7 +1772,7 @@ function SectorDashboardBody({ project, channels, values, history, logs }) {
 
   if (project?.title === "Industrial Dashboard Systems") {
     return (
-      <div className="px-6 py-5 space-y-4">
+      <div className="iiot-dashboard-body px-6 py-5 space-y-4">
         {kpiGrid}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
           <DashboardPanel title="Operator View Throughput" accent={accent}>
@@ -1479,7 +1811,7 @@ function SectorDashboardBody({ project, channels, values, history, logs }) {
 
   if (project?.title === "Cloud + Edge IoT Integration") {
     return (
-      <div className="px-6 py-5 space-y-4">
+      <div className="iiot-dashboard-body px-6 py-5 space-y-4">
         {kpiGrid}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
           <DashboardPanel title="Secure Ingestion Pipeline" accent={accent}>
@@ -1518,7 +1850,7 @@ function SectorDashboardBody({ project, channels, values, history, logs }) {
   }
 
   return (
-    <div className="px-6 py-5 space-y-4">
+      <div className="iiot-dashboard-body px-6 py-5 space-y-4">
       {kpiGrid}
       <div className="grid grid-cols-1 xl:grid-cols-[1.15fr_0.85fr] gap-4">
         <DashboardPanel title="Machine Cell Overview" accent={accent}>
@@ -1711,21 +2043,21 @@ function LiveProjectDashboard({ project, onClose }) {
 
   return (
     <div
-      className="fixed inset-0 z-[9999] flex items-center justify-center px-4 bg-black/80 backdrop-blur-md"
+      className="iiot-dashboard-overlay fixed inset-0 z-[9999] flex items-center justify-center px-4 bg-black/80 backdrop-blur-md"
       style={{ animation: "iiotDashboardBackdrop .22s ease both", paddingTop: "calc(var(--nav-h) + 24px)", paddingBottom: 24 }}
       onClick={onClose}
     >
       <div
-        className="w-full max-w-5xl overflow-y-auto bg-[#0a0a0e] border rounded-2xl shadow-2xl relative"
+        className="iiot-dashboard-modal w-full max-w-5xl overflow-y-auto bg-[#0a0a0e] border rounded-2xl shadow-2xl relative"
         style={{ maxHeight: "calc(100svh - var(--nav-h) - 48px)", borderColor: sectorStyle.border, boxShadow: `0 24px 80px ${sectorStyle.dim}`, animation: "iiotDashboardPanel .3s cubic-bezier(.2,.8,.2,1) both" }}
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
         <div
-          className="flex items-start justify-between gap-4 px-6 py-5 border-b border-zinc-900"
+          className="iiot-dashboard-header flex items-start justify-between gap-4 px-6 py-5 border-b border-zinc-900"
           style={{ background: `linear-gradient(90deg, ${sectorStyle.dim}, transparent)` }}
         >
-          <div className="flex items-center gap-4">
+          <div className="iiot-dashboard-title-row flex items-center gap-4">
             <div
               className="p-3 bg-zinc-900 border rounded"
               style={{ color: sectorStyle.accent, borderColor: sectorStyle.border }}
@@ -1751,7 +2083,7 @@ function LiveProjectDashboard({ project, onClose }) {
         </div>
 
         {/* Tech badges */}
-        <div className="px-6 py-4 border-b border-zinc-900 flex flex-wrap items-center gap-2">
+        <div className="iiot-tech-stack px-6 py-4 border-b border-zinc-900 flex flex-wrap items-center gap-2">
           <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-widest mr-2">Tech Stack:</span>
           {(project.tech || []).map((t, i) => (
             <span
@@ -1782,9 +2114,17 @@ export default function IndustrialIoTSolutions() {
   const [activeDeployment, setActiveDeployment] = useState("hybrid");
   const [activeUseCase, setActiveUseCase] = useState(0);
   const [faqOpen, setFaqOpen] = useState(Array(8).fill(false));
+  const useCaseDetailRef = useRef(null);
 
   // Selected project for the live dashboard modal
   const [selectedProject, setSelectedProject] = useState(null);
+
+  const selectUseCase = (id) => {
+    setActiveUseCase(id);
+    window.setTimeout(() => {
+      useCaseDetailRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 80);
+  };
 
   // Live Telemetry Showcase States
   const [dashboardStatus, setDashboardStatus] = useState("NOMINAL"); // NOMINAL, WARNING, ALERT
@@ -1888,6 +2228,12 @@ export default function IndustrialIoTSolutions() {
 
   // GSAP Scroll Animation Effects
   useEffect(() => {
+    const reduceMotion =
+      window.matchMedia("(max-width: 768px)").matches ||
+      window.matchMedia("(pointer: coarse)").matches ||
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduceMotion) return undefined;
+
     // Reveal animation for headers and cards
     const revealElements = document.querySelectorAll(".gsap-reveal");
     revealElements.forEach(el => {
@@ -1913,6 +2259,12 @@ export default function IndustrialIoTSolutions() {
 
   // Simple background canvas particles representing IoT node connections
   useEffect(() => {
+    const shouldSkipCanvas =
+      window.matchMedia("(max-width: 768px)").matches ||
+      window.matchMedia("(pointer: coarse)").matches ||
+      navigator.connection?.saveData;
+    if (shouldSkipCanvas) return undefined;
+
     const canvas = document.getElementById("particles-canvas");
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
@@ -2530,7 +2882,7 @@ export default function IndustrialIoTSolutions() {
               </p>
             </div>
 
-            <div className="flex flex-wrap justify-center gap-4 max-w-4xl mx-auto">
+            <div className="iiot-tech-matrix flex flex-wrap justify-center gap-4 max-w-4xl mx-auto">
               {[
                 { name: "ESP32 Microcontrollers", type: "hardware" },
                 { name: "STM32 Architectures", type: "hardware" },
@@ -2550,7 +2902,7 @@ export default function IndustrialIoTSolutions() {
               ].map((tech, idx) => (
                 <div
                   key={idx}
-                  className={`px-5 py-3 rounded-lg border font-mono text-xs transition-all duration-300 flex items-center gap-3 ${
+                  className={`iiot-tech-pill px-5 py-3 rounded-lg border font-mono text-xs transition-all duration-300 flex items-center gap-3 ${
                     tech.type === "hardware"
                       ? "border-zinc-800 bg-zinc-900/30 text-zinc-300 hover:border-cyan-500/40 hover:text-cyan-300"
                       : tech.type === "protocol"
@@ -2689,7 +3041,7 @@ export default function IndustrialIoTSolutions() {
                 { step: "07", name: "Deployment", desc: "Install sensor channels, configure gateways, and establish client loops." },
                 { step: "08", name: "Support Audit", desc: "Perform periodic checks, calibration tests, and firmware updates." }
               ].map((item, idx) => (
-                <div key={idx} className="bg-zinc-950/60 border border-zinc-900 p-5 rounded-lg text-left relative z-10 flex flex-col justify-between h-[210px] group hover:border-zinc-800 transition-colors duration-300">
+                <div key={idx} className="iiot-workflow-card bg-zinc-950/60 border border-zinc-900 p-5 rounded-lg text-left relative z-10 flex flex-col justify-between h-[210px] group hover:border-zinc-800 transition-colors duration-300">
                   <div>
                     <span className="text-xs font-mono text-cyan-400 block mb-3">{item.step}</span>
                     <h4 className="text-xs font-bold text-white mb-2 leading-snug group-hover:text-cyan-300 transition-colors duration-300 font-syne">{item.name}</h4>
@@ -2737,7 +3089,7 @@ export default function IndustrialIoTSolutions() {
                         ? "border-cyan-500 bg-zinc-900/60 text-white"
                         : "border-zinc-900 bg-zinc-900/20 text-zinc-500 hover:border-zinc-800"
                     }`}
-                    onClick={() => setActiveUseCase(uc.id)}
+                    onClick={() => selectUseCase(uc.id)}
                   >
                     <span className="font-bold">{uc.title}</span>
                     <span className="text-[10px] text-zinc-500 mt-1">{uc.client}</span>
@@ -2746,7 +3098,7 @@ export default function IndustrialIoTSolutions() {
               </div>
 
               {/* Right Column: Case study details */}
-              <div className="iiot-usecase-detail lg:col-span-8 bg-zinc-950/80 border border-zinc-800 p-8 rounded-xl relative min-h-[420px] flex flex-col justify-between">
+              <div ref={useCaseDetailRef} className="iiot-usecase-detail lg:col-span-8 bg-zinc-950/80 border border-zinc-800 p-8 rounded-xl relative min-h-[420px] flex flex-col justify-between">
                 <AnimatePresence mode="wait">
                   {[
                     {
@@ -2886,7 +3238,7 @@ export default function IndustrialIoTSolutions() {
             </div>
 
             {/* Dashboard Console Container */}
-            <div className="bg-[#0c0c10] border border-zinc-800 rounded-xl overflow-hidden shadow-2xl max-w-5xl mx-auto">
+            <div className="iiot-console bg-[#0c0c10] border border-zinc-800 rounded-xl overflow-hidden shadow-2xl max-w-5xl mx-auto">
               
               {/* Top Controls Bar */}
               <div className="bg-zinc-950 px-6 py-4 border-b border-zinc-900 flex flex-wrap justify-between items-center gap-4">
@@ -2988,7 +3340,7 @@ export default function IndustrialIoTSolutions() {
                       <span className="text-[10px] font-mono text-zinc-500 uppercase">Parameter: Acceleration (mm/s)</span>
                     </div>
                     
-                    <div className="h-44 w-full flex items-center justify-center relative bg-[#09090b]/80 rounded border border-zinc-900 p-4">
+                    <div className="iiot-telemetry-chart h-44 w-full flex items-center justify-center relative bg-[#09090b]/80 rounded border border-zinc-900 p-4">
                       {/* Grid background lines */}
                       <div className="absolute inset-0 grid grid-rows-4 grid-cols-6 pointer-events-none opacity-[0.03]">
                         {Array(24).fill(0).map((_, i) => <div key={i} className="border border-white" />)}
@@ -3059,9 +3411,9 @@ export default function IndustrialIoTSolutions() {
             </div>
 
             {/* Matrix Table */}
-            <div className="max-w-4xl mx-auto border border-zinc-800 rounded-xl overflow-hidden shadow-xl bg-zinc-950/60 backdrop-blur-md">
-              <div className="overflow-x-auto">
-                <table className="w-full text-left font-mono text-xs border-collapse">
+            <div className="iiot-capability-matrix max-w-4xl mx-auto border border-zinc-800 rounded-xl overflow-hidden shadow-xl bg-zinc-950/60 backdrop-blur-md">
+              <div className="iiot-capability-wrap overflow-x-auto">
+                <table className="iiot-capability-table w-full text-left font-mono text-xs border-collapse">
                   <thead>
                     <tr className="bg-zinc-950 border-b border-zinc-800 text-zinc-400 uppercase tracking-widest text-[10px]">
                       <th className="p-5 font-bold">CAPABILITY SPECIFICATION</th>
@@ -3081,10 +3433,10 @@ export default function IndustrialIoTSolutions() {
                       { name: "API & Cloud Backhaul Pipelines", type: "cloud", value: "AWS IoT Core, secure WebHooks, REST integration layer", rate: "96%", spec: "X.509 client cert validation" }
                     ].map((row, idx) => (
                       <tr key={idx} className="hover:bg-zinc-900/30 transition-colors duration-200">
-                        <td className="p-5 font-bold text-white font-sans">{row.name}</td>
-                        <td className="p-5 text-zinc-400 font-sans">{row.value}</td>
-                        <td className="p-5 text-center text-cyan-400 font-bold">{row.rate}</td>
-                        <td className="p-5 text-right text-zinc-500">{row.spec}</td>
+                        <td data-label="Capability" className="p-5 font-bold text-white font-sans">{row.name}</td>
+                        <td data-label="ARC LABS Core" className="p-5 text-zinc-400 font-sans">{row.value}</td>
+                        <td data-label="Integration Rate" className="p-5 text-center text-cyan-400 font-bold">{row.rate}</td>
+                        <td data-label="Protocol Compliance" className="p-5 text-right text-zinc-500">{row.spec}</td>
                       </tr>
                     ))}
                   </tbody>
