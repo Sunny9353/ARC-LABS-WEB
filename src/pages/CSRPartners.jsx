@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
+import { addDoc, collection } from "firebase/firestore";
+import { db } from "../firebase";
 import { useBodyScrollLock, validateRequiredFields } from "../utils/ui";
 
 /* ═══════════════════════════════════════════════════════════════════
@@ -726,11 +728,22 @@ function CSRModal({ onClose }) {
   const [loading, setLoading] = useState(false);
   const [done, setDone] = useState(false);
   const h = (e) => setForm((p) => ({ ...p, [e.target.name]: e.target.value }));
-  const submit = (e) => {
+  const submit = async (e) => {
     e.preventDefault();
     if (!validateRequiredFields(e.currentTarget)) return;
     setLoading(true);
-    setTimeout(() => { setLoading(false); setDone(true); }, 1500);
+    try {
+      await addDoc(collection(db, "csrPartnershipLeads"), {
+        ...form,
+        leadType: "CSR Partnership",
+        source: "csr_partners_modal",
+        createdAt: new Date().toISOString(),
+      });
+      setDone(true);
+    } catch (err) {
+      console.error("Unable to save CSR partnership lead", err);
+    }
+    setLoading(false);
   };
 
   return (

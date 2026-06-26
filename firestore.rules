@@ -7,25 +7,26 @@ service cloud.firestore {
         && (
           request.auth.token.admin == true
           || request.auth.token.email == "techarclab@gmail.com"
+          || request.auth.token.email == "techarclabs@gmail.com"
+          || request.auth.token.email == "arcadmin@gmail.com"
         );
     }
 
-    // Certificates — public read (for verification), write only from authenticated clients
+    // Public verification, tightly controlled creation from eligible registrations.
     match /certificates/{certId} {
       allow read: if true;
-      allow create: if true;  // TODO: restrict to authenticated users or server-side
-      allow update, delete: if false;
+      allow create: if request.resource.data.eligibleStudentId is string
+        && exists(/databases/$(database)/documents/certificateEligibleRegistrations/$(request.resource.data.eligibleStudentId))
+        && !("certificateId" in get(/databases/$(database)/documents/certificateEligibleRegistrations/$(request.resource.data.eligibleStudentId)).data);
+      allow list, update, delete: if isAdmin();
     }
 
-    // Legacy paid-student records keyed only by roll/registration number.
     match /certificateEligibleStudents/{rollKey} {
       allow get: if true;
-      allow list: if false;
+      allow list: if isAdmin();
       allow create, update, delete: if isAdmin();
     }
 
-    // Paid workshop/training records keyed by roll + workshop/session code.
-    // Example: 23KA109D1_CMRTC-IOT-JUN2026
     match /certificateEligibleRegistrations/{eligibilityId} {
       allow get: if true;
       allow list, create, delete: if isAdmin();
@@ -37,19 +38,57 @@ service cloud.firestore {
         );
     }
 
-    // Orders — server-side only (Cloud Functions write via Admin SDK)
     match /orders/{orderId} {
-      allow read, write: if false;
+      allow create: if true;
+      allow read, update: if isAdmin();
+      allow delete: if false;
     }
 
-    // Invoices — server-side only
     match /invoices/{invoiceId} {
-      allow read, write: if false;
+      allow read: if isAdmin();
+      allow write: if false;
     }
 
-    // Counters — server-side only
     match /counters/{counterId} {
       allow read, write: if false;
+    }
+
+    match /analyticsEvents/{eventId} {
+      allow create: if true;
+      allow read, update, delete: if isAdmin();
+    }
+
+    match /telemetry_data/{telemetryId} {
+      allow create: if request.resource.data.latitude is number
+        && request.resource.data.longitude is number
+        && request.resource.data.pagePath is string;
+      allow read: if isAdmin();
+      allow update, delete: if false;
+    }
+
+    match /programCurriculumLeads/{leadId} {
+      allow create: if true;
+      allow read, update, delete: if isAdmin();
+    }
+
+    match /custom_proposals/{proposalId} {
+      allow create: if true;
+      allow read, update, delete: if isAdmin();
+    }
+
+    match /csrPartnershipLeads/{leadId} {
+      allow create: if true;
+      allow read, update, delete: if isAdmin();
+    }
+
+    match /contactEnquiries/{leadId} {
+      allow create: if true;
+      allow read, update, delete: if isAdmin();
+    }
+
+    match /orderEvents/{eventId} {
+      allow read, create: if isAdmin();
+      allow update, delete: if false;
     }
   }
 }

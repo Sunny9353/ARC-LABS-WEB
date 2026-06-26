@@ -7,6 +7,7 @@ import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import ArcLabsChatBot from "./components/ArcLabsChatBot";
 import { installRequiredFieldUX } from "./utils/ui";
+import { installAnalyticsTracker, trackPageView } from "./utils/analytics";
 
 // Pages — lazy-loaded
 if (typeof window !== "undefined" && !window.__ARC_DOCUMENT_START_PATH__) {
@@ -23,11 +24,15 @@ const Certification = lazy(() => import("./pages/Certification"));
 const Checkout = lazy(() => import("./pages/Checkout"));
 const IndustrialIoTSolutions = lazy(() => import("./pages/IndustrialIoTSolutions"));
 const LegalPage = lazy(() => import("./pages/LegalPage"));
+const Admin = lazy(() => import("./pages/Admin"));
 
 function ScrollReset() {
   const { pathname } = useLocation();
   useEffect(() => {
     window.scrollTo(0, 0);
+    if (!pathname.startsWith("/admin")) {
+      trackPageView();
+    }
   }, [pathname]);
   return null;
 }
@@ -51,8 +56,11 @@ const WaIcon = () => (
 function Layout({ children }) {
   const { pathname } = useLocation();
   const isHome = pathname === "/";
+  const isAdmin = pathname.startsWith("/admin");
 
   useEffect(() => {
+    if (isAdmin) return undefined;
+
     const selectors = [
       ".section",
       ".about-section",
@@ -113,7 +121,11 @@ function Layout({ children }) {
       timers.forEach((timer) => window.clearTimeout(timer));
       observer?.disconnect();
     };
-  }, [pathname]);
+  }, [pathname, isAdmin]);
+
+  if (isAdmin) {
+    return <>{children}</>;
+  }
 
   return (
     <div className={`app-shell${isHome ? " home-intro-shell" : ""}`}>
@@ -135,7 +147,10 @@ function Layout({ children }) {
 }
 
 export default function App() {
-  useEffect(() => installRequiredFieldUX(), []);
+  useEffect(() => {
+    installRequiredFieldUX();
+    installAnalyticsTracker();
+  }, []);
 
   return (
     <HelmetProvider>
@@ -156,6 +171,7 @@ export default function App() {
             <Route path="/privacy" element={<LegalPage type="privacy" />} />
             <Route path="/terms" element={<LegalPage type="terms" />} />
             <Route path="/refunds" element={<LegalPage type="refunds" />} />
+            <Route path="/admin/*" element={<Admin />} />
             <Route
               path="*"
               element={

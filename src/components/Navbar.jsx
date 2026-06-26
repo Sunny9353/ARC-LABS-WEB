@@ -70,6 +70,11 @@ export default function Navbar() {
             </Link>
           </li>
           <li>
+            <Link to="/admin" className="nav-admin-login">
+              Admin Login
+            </Link>
+          </li>
+          <li>
             <button
               type="button"
               className="nav-theme-toggle"
@@ -120,6 +125,13 @@ export default function Navbar() {
           style={{ textAlign: "center", marginTop: 4 }}
         >
           Get Started
+        </Link>
+        <Link
+          to="/admin"
+          className={`nav-admin-login${location.pathname.startsWith("/admin") ? " active" : ""}`}
+          style={{ textAlign: "center", marginTop: 4 }}
+        >
+          Admin Login
         </Link>
       </div>
     </>
