@@ -49,7 +49,7 @@ export default function Navbar() {
     <>
       <nav className={`navbar${scrolled ? " scrolled" : ""}${isHome ? " home-intro" : ""}`}>
         <Link to="/" state={linkStateFor("/")} className="navbar-logo">
-          <img src="/images/brand/arc-labs-logo-transparent.png" alt="ARC LABS" />
+          <img src="/images/brand/arc-labs-logo.png" alt="ARC LABS" />
         </Link>
 
         <ul className="navbar-links">
@@ -137,4 +137,3 @@ export default function Navbar() {
     </>
   );
 }
-
