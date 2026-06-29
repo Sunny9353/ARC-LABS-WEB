@@ -1177,8 +1177,8 @@ export default function ProductsPage() {
         <h2>Need help choosing the <span style={{ color: "var(--accent)" }}>right kit?</span></h2>
         <p>Talk to our team. We'll recommend the right board for your lab, budget, and curriculum.</p>
         <div className="pcta-btns">
-          <a href="tel:+918699929532" className="btn btn-primary">+91 86999 29532</a>
-          <a href="https://wa.me/918699929532" className="btn btn-secondary" target="_blank" rel="noreferrer">WhatsApp</a>
+          <a href="tel:+917815809412" className="btn btn-primary">+91 7815809412</a>
+          <a href="https://wa.me/917815809412" className="btn btn-secondary" target="_blank" rel="noreferrer">WhatsApp</a>
           <a href="mailto:hello@arclabs.in" className="btn btn-secondary">hello@arclabs.in</a>
         </div>
         <p style={{ marginTop: "1.5rem", fontSize: ".85rem", color: "var(--text-3)" }}>

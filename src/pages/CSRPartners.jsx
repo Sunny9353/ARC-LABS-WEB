@@ -762,7 +762,7 @@ function CSRModal({ onClose }) {
               <br /><br />
               For immediate response:<br />
               <strong style={{ color: "var(--accent)" }}>hello@arclabs.in</strong><br />
-              <strong style={{ color: "var(--accent)" }}>+91 8699929532 (WhatsApp)</strong>
+              <strong style={{ color: "var(--accent)" }}>+91 7815809412 (WhatsApp)</strong>
             </p>
           </div>
         ) : (
@@ -1231,9 +1231,9 @@ export default function CSRPartnersPage() {
         <div className="csr-contact-layout" style={{ marginTop: "2.5rem" }}>
           <div>
             {[
-              { abbr: "TEL", bg: "var(--tag-bg)", color: "var(--accent)", title: "Direct Line", val: <><a href="tel:+918699929532">+91 8699929532</a> · <a href="tel:+914035659806">+91 40 3565 9806</a></> },
+              { abbr: "TEL", bg: "var(--tag-bg)", color: "var(--accent)", title: "Direct Line", val: <><a href="tel:+917815809412">+91 7815809412</a> · <a href="tel:+914035659806">+91 40 3565 9806</a></> },
               { abbr: "EML", bg: "var(--tag-bg)", color: "var(--blue)", title: "Email", val: <a href="mailto:hello@arclabs.in">hello@arclabs.in</a> },
-              { abbr: "WA", bg: "var(--accent-glow)", color: "var(--accent)", title: "WhatsApp", val: <a href="https://wa.me/918699929532" target="_blank" rel="noreferrer">+91 8699929532 — preferred for quick response</a> },
+              { abbr: "WA", bg: "var(--accent-glow)", color: "var(--accent)", title: "WhatsApp", val: <a href="https://wa.me/917815809412" target="_blank" rel="noreferrer">+91 7815809412 — preferred for quick response</a> },
               { abbr: "LOC", bg: "var(--tag-bg)", color: "var(--amber)", title: "Office", val: "4-7-138/1, Narendra Nagar, Habsiguda, Hyderabad – 500007" },
               { abbr: "REG", bg: "var(--tag-bg)", color: "var(--accent)", title: "Registration", val: "MSME Registered · PAN: Available on request · 80G Certificate: Available" },
             ].map((c) => (
@@ -1254,7 +1254,7 @@ export default function CSRPartnersPage() {
               </p>
               <div style={{ display: "flex", flexDirection: "column", gap: ".7rem" }}>
                 <button className="btn btn-primary" style={{ justifyContent: "center" }} onClick={() => setShowModal(true)}>Submit Partnership Enquiry</button>
-                <a href="https://wa.me/918699929532" className="btn btn-ghost" style={{ justifyContent: "center" }} target="_blank" rel="noreferrer">WhatsApp Our CSR Team</a>
+                <a href="https://wa.me/917815809412" className="btn btn-ghost" style={{ justifyContent: "center" }} target="_blank" rel="noreferrer">WhatsApp Our CSR Team</a>
                 <a href="mailto:hello@arclabs.in?subject=CSR Partnership Enquiry" className="btn btn-secondary" style={{ justifyContent: "center" }}>Email for Due Diligence Documents</a>
               </div>
             </div>
@@ -1271,7 +1271,7 @@ export default function CSRPartnersPage() {
         <div className="csr-bottom-btns">
           <button className="btn btn-primary" onClick={() => setShowModal(true)}>Become a Partner</button>
           <Link to="/lab-packages" className="btn btn-ghost">View Lab Packages</Link>
-          <a href="https://wa.me/918699929532" className="btn btn-ghost" target="_blank" rel="noreferrer">WhatsApp Us</a>
+          <a href="https://wa.me/917815809412" className="btn btn-ghost" target="_blank" rel="noreferrer">WhatsApp Us</a>
         </div>
       </div>
 

@@ -316,7 +316,7 @@ function AIReadyIntro() {
           </h2>
         </div>
         <div className="company-info-box">
-          <h2>About ARC LABS</h2>
+          <h2 style={{ fontSize: "1.4rem", lineHeight: 1.15, marginBottom: "0.9rem", fontWeight: 700 }}>About ARC LABS</h2>
 
           <p>
             ARC LABS is a Hyderabad-based STEM lab implementation company that
@@ -345,8 +345,8 @@ function Services() {
       id: "school",
       icon: "🏫",
       color: "var(--accent)",
-      colorDim: "var(--tag-bg)",
-      colorBorder: "var(--tag-bg)",
+      colorDim: "var(--accent-dim)",
+      colorBorder: "var(--accent-dim)",
       title: "School Lab Setup & STEM",
       desc: "End-to-end IoRT + AI lab installation for Classes 3–10. Hardware, curriculum, installation, and ongoing support — bundled.",
       points: [
@@ -361,9 +361,9 @@ function Services() {
     {
       id: "college",
       icon: "🎓",
-      color: "var(--tag-text)",
-      colorDim: "var(--tag-bg)",
-      colorBorder: "var(--tag-bg)",
+      color: "var(--accent)",
+      colorDim: "var(--accent-dim)",
+      colorBorder: "var(--accent-dim)",
       title: "College Training Programs",
       desc: "Industry-driven curriculum in IoT, AI, Cloud, and Embedded Systems. Real projects, live hardware, certification.",
       points: [
@@ -378,9 +378,9 @@ function Services() {
     {
       id: "online",
       icon: "💻",
-      color: "#a855f7",
-      colorDim: "rgba(168,85,247,0.12)",
-      colorBorder: "rgba(168,85,247,0.30)",
+      color: "var(--accent)",
+      colorDim: "var(--accent-dim)",
+      colorBorder: "var(--accent-dim)",
       title: "Online Certification",
       desc: "Structured online programs with mentor-led sessions, hands-on projects, and industry-recognized certification.",
       points: [
@@ -395,9 +395,9 @@ function Services() {
     {
       id: "csr",
       icon: "🤝",
-      color: "var(--tag-text)",
-      colorDim: "var(--tag-bg)",
-      colorBorder: "var(--tag-bg)",
+      color: "var(--accent)",
+      colorDim: "var(--accent-dim)",
+      colorBorder: "var(--accent-dim)",
       title: "CSR Lab Implementation",
       desc: "Complete CSR-funded lab setup with impact reporting, cost-per-beneficiary data, and measurable learning outcomes.",
       points: [
@@ -412,9 +412,9 @@ function Services() {
     {
       id: "teacher",
       icon: "👩‍🏫",
-      color: "var(--tag-text)",
-      colorDim: "var(--tag-bg)",
-      colorBorder: "var(--tag-bg)",
+      color: "var(--accent)",
+      colorDim: "var(--accent-dim)",
+      colorBorder: "var(--accent-dim)",
       title: "Teacher Training",
       desc: "Two-level certification program that makes teachers independently capable of delivering IoT and Robotics education.",
       points: [
@@ -429,9 +429,9 @@ function Services() {
     {
       id: "rnd",
       icon: "⚙️",
-      color: "#64748b",
-      colorDim: "rgba(100,116,139,0.12)",
-      colorBorder: "rgba(100,116,139,0.30)",
+      color: "var(--accent)",
+      colorDim: "var(--accent-dim)",
+      colorBorder: "var(--accent-dim)",
       title: "Custom Hardware & R&D",
       desc: "Made-in-India development boards and educational kits. Custom IoT and embedded system design for institutions.",
       points: [
@@ -517,23 +517,62 @@ function Services() {
 /* ─── Stats Band ───────────────────────────────────────── */
 function StatsBand() {
   const STATS = [
-    { num: "25,000+", label: "Students Upskilled", desc: "Schools, colleges & corporates" },
-    { num: "1,000+", label: "Faculty Certified", desc: "Including IIT & NIT programs" },
-    { num: "3,000+", label: "Training Sessions", desc: "Delivered across India" },
-    { num: "10+", label: "Years in EdTech", desc: "MSME-registered, Hyderabad" },
-    { num: "500+", label: "Institutions", desc: "Schools, colleges & labs" },
+    { value: 25000, suffix: "+", label: "Students Upskilled", desc: "Schools, colleges & corporates" },
+    { value: 1000, suffix: "+", label: "Faculty Certified", desc: "Including IIT & NIT programs" },
+    { value: 3000, suffix: "+", label: "Training Sessions", desc: "Delivered across India" },
+    { value: 10, suffix: "+", label: "Years in EdTech", desc: "MSME-registered, Hyderabad" },
+    { value: 500, suffix: "+", label: "Institutions", desc: "Schools, colleges & labs" },
   ];
   return (
     <div className="stats-band">
       <div className="stats-grid">
         {STATS.map((s) => (
           <div key={s.label}>
-            <div className="stat-num">{s.num}</div>
+            <AnimatedStat value={s.value} suffix={s.suffix} />
             <div className="stat-label">{s.label}</div>
             <div className="stat-desc">{s.desc}</div>
           </div>
         ))}
       </div>
+    </div>
+  );
+}
+function AnimatedStat({ value, suffix }) {
+  const [count, setCount] = useState(0);
+  const ref = useRef(null);
+
+  useEffect(() => {
+    const node = ref.current;
+    if (!node) return undefined;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return;
+
+        const duration = 1600;
+        const start = performance.now();
+
+        const tick = (now) => {
+          const progress = Math.min((now - start) / duration, 1);
+          const eased = 1 - Math.pow(1 - progress, 3);
+          setCount(Math.round(value * eased));
+          if (progress < 1) requestAnimationFrame(tick);
+        };
+
+        requestAnimationFrame(tick);
+        observer.disconnect();
+      },
+      { threshold: 0.35 }
+    );
+
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, [value]);
+
+  return (
+    <div className="stat-num" ref={ref}>
+      {count.toLocaleString("en-IN")}
+      {suffix}
     </div>
   );
 }
@@ -834,6 +873,36 @@ function Testimonials() {
       text: "First-class knowledge and a truly professional approach.",
       author: "Niyati Anil Chougale",
       role: "D.y. Patil Agriculture and Technical University, Talsande"
+    },
+    {
+      stars: 5,
+      text: "The teacher’s performance is good. The teacher teaches very well. The feedback for the teacher is positive.",
+      author: "Chetan Parihar",
+      role: "MIT ADT University, Pune"
+    },
+    {
+      stars: 5,
+      text: "The trainer is good and explained well, but is not sufficient to cover all the topics.",
+      author: "Bonthu Sai Venkata Manoj",
+      role: "Aditya Engineering College, Kakinada"
+    },
+    {
+      stars: 4.5,
+      text: "Trainer makes difficult concept easy.",
+      author: "Ashish Didewar",
+      role: "MGM's College of CS & IT, Nanded"
+    },
+    {
+      stars: 5,
+      text: "Absolute training session I have ever seen ..I have got a keen knowledge in basic electronics..the explanation is really impressive and interesting class.Also a humble request to continue our training session to experience and go forward.",
+      author: "Velugala Mukthavali",
+      role: "Sri Indu College of Engineering and Technology, Hyderabad"
+    },
+    {
+      stars: 5,
+      text: "Our trainer is very knowledgeable and experienced in the field.I really appreciate our trainer's patience and willingness to answer questions. The trainer's explanations are clear and easy to understand.",
+      author: "Ruble Jibi",
+      role: "Srinivas Institute of Technology, Mangalore"
     }
   ];
   return (

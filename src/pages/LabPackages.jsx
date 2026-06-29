@@ -64,17 +64,20 @@ const pageStyles = `
 @keyframes lpFill { from { width: 0; } }
 
 /* Audience switcher */
-.lp-audience-bar { display: flex; justify-content: center; gap: .5rem; padding: 0 5vw 52px; }
+.lp-audience-bar { display: flex; justify-content: center; gap: 1rem; padding: 0 5vw 62px; flex-wrap: wrap; }
 .lp-aud-btn {
-  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px;
-  padding: 10px 24px; border-radius: 9px;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;
+  min-width: 220px; min-height: 76px;
+  padding: 16px 28px; border-radius: 12px;
   border: 1px solid var(--border-2); background: var(--surface);
-  color: var(--text-3); font-size: .85rem; font-weight: 500;
-  cursor: pointer; transition: all .25s; font-family: inherit;
+  color: var(--text-3); font-size: 1rem; font-weight: 600;
+  cursor: pointer; transition: transform .25s, border-color .25s, background .25s;
+  font-family: inherit; text-align: center;
 }
-.lp-aud-btn strong { color: inherit; font-size: .86rem; line-height: 1.1; }
+.lp-aud-btn:hover { transform: translateY(-1px); }
+.lp-aud-btn strong { color: inherit; font-size: 1.12rem; line-height: 1.1; }
 .lp-aud-btn span { display: none; }
-.lp-aud-btn::after { content: attr(data-sub); color: var(--text-4); font-size: .72rem; line-height: 1.2; }
+.lp-aud-btn::after { content: attr(data-sub); color: var(--text-4); font-size: .84rem; line-height: 1.3; }
 .lp-aud-btn.active {
   background: var(--tag-bg); border-color: var(--accent); color: var(--accent);
 }

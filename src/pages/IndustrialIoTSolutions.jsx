@@ -2169,6 +2169,7 @@ export default function IndustrialIoTSolutions() {
   // States
   const [activeSolution, setActiveSolution] = useState(0);
   const [activeDeployment, setActiveDeployment] = useState("hybrid");
+  const [hoveredDeployment, setHoveredDeployment] = useState(null);
   const [activeUseCase, setActiveUseCase] = useState(0);
   const [faqOpen, setFaqOpen] = useState(Array(8).fill(false));
   const useCaseDetailRef = useRef(null);
@@ -3041,27 +3042,32 @@ export default function IndustrialIoTSolutions() {
                   traffic: "GATEWAY âž” GSM MODEM âž” SECURE APN âž” WEB APP DATABASE",
                   icon: Signal
                 }
-              ].map((model) => (
+              ].map((model) => {
+                const isDeploymentHighlighted = (hoveredDeployment || activeDeployment) === model.id;
+
+                return (
                 <div
                   key={model.id}
-                  className={`p-6 border rounded-xl transition-all duration-300 flex flex-col justify-between cursor-pointer ${
-                    activeDeployment === model.id
+                  className={`group p-6 border rounded-xl transition-all duration-300 flex flex-col justify-between cursor-pointer hover:border-cyan-500/60 hover:bg-zinc-950/80 hover:shadow-lg hover:shadow-cyan-950/20 ${
+                    isDeploymentHighlighted
                       ? "border-cyan-500/60 bg-zinc-950/80 shadow-lg shadow-cyan-950/20"
-                      : "border-zinc-800/80 bg-zinc-950/20 hover:border-zinc-700/60"
+                      : "border-zinc-800/80 bg-zinc-950/20"
                   }`}
+                  onMouseEnter={() => setHoveredDeployment(model.id)}
+                  onMouseLeave={() => setHoveredDeployment(null)}
                   onClick={() => setActiveDeployment(model.id)}
                 >
                   <div>
                     <div className="flex justify-between items-center mb-6">
-                      <model.icon className={`w-6 h-6 ${activeDeployment === model.id ? "text-cyan-400" : "text-zinc-500"}`} />
+                      <model.icon className={`w-6 h-6 transition-colors duration-300 group-hover:text-cyan-400 ${isDeploymentHighlighted ? "text-cyan-400" : "text-zinc-500"}`} />
                       <span className={`text-[8px] font-sans px-2 py-0.5 rounded ${
-                        activeDeployment === model.id ? "bg-cyan-950 text-cyan-400" : "bg-zinc-900 text-zinc-500"
+                        isDeploymentHighlighted ? "bg-cyan-950 text-cyan-400" : "bg-zinc-900 text-zinc-500 group-hover:bg-cyan-950 group-hover:text-cyan-400"
                       }`}>
                         {model.id.toUpperCase()}
                       </span>
                     </div>
 
-                    <h3 className="text-sm font-bold text-white mb-2 font-syne">{model.title}</h3>
+                    <h3 className="text-sm font-bold text-white mb-2 font-syne transition-colors duration-300 group-hover:text-cyan-100">{model.title}</h3>
                     <p className="text-xs text-zinc-400 leading-relaxed font-sans font-light mb-6">{model.desc}</p>
                   </div>
 
@@ -3070,7 +3076,8 @@ export default function IndustrialIoTSolutions() {
                     <span className="text-[9px] font-sans text-zinc-400 leading-snug">{model.traffic}</span>
                   </div>
                 </div>
-              ))}
+                );
+              })}
             </div>
           </div>
         </section>

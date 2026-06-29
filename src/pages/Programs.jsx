@@ -377,7 +377,7 @@ export const pageStyles = `
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 1.5px;
-    background: var(--border);
+    background: transparent;
     border-radius: var(--radius-xl);
     overflow: hidden;
   }
@@ -3936,7 +3936,7 @@ export function DetailPanel({ tech, onClose, durationOptions = DURATION_OPTIONS 
             <button
               className="btn btn-secondary"
               onClick={() =>
-                window.open("https://wa.me/918699929532", "_blank")
+                window.open("https://wa.me/917815809412", "_blank")
               }
             >
               WhatsApp Us

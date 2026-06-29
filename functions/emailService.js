@@ -170,7 +170,7 @@ function buildEmailHtml({ customerName, invoiceNumber, amount, productName }) {
           ARC LABS | 4-7-138/1, Narendra Nagar, Habsiguda, Hyderabad 500007
         </p>
         <p style="margin:0; color:#71717a; font-size:10px;">
-          hello@arclabs.in | +91-8699929532
+          hello@arclabs.in | +91-7815809412
         </p>
         <p style="margin:8px 0 0; color:#52525b; font-size:9px;">
           This is an automated email. Please do not reply directly.
@@ -204,7 +204,7 @@ Your GST-compliant tax invoice is attached as a PDF.
 ---
 ARC LABS
 4-7-138/1, Narendra Nagar, Habsiguda, Hyderabad 500007
-hello@arclabs.in | +91-8699929532
+hello@arclabs.in | +91-7815809412
 `.trim();
 }
 

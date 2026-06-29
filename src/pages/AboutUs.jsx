@@ -8,7 +8,7 @@ import "swiper/css/effect-coverflow";
 const TEAM = [
   {
     name: "Vamshidar Reddy",
-    role: "Co-Founder",
+    role: "Founder",
     image:
       "https://static.wixstatic.com/media/8d617c_d5af19944ebd4084a06c537b648ab1d7~mv2.png/v1/crop/x_0%2Cy_0%2Cw_1024%2Ch_849/fill/w_806%2Ch_668%2Cal_c%2Cq_92%2Cusm_0.66_1.00_0.01%2Cenc_avif%2Cquality_auto/Gemini_Generated_Image_i6pvcgi6pvcgi6pv.png",
     imagePosition: "50% 18%",
@@ -17,7 +17,7 @@ const TEAM = [
   },
   {
     name: "Anvesh Reddy",
-    role: "CEO",
+    role: "Founder & CEO",
     image:
       "https://static.wixstatic.com/media/8d617c_f1066df64f3947f09ce362eb2d760371~mv2.png/v1/crop/x_0%2Cy_0%2Cw_625%2Ch_518/fill/w_806%2Ch_668%2Cal_c%2Cq_92%2Cusm_0.66_1.00_0.01%2Cenc_avif%2Cquality_auto/Capture_PNG.png",
     imagePosition: "50% 16%",
@@ -26,7 +26,7 @@ const TEAM = [
   },
   {
     name: "Apurupa Laxmi",
-    role: "Marketing Director",
+    role: "Co-Founder",
     image:
       "https://static.wixstatic.com/media/8d617c_bc7ca3e783da43ddb1c5891a0703d330~mv2.png/v1/crop/x_0%2Cy_182%2Cw_832%2Ch_689/fill/w_806%2Ch_668%2Cal_c%2Cq_92%2Cusm_0.66_1.00_0.01%2Cenc_avif%2Cquality_auto/Generated%20Image%20October%2024%2C%202025%20-%204_02PM.png",
     imagePosition: "50% 18%",
@@ -35,15 +35,46 @@ const TEAM = [
   },
 ];
 
-const CLIENT_IMAGES = [
-  "/images/aboutus/6713791d-e668-46c6-9bfd-522aa097be0a.JPG",
-  "/images/aboutus/c63a85d7-d797-41cf-9044-2c6a9e13fb96.jpg",
-  "/images/aboutus/whatsapp.jpeg",
-  "/images/aboutus/IMG_4225 (1).jpg",
-  "/images/aboutus/IMG_8481.jpg",
-];
+const CLIENTS = [
+  { file: "ACE Engineering College.JPEG", institution: "ACE Engineering College", location: "Hyderabad", workshop: "Technology Workshop" },
+  { file: "CMRIT Hyderabad.jpg", institution: "CMRIT", location: "Hyderabad", workshop: "Technology Workshop" },
+  { file: "D Y PTatil University, Maharashtara-IoRT.jpeg", institution: "D Y Patil University", location: "Maharashtra", workshop: "IoRT Workshop" },
+  { file: "Delhi Public School, Hyd-IoRT.jpeg", institution: "Delhi Public School", location: "Hyderabad", workshop: "IoRT Workshop" },
+  { file: "Don Bosco college of Engineering, Goa.JPG", institution: "Don Bosco College of Engineering", location: "Goa", workshop: "Technology Workshop" },
+  { file: "IIT HYD, Drone.JPG", institution: "IIT Hyderabad", location: "Hyderabad", workshop: "Drone Workshop" },
+  { file: "Janetics Coimbatoor.jpeg", institution: "Janatics", location: "Coimbatore", workshop: "Technology Workshop" },
+  { file: "JNTUH-IoRT, Hyd.jpg", institution: "JNTUH", location: "Hyderabad", workshop: "IoRT Workshop" },
+  { file: "Karnatka Arts,Science and Commerce College, Bidar.jpg", institution: "Karnataka Arts, Science and Commerce College", location: "Bidar", workshop: "Technology Workshop" },
+  { file: "KITE College, Banglore(IoT).jpg", institution: "KITE College", location: "Bangalore", workshop: "IoT Workshop" },
+  { file: "LIttle Learning Foundation, New Dehli - IoT Corparate Training.png", institution: "Little Learning Foundation", location: "New Delhi", workshop: "IoT Corporate Training" },
+  { file: "Loyola Eng College, Chennai-Iot.jpg", institution: "Loyola Engineering College", location: "Chennai", workshop: "IoT Workshop" },
+  { file: "Mallareddy University, Hyd-Advanced IoT.JPG", institution: "Malla Reddy University", location: "Hyderabad", workshop: "Advanced IoT Workshop" },
+  { file: "MGM's Eng College, Nanded-IoT.jpg", institution: "MGM's Engineering College", location: "Nanded", workshop: "IoT Workshop" },
+  { file: "MIT Pune-ToRT.JPG", institution: "MIT Pune", location: "Pune", workshop: "IoRT Workshop" },
+  { file: "Mohan Babu University, Tirupathi-Advanced IoT.jpg", institution: "Mohan Babu University", location: "Tirupati", workshop: "Advanced IoT Workshop" },
+  { file: "Mumbai-FCRIT.jpg", institution: "FCRIT", location: "Mumbai", workshop: "Technology Workshop" },
+  { file: "Okridge International School, Gachibowli, Hyd-Robottics.jpeg", institution: "Oakridge International School", location: "Gachibowli, Hyderabad", workshop: "Robotics Workshop" },
+  { file: "Reva University, Banglore-IoT.JPEG", institution: "Reva University", location: "Bangalore", workshop: "IoT Workshop" },
+  { file: "RTA 2.jpg", institution: "RTA", location: "Hyderabad", workshop: "Technology Workshop" },
+  { file: "RTA.jpg", institution: "RTA", location: "Hyderabad", workshop: "Technology Workshop" },
+  { file: "Sai Ram College of Eng, Banglore-IoT.jpg", institution: "Sai Ram College of Engineering", location: "Bangalore", workshop: "IoT Workshop" },
+  { file: "SIC(Samsung Ino Center.JPG", institution: "Samsung Innovation Center", location: "Hyderabad", workshop: "Innovation Workshop" },
+  { file: "SRM University, kattankulathur, Tamil Nadu - IoT with RPI.JPG", institution: "SRM University", location: "Kattankulathur, Tamil Nadu", workshop: "IoT with Raspberry Pi Workshop" },
+  { file: "Swarnandra Eng College, Andra Pradesh-Embedded Internship.jpg", institution: "Swarnandhra Engineering College", location: "Andhra Pradesh", workshop: "Embedded Internship" },
+  { file: "VIT, Chennai-IoT.jpg", institution: "VIT", location: "Chennai", workshop: "IoT Workshop" },
+].map((client) => ({
+  ...client,
+  image: `/images/aboutus/${client.file}`,
+  caption: `${client.institution}, ${client.location}, ${client.workshop}`,
+  description: `Arc Labs partnered with ${client.institution} for a hands-on ${client.workshop.toLowerCase()} in ${client.location}. The session focused on practical learning, guided implementation, and industry-ready project exposure for participants.`,
+}));
+
+
 
 export default function AboutUs() {
+  const [activeClientIndex, setActiveClientIndex] = useState(0);
+  const activeClient = CLIENTS[activeClientIndex] || CLIENTS[0];
+
   return (
     <>
       <Helmet>
@@ -105,12 +136,10 @@ export default function AboutUs() {
         </div>
 
         <figure className="about-quote">
-          <blockquote>
-            We have partnered with Arc Labs for multiple projects, and their custom development
-            boards have exceeded our expectations. Their attention to detail, prompt communication,
-            and high-quality products have made them a trusted partner for our technology needs.
-          </blockquote>
-          <figcaption>Krishna Murthy, GCET</figcaption>
+          <div className="about-quote-copy" key={activeClient.file} aria-live="polite">
+            <blockquote>{activeClient.description}</blockquote>
+            <figcaption>{activeClient.caption}</figcaption>
+          </div>
         </figure>
 
 <div className="about-gallery">
@@ -121,6 +150,7 @@ export default function AboutUs() {
   slidesPerView="auto"
   loop={true}
   speed={950}
+  onSlideChange={(swiper) => setActiveClientIndex(swiper.realIndex)}
 
 autoplay={{
   delay: 2500,
@@ -139,11 +169,11 @@ autoplay={{
   modules={[EffectCoverflow, Autoplay]}
   className="aboutSwiper"
 >
-    {CLIENT_IMAGES.map((image, index) => (
-<SwiperSlide key={index}>
+    {CLIENTS.map((client) => (
+<SwiperSlide key={client.file}>
   <img
-    src={image}
-    alt={`Gallery ${index + 1}`}
+    src={client.image}
+    alt={`${client.institution} ${client.workshop}`}
   />
 </SwiperSlide>
     ))}

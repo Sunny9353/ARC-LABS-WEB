@@ -307,7 +307,7 @@ exports.razorpayWebhook = functions.https.onRequest(async (req, res) => {
         pan: config.company?.pan || "NOT_CONFIGURED",
         stateCode: companyStateCode,
         email: "hello@arclabs.in",
-        phone: "+91-8699929532",
+        phone: "+91-7815809412",
       },
     };
 

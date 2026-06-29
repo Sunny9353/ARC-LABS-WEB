@@ -4,7 +4,7 @@ import { SAMPLE_CERTIFICATES } from "./constants.js";
 const CONTACT_ACTIONS = [
   { label: "Call sales", href: "tel:+917815809412" },
   { label: "Email ARC LABS", href: "mailto:hello@arclabs.in" },
-  { label: "WhatsApp", href: "https://wa.me/918699929532" },
+  { label: "WhatsApp", href: "https://wa.me/917815809412" },
 ];
 
 const PAGE_ACTIONS = {
@@ -18,7 +18,7 @@ const PAGE_ACTIONS = {
 };
 
 const CONTACT_TEXT =
-  "You can contact ARC LABS at +91 78158 09412, +91 40 3565 9806, hello@arclabs.in, or sales@arclabs.in. WhatsApp is available at +91 86999 29532. ARC LABS is based in Hyderabad and serves schools, colleges, CSR partners, and industrial clients across India.";
+  "You can contact ARC LABS at +91 78158 09412, +91 40 3565 9806, hello@arclabs.in, or sales@arclabs.in. WhatsApp is available at +91 7815809412. ARC LABS is based in Hyderabad and serves schools, colleges, CSR partners, and industrial clients across India.";
 
 const LAB_PACKAGES = {
   school: [
