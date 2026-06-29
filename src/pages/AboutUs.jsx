@@ -1,5 +1,6 @@
 import { Helmet } from "react-helmet-async";
 import "../styles/AboutUs.css";
+import "../styles/AboutUsGalleryFinal.css";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { EffectCoverflow, Autoplay } from "swiper/modules";
 import React, { useState } from "react";
@@ -159,10 +160,10 @@ autoplay={{
 
   coverflowEffect={{
     rotate: 0,
-    stretch: -26,
-    depth: 280,
-    modifier: 1.35,
-    scale: 0.82,
+    stretch: -54,
+    depth: 220,
+    modifier: 1.15,
+    scale: 0.86,
     slideShadows: false,
   }}
 

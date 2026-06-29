@@ -1,195 +1,247 @@
-// ─────────────────────────────────────────────────────────────────────────────
-// ARC LABS Certificate generator
-// Produces a landscape A4 PDF that replicates the ARC LABS x D.Y. Patil
-// "Certificate of Completion" design, with the participant name, workshop title,
-// institution and dates filled dynamically from the verified certificate record.
-// ─────────────────────────────────────────────────────────────────────────────
 import { jsPDF } from "jspdf";
-import {
-  logoArclabs,
-  logoDypatil,
-  logoMsme,
-  sealArclabs,
-  signHod,
-  signRegistrar,
-  signVc,
-} from "../data/certificateAssets.js";
-import { getTech, getDurationLabel, fmtDate } from "./certificationHelpers.js";
+import { getTech, fmtDate } from "./certificationHelpers.js";
 
-const NAVY = [11, 43, 92];
-const BLUE = [27, 79, 160];
-const CYAN = [54, 207, 224];
-const INK = [33, 37, 41];
-const GREY = [90, 99, 112];
+const TEMPLATE_URL = "/images/certificates/mit-pune-certificate-template.png";
+const INK = [12, 12, 12];
+const NAME_NAVY = [18, 34, 74];
 
-const NUM_WORDS = [
-  "Zero", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight",
-  "Nine", "Ten", "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen",
-  "Sixteen", "Seventeen", "Eighteen", "Nineteen", "Twenty",
-];
+const imageCache = new Map();
 
-const durationWord = (days) =>
-  days > 0 && days <= 20 ? NUM_WORDS[days] : String(days || "");
-
-const SIGNATORIES = [
-  { img: sealArclabs, name: "Vamshidar Reddy", title: "Founder", isSeal: true },
-  { img: signHod, name: "Mr. Naresh Kamble", title: "HoD CSE" },
-  { img: signRegistrar, name: "Prof. Dr. Jayendra Khot", title: "Registrar" },
-  { img: signVc, name: "Prof. Dr. Anilkumar S Gupta", title: "Vice Chancellor" },
-];
-
-export function downloadCertificatePdf(cert) {
-  const doc = buildCertificateDoc(cert);
+export async function downloadCertificatePdf(cert) {
+  const doc = await buildCertificateDoc(cert);
   if (!doc) return;
-  const name = cert.fullName || "certificate";
-  const safe = name.replace(/[^a-z0-9]+/gi, "-").toLowerCase();
-  doc.save(`arc-labs-certificate-${safe}.pdf`);
+
+  const name = cert.fullName || cert.rollNo || "certificate";
+  const safe = name.replace(/[^a-z0-9]+/gi, "-").replace(/^-|-$/g, "").toLowerCase();
+  doc.save(`arc-labs-certificate-${safe || "student"}.pdf`);
 }
 
-export function buildCertificateDoc(cert) {
+export async function buildCertificateDoc(cert) {
   if (!cert) return null;
 
-  const tech = getTech(cert.technology || "");
-  const days = parseInt(String(cert.durationDays || "0").replace(/\D/g, ""), 10) || 0;
-  const name = cert.fullName || "Participant";
-  const institution =
-    cert.institution ||
-    "D.Y. Patil Agriculture and Technical University, Talsande";
-  const workshopTitle = tech.label || cert.technology || "IoT & Robotics";
-  const dateText = cert.trainingDate ? fmtDate(cert.trainingDate) : "";
-
+  const template = await loadImageDataUrl(TEMPLATE_URL);
   const doc = new jsPDF({ unit: "pt", format: "a4", orientation: "landscape" });
-  const W = doc.internal.pageSize.getWidth();   // 842
-  const H = doc.internal.pageSize.getHeight();  // 595
+  const W = doc.internal.pageSize.getWidth();
+  const H = doc.internal.pageSize.getHeight();
   const cx = W / 2;
 
-  // ── Background & frame ──────────────────────────────────────────────────────
-  doc.setFillColor(255, 255, 255);
-  doc.rect(0, 0, W, H, "F");
+  doc.addImage(template, "PNG", 0, 0, W, H);
 
-  // Decorative corner triangles (subtle grey)
-  doc.setFillColor(232, 236, 242);
-  doc.triangle(0, 0, 150, 0, 0, 95, "F");
-  doc.setFillColor(241, 244, 248);
-  doc.triangle(0, 0, 95, 0, 0, 150, "F");
-  doc.setFillColor(232, 236, 242);
-  doc.triangle(W, H, W - 150, H, W, H - 95, "F");
-  doc.setFillColor(241, 244, 248);
-  doc.triangle(W, H, W - 95, H, W, H - 150, "F");
+  const data = normalizeCertificateData(cert);
 
-  // Left accent bar (navy + cyan)
-  doc.setFillColor(...NAVY);
-  doc.rect(0, 0, 10, H, "F");
-  doc.setFillColor(...CYAN);
-  doc.rect(14, 0, 5, H, "F");
+  // Clean only the variable workshop placeholder lines. The name line is kept
+  // from the template so the certificate spacing stays exactly like the design.
+  cover(doc, 128, 318, 590, 88);
 
-  // ── Logos ───────────────────────────────────────────────────────────────────
-  const logoH = 52;
-  drawImage(doc, logoArclabs, 60, 20, logoH, "left");
-  drawImage(doc, logoDypatil, cx, 22, logoH - 4, "center");
-  drawImage(doc, logoMsme, W - 60, 18, logoH, "right");
+  drawParticipantName(doc, data.fullName, cx, 292);
 
-  // ── Title ─────────────────────────────────────────────────────────────────--
-  doc.setFont("times", "bold");
-  doc.setFontSize(42);
-  doc.setTextColor(...BLUE);
-  doc.text("CERTIFICATE OF COMPLETION", cx, 150, { align: "center" });
-
-  doc.setFont("helvetica", "bold");
-  doc.setFontSize(15);
-  doc.setTextColor(...INK);
-  doc.text("This is to certify that", cx, 182, { align: "center" });
-
-  // ── Participant name ─────────────────────────────────────────────────────────
-  doc.setFont("times", "bolditalic");
-  doc.setFontSize(30);
-  doc.setTextColor(...NAVY);
-  doc.text(name, cx, 228, { align: "center" });
-  doc.setDrawColor(...GREY);
-  doc.setLineWidth(0.8);
-  doc.line(cx - 250, 242, cx + 250, 242);
-
-  // ── Body ─────────────────────────────────────────────────────────────────────
-  let y = 272;
-  const line = (text, { size = 12.5, style = "normal", color = INK, gap = 19, font = "helvetica" } = {}) => {
-    doc.setFont(font, style);
-    doc.setFontSize(size);
-    doc.setTextColor(...color);
-    doc.text(text, cx, y, { align: "center" });
-    y += gap;
-  };
-
-  line("has successfully participated in the");
-  line(`${durationWord(days) || "Hands-on"}-Day Hands-on Workshop on ${workshopTitle}`, {
-    style: "bold",
-    size: 14,
-    color: NAVY,
-    gap: 22,
-  });
-  line(`Organised at ${institution},`, { style: "bold", size: 12.5, gap: 19 });
-  line("in collaboration with ARC LABS" + (dateText ? "," : "."), { gap: dateText ? 19 : 24 });
-  if (dateText) line(`held on ${dateText}.`, { style: "bold", gap: 26 });
-
-  line(
-    "In recognition of their dedication to learning and commitment to advancing their",
-    { size: 11.5, color: GREY, gap: 16 }
-  );
-  line(
-    `technical knowledge in ${workshopTitle}, the participant demonstrated active`,
-    { size: 11.5, color: GREY, gap: 16 }
-  );
-  line(
-    "engagement in hands-on sessions, practical assignments, and a real-world project.",
-    { size: 11.5, color: GREY, gap: 22 }
-  );
-  line("We appreciate their enthusiasm and participation in this workshop.", {
-    size: 11.5,
-    color: GREY,
-  });
-
-  // ── Certificate ID (small, bottom-left above bar) ────────────────────────────
-  if (cert.certId) {
-    doc.setFont("helvetica", "normal");
-    doc.setFontSize(9);
-    doc.setTextColor(...GREY);
-    doc.text(`Certificate ID: ${cert.certId}  •  Verify at arclabs.in/verify`, 40, H - 18);
-  }
-
-  // ── Signatures ───────────────────────────────────────────────────────────────
-  const colCx = [165, 370, 575, 765];
-  const lineY = H - 78;
-  SIGNATORIES.forEach((s, i) => {
-    const x = colCx[i];
-    const imgH = s.isSeal ? 44 : 34;
-    const imgY = s.isSeal ? lineY - imgH - 14 : lineY - imgH - 4;
-    drawImage(doc, s.img, x, imgY, imgH, "center");
-    doc.setDrawColor(...INK);
-    doc.setLineWidth(0.8);
-    doc.line(x - 78, lineY, x + 78, lineY);
-    doc.setFont("helvetica", "bold");
-    doc.setFontSize(11);
-    doc.setTextColor(...INK);
-    doc.text(s.name, x, lineY + 16, { align: "center" });
-    doc.setFont("helvetica", "normal");
-    doc.setFontSize(9.5);
-    doc.setTextColor(...GREY);
-    doc.text(s.title, x, lineY + 30, { align: "center" });
-  });
+  drawCertificateBody(doc, data);
 
   return doc;
 }
 
-// Draw a PNG asset scaled to a target height, anchored left / center / right at x.
-function drawImage(doc, asset, x, y, targetH, anchor = "left") {
-  if (!asset || !asset.data) return;
-  const ratio = asset.w / asset.h;
-  const w = targetH * ratio;
-  let drawX = x;
-  if (anchor === "center") drawX = x - w / 2;
-  else if (anchor === "right") drawX = x - w;
-  try {
-    doc.addImage(asset.data, "PNG", drawX, y, w, targetH);
-  } catch (_) {
-    /* ignore a malformed asset rather than break the whole certificate */
+function normalizeCertificateData(cert) {
+  const tech = getTech(cert.technology || "");
+  const durationDays = cleanDays(cert.durationDays);
+  const programName =
+    clean(cert.programName) ||
+    clean(cert.workshopName) ||
+    clean(tech?.label) ||
+    clean(cert.technology) ||
+    "Internet of Robotic Things";
+
+  const departmentName = clean(cert.departmentName) || clean(cert.department) || "the concerned department";
+  const collegeName = clean(cert.collegeName) || clean(cert.institution) || "the institution";
+  const location = clean(cert.location) || clean(cert.city) || clean(cert.state) || "the venue";
+
+  return {
+    certId: clean(cert.certId),
+    rollNo: clean(cert.rollNo) || clean(cert.rollKey) || "-",
+    fullName: clean(cert.fullName) || "Participant Name",
+    durationDays,
+    programName,
+    departmentName,
+    collegeName,
+    location,
+    dateRange: formatCertificateDateRange(cert),
+  };
+}
+
+function drawParticipantName(doc, name, x, y) {
+  const fontSize = fitFontSize(doc, name, 410, 22, 13);
+  doc.setFont("helvetica", "bolditalic");
+  doc.setFontSize(fontSize);
+  doc.setTextColor(...NAME_NAVY);
+  doc.text(name, x, y, { align: "center" });
+}
+
+function drawCertificateBody(doc, data) {
+  const fontSize = 14;
+  const lineHeight = 15.6;
+  const maxWidth = 690;
+  const cx = doc.internal.pageSize.getWidth() / 2;
+  let y = 338;
+
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(fontSize);
+  doc.setTextColor(...INK);
+
+  doc.text("has successfully participated in the", cx, y, { align: "center" });
+  y += lineHeight;
+
+  drawRichCenteredLine(doc, cx, y, [
+    { text: `${data.durationDays}-Day Hands-on Workshop on ` },
+    { text: data.programName, bold: true },
+  ], maxWidth, fontSize);
+  y += lineHeight;
+
+  y = drawWrappedCenteredText(
+    doc,
+    `organized by the Department of ${data.departmentName}, ${data.collegeName}, held at ${data.location} on ${data.dateRange}`,
+    cx,
+    y,
+    maxWidth,
+    lineHeight,
+    fontSize
+  );
+
+  drawRichCenteredLine(doc, cx, y, [
+    { text: "with sponsorship support from " },
+    { text: "E-Cell, IIT Hyderabad.", bold: true },
+  ], maxWidth, fontSize);
+}
+
+function drawWrappedCenteredText(doc, text, x, y, maxWidth, lineHeight, fontSize) {
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(fontSize);
+  const lines = doc.splitTextToSize(text, maxWidth).slice(0, 2);
+  lines.forEach((line, index) => {
+    doc.text(line, x, y + index * lineHeight, { align: "center" });
+  });
+  return y + lines.length * lineHeight;
+}
+
+function drawRichCenteredLine(doc, x, y, segments, maxWidth, fontSize) {
+  let size = fontSize;
+  while (size > 10 && richLineWidth(doc, segments, size) > maxWidth) {
+    size -= 0.5;
   }
+
+  const totalWidth = richLineWidth(doc, segments, size);
+  let cursor = x - totalWidth / 2;
+
+  segments.forEach((segment) => {
+    doc.setFont("helvetica", segment.bold ? "bold" : "normal");
+    doc.setFontSize(size);
+    doc.setTextColor(...INK);
+    doc.text(segment.text, cursor, y);
+    cursor += doc.getTextWidth(segment.text);
+  });
+}
+
+function richLineWidth(doc, segments, fontSize) {
+  return segments.reduce((width, segment) => {
+    doc.setFont("helvetica", segment.bold ? "bold" : "normal");
+    doc.setFontSize(fontSize);
+    return width + doc.getTextWidth(segment.text);
+  }, 0);
+}
+
+function cover(doc, x, y, w, h) {
+  doc.setFillColor(255, 255, 255);
+  doc.rect(x, y, w, h, "F");
+}
+
+function fitFontSize(doc, text, maxWidth, startSize, minSize) {
+  for (let size = startSize; size >= minSize; size -= 1) {
+    doc.setFont("helvetica", "bolditalic");
+    doc.setFontSize(size);
+    if (doc.getTextWidth(text) <= maxWidth) return size;
+  }
+  return minSize;
+}
+
+function formatCertificateDateRange(cert) {
+  const start = parseDate(cert.startDate || cert.trainingDate);
+  const end = parseDate(cert.endDate || cert.trainingEndDate);
+
+  if (start && end) {
+    const sameMonth = start.getMonth() === end.getMonth() && start.getFullYear() === end.getFullYear();
+    if (sameMonth) {
+      return `${ordinal(start.getDate())} to ${ordinal(end.getDate())} ${monthName(end)} ${end.getFullYear()}`;
+    }
+    if (start.getFullYear() === end.getFullYear()) {
+      return `${ordinal(start.getDate())} ${monthName(start)} to ${ordinal(end.getDate())} ${monthName(end)} ${end.getFullYear()}`;
+    }
+    return `${ordinal(start.getDate())} ${monthName(start)} ${start.getFullYear()} to ${ordinal(end.getDate())} ${monthName(end)} ${end.getFullYear()}`;
+  }
+
+  if (start) return `${ordinal(start.getDate())} ${monthName(start)} ${start.getFullYear()}`;
+
+  const month = clean(cert.month);
+  const year = clean(cert.year);
+  if (month && year) return `${month} ${year}`;
+  if (month) return month;
+  if (cert.trainingDate) return fmtDate(cert.trainingDate);
+  return "the scheduled dates";
+}
+
+function parseDate(value) {
+  if (!value) return null;
+  if (value instanceof Date && !Number.isNaN(value.getTime())) return value;
+
+  const text = String(value).trim();
+  if (!text) return null;
+
+  const parsed = new Date(text);
+  return Number.isNaN(parsed.getTime()) ? null : parsed;
+}
+
+function ordinal(day) {
+  const n = Number(day);
+  const mod100 = n % 100;
+  if (mod100 >= 11 && mod100 <= 13) return `${n}th`;
+  switch (n % 10) {
+    case 1:
+      return `${n}st`;
+    case 2:
+      return `${n}nd`;
+    case 3:
+      return `${n}rd`;
+    default:
+      return `${n}th`;
+  }
+}
+
+function monthName(date) {
+  return date.toLocaleString("en-IN", { month: "long" });
+}
+
+function clean(value) {
+  return String(value || "").trim();
+}
+
+function cleanDays(value) {
+  const days = String(value || "").replace(/\D/g, "");
+  return days || "3";
+}
+
+async function loadImageDataUrl(url) {
+  if (imageCache.has(url)) return imageCache.get(url);
+
+  const response = await fetch(url);
+  if (!response.ok) {
+    throw new Error(`Could not load certificate template: ${url}`);
+  }
+
+  const blob = await response.blob();
+  const dataUrl = await new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = reject;
+    reader.readAsDataURL(blob);
+  });
+
+  imageCache.set(url, dataUrl);
+  return dataUrl;
 }

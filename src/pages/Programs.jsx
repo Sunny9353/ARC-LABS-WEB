@@ -12,11 +12,11 @@ export const pageStyles = `
   /* Hero */
   .prog-hero {
     min-height: calc(100svh - var(--nav-h));
-    padding: clamp(64px, 7vh, 92px) 5vw clamp(48px, 6vh, 76px);
+    padding: clamp(22px, 3vh, 36px) 5vw clamp(48px, 6vh, 76px);
     position: relative;
     overflow: clip;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
   }
   .prog-hero::before {
@@ -4111,8 +4111,8 @@ export default function ProgramsPage() {
 
         <div className="track-mode-switch" aria-label="Track type">
           {[
-            { id: "programs", label: "Program Tracks" },
-            { id: "internships", label: "Internship Tracks" },
+            { id: "programs", label: "Programs" },
+            { id: "internships", label: "Internships" },
           ].map((mode) => (
             <button
               key={mode.id}

@@ -16,6 +16,7 @@ export default function VerifyPanel({ onSuccess }) {
   const [result, setResult] = useState(null);
   const [error, setError] = useState("");
   const [toast, setToast] = useState("");
+  const [downloading, setDownloading] = useState(false);
 
   const doVerify = async (id) => {
     const sid = (id || q).trim().toUpperCase();
@@ -49,6 +50,21 @@ export default function VerifyPanel({ onSuccess }) {
     navigator.clipboard.writeText(result?.certId || "").catch(() => {});
     setToast("Certificate ID copied!");
     setTimeout(() => setToast(""), 2000);
+  };
+
+  const downloadVerifiedCertificate = async () => {
+    if (!result) return;
+
+    setDownloading(true);
+    setToast("");
+    try {
+      await downloadCertificatePdf(result);
+    } catch (err) {
+      console.error(err);
+      setToast("Certificate download failed. Please try again.");
+      setTimeout(() => setToast(""), 3000);
+    }
+    setDownloading(false);
   };
 
   return (
@@ -108,9 +124,10 @@ export default function VerifyPanel({ onSuccess }) {
           <div className="cert-acts" style={{ marginTop: "1rem" }}>
             <button
               className="btn-act primary"
-              onClick={() => downloadCertificatePdf(result)}
+              onClick={downloadVerifiedCertificate}
+              disabled={downloading}
             >
-              Download Certificate
+              {downloading ? "Preparing..." : "Download Certificate"}
             </button>
 
             <button className="btn-act ghost" onClick={copy}>

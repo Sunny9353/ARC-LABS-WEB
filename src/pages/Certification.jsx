@@ -3,7 +3,6 @@ import { Helmet } from "react-helmet-async";
 import "../styles/Certification.css";
 import VerifyPanel from "../components/VerifyPanel";
 import RegisterPanel from "../components/RegisterPanel";
-import EligibleStudentUploadPanel from "../components/EligibleStudentUploadPanel";
 
 export default function CertificationPage() {
   const [tab, setTab] = useState("verify");
@@ -53,12 +52,7 @@ export default function CertificationPage() {
           Register Certificate
         </button>
 
-        <button
-          className={`mtab${tab === "upload" ? " active" : ""}`}
-          onClick={() => setTab("upload")}
-        >
-          Upload Paid Students
-        </button>
+        
       </div>
 
       {/* CONTENT */}
@@ -69,10 +63,6 @@ export default function CertificationPage() {
 
         {tab === "register" && (
           <RegisterPanel onRegistered={handleVerified} />
-        )}
-
-        {tab === "upload" && (
-          <EligibleStudentUploadPanel />
         )}
       </div>
     </>

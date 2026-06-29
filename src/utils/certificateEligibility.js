@@ -106,11 +106,62 @@ export function mapStudentRow(row) {
       pickColumn(row, ["institution type", "registration type", "participant type"])
     ),
     workshopName,
+    programName: String(
+      pickColumn(row, [
+        "program name",
+        "name of the program",
+        "course name",
+        "workshop title",
+        "training name",
+      ]) || workshopName
+    ).trim(),
+    orgName: String(
+      pickColumn(row, [
+        "org name",
+        "organization name",
+        "organisation name",
+        "organized by",
+        "organised by",
+        "organizer",
+        "organiser",
+      ]) || ""
+    ).trim(),
+    departmentName: String(
+      pickColumn(row, [
+        "department",
+        "department name",
+        "dept",
+        "dept name",
+        "dept_name",
+      ]) || ""
+    ).trim(),
+    collegeName: String(
+      pickColumn(row, [
+        "college",
+        "college name",
+        "college_name",
+        "institution",
+        "institution name",
+      ]) || ""
+    ).trim(),
+    location: String(
+      pickColumn(row, [
+        "location",
+        "venue",
+        "place",
+        "city",
+        "held at",
+      ]) || ""
+    ).trim(),
     workshopCode,
     workshopKey: normalizeWorkshopCode(workshopCode),
     technology: normalizeTechnology(workshopName),
     durationDays: String(pickColumn(row, ["duration", "duration days", "days"]) || "").replace(/\D/g, ""),
     trainingDate: normalizeExcelDate(pickColumn(row, ["training date", "date", "workshop date"])),
+    startDate: normalizeExcelDate(pickColumn(row, ["start date", "from date", "date from"])),
+    endDate: normalizeExcelDate(pickColumn(row, ["end date", "to date", "date to"])),
+    month: String(pickColumn(row, ["month", "workshop month"]) || "").trim(),
+    year: String(pickColumn(row, ["year", "workshop year"]) || "").replace(/\D/g, ""),
     paymentStatus,
     feePaid: parsePaidValue(paymentStatus),
   };
