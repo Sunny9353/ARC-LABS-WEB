@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { addDoc, collection } from "firebase/firestore";
 import { db } from "../firebase";
 import { Helmet } from "react-helmet-async";
+import AnimatedCount from "../components/AnimatedCount";
 import { useBodyScrollLock, validateRequiredFields } from "../utils/ui";
 
 /* ═══════════════════════════════════════════════════════════════════
@@ -902,7 +903,7 @@ export default function LabPackagesPage() {
             ].map((s) => (
               <div className="lp-stat" key={s.label} style={{ "--stat-color": s.color }}>
                 <div className="lp-stat-row">
-                  <div className="lp-stat-num">{s.num}</div>
+                  <div className="lp-stat-num"><AnimatedCount value={s.num} /></div>
                   <span className="lp-stat-badge" style={{ background: "var(--tag-bg)", color: "var(--tag-text)" }}>{s.badge}</span>
                 </div>
                 <div className="lp-stat-label">{s.label}</div>

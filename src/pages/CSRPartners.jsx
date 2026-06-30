@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { addDoc, collection } from "firebase/firestore";
 import { db } from "../firebase";
+import AnimatedCount from "../components/AnimatedCount";
 import { useBodyScrollLock, validateRequiredFields } from "../utils/ui";
 
 /* ═══════════════════════════════════════════════════════════════════
@@ -193,9 +194,9 @@ const pageStyles = `
 
 /* ── Schedule VII ────────────────────────────────── */
 .csr-sch7-layout{
-  display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:start;
+  display:grid;grid-template-columns:minmax(360px,.82fr) minmax(520px,1.18fr);gap:3.5rem;align-items:start;
 }
-@media(max-width:800px){.csr-sch7-layout{grid-template-columns:1fr;gap:2.5rem}}
+@media(max-width:1040px){.csr-sch7-layout{grid-template-columns:1fr;gap:2.5rem}}
 
 .csr-sch7-doc{
   background:var(--surface-2);border:1px solid var(--border-2);border-radius:16px;overflow:hidden;
@@ -252,6 +253,7 @@ const pageStyles = `
 .csr-docs-box{
   margin-top:2rem;background:var(--surface-2);
   border:1px solid var(--border-2);border-radius:12px;padding:18px 20px;
+  width:100%;
 }
 .csr-docs-box h4{
   font-family:var(--font-sans);font-size:.62rem;
@@ -362,13 +364,14 @@ const pageStyles = `
 
 /* ── Reporting ───────────────────────────────────── */
 .csr-report-layout{
-  display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:start;
+  display:grid;grid-template-columns:minmax(420px,1fr) minmax(520px,1.08fr);gap:4rem;align-items:stretch;
 }
-@media(max-width:800px){.csr-report-layout{grid-template-columns:1fr;gap:2.5rem}}
+@media(max-width:1080px){.csr-report-layout{grid-template-columns:1fr;gap:2.5rem}}
 
 .csr-rdp{
   background:var(--surface-2);border:1px solid var(--border-2);
   border-radius:16px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.4);
+  height:100%;
 }
 .csr-rdp-header{
   background:var(--surface-3);padding:14px 18px;
@@ -394,8 +397,10 @@ const pageStyles = `
 .csr-report-items{display:flex;flex-direction:column;gap:1rem}
 .csr-report-item{
   background:var(--surface-2);border:1px solid var(--border-1);border-radius:12px;
-  padding:18px 20px;display:flex;gap:14px;align-items:flex-start;
+  padding:20px 24px;display:flex;gap:16px;align-items:center;
   transition:border-color .2s;
+  flex:1;
+  min-height:128px;
 }
 .csr-report-item:hover{border-color:var(--border-2)}
 .csr-ri-icon{
@@ -504,9 +509,16 @@ const pageStyles = `
 .csr-ci-val a:hover{text-decoration:underline}
 
 /* ── FAQ ─────────────────────────────────────────── */
+.csr-faq-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:1rem;
+  margin-top:2.5rem;
+}
+@media(max-width:860px){.csr-faq-grid{grid-template-columns:1fr}}
 .csr-faq-item{
   background:var(--surface-2);border:1px solid var(--border-1);
-  border-radius:12px;margin-bottom:.8rem;overflow:hidden;
+  border-radius:12px;overflow:hidden;
   cursor:pointer;transition:border-color .2s;
 }
 .csr-faq-item.csr-faq-open{border-color:var(--tag-bg)}
@@ -920,7 +932,7 @@ export default function CSRPartnersPage() {
           <div className="csr-iw">
             {IMPACT_WALL.map((item) => (
               <div className="csr-iw-cell" key={item.label} style={{ "--cell-color": item.color }}>
-                <div className="csr-iw-num">{item.num}</div>
+                <div className="csr-iw-num"><AnimatedCount value={item.num} /></div>
                 <div className="csr-iw-lbl">{item.label}</div>
                 <div className="csr-iw-sub">{item.sub}</div>
               </div>
@@ -1035,7 +1047,7 @@ export default function CSRPartnersPage() {
             { num: "100%", label: "Documentation Rate", sub: "All programs documented" },
           ].map((m) => (
             <div className="csr-imp-cell" key={m.label}>
-              <div className="csr-imp-num">{m.num}</div>
+              <div className="csr-imp-num"><AnimatedCount value={m.num} /></div>
               <div className="csr-imp-label">{m.label}</div>
               <div className="csr-imp-sub">{m.sub}</div>
             </div>
@@ -1206,7 +1218,7 @@ export default function CSRPartnersPage() {
       <div className="csr-sec csr-sec-alt">
         <span className="section-label">Common Questions</span>
         <h2 className="section-heading">Questions your legal and finance team will ask — answered.</h2>
-        <div style={{ maxWidth: "780px", marginTop: "2.5rem" }}>
+        <div className="csr-faq-grid">
           {FAQS.map((faq, i) => (
             <div key={i} className={`csr-faq-item${openFaq === i ? " csr-faq-open" : ""}`} onClick={() => setOpenFaq(openFaq === i ? null : i)}>
               <div className="csr-faq-q">

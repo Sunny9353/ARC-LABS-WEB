@@ -35,6 +35,41 @@ export default function RegisterPanel({ onRegistered }) {
   const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const openModal = (data) => setModal(data);
   const closeModal = () => setModal(null);
+  const formatMonthDayInput = (value) => {
+    const digits = String(value || "").replace(/\D/g, "").slice(0, 4);
+    if (digits.length <= 2) return digits;
+    return `${digits.slice(0, 2)}-${digits.slice(2)}`;
+  };
+  const normalizeComparable = (value) =>
+    String(value || "")
+      .trim()
+      .replace(/\s+/g, " ")
+      .toLowerCase();
+  const normalizeEmail = (value) => String(value || "").trim().toLowerCase();
+  const detailsMismatchModal = {
+    type: "failed",
+    eyebrow: "Incorrect details",
+    title: "Details Do Not Match",
+    message: "Some details do not match the uploaded student record.",
+    note: "Kindly check the details provided, or contact your Dept / Mentor for help.",
+  };
+
+  const detailsMatchUploadedRecord = (student) => {
+    const checks = [
+      [form.fullName, student.fullName, normalizeComparable],
+      [form.email, student.email, normalizeEmail],
+      [form.institution, student.institution, normalizeComparable],
+      [form.institutionType, student.institutionType, normalizeComparable],
+      [form.workshopCode, student.workshopCode || student.workshopKey, normalizeWorkshopCode],
+      [form.rollNo, student.rollNo || student.rollKey, normalizeRollNumber],
+    ];
+
+    return checks.every(([entered, uploaded, normalize]) => {
+      const uploadedValue = normalize(uploaded);
+      if (!uploadedValue) return true;
+      return normalize(entered) === uploadedValue;
+    });
+  };
 
   const applyEligibleDefaults = (student) => {
     setForm((prev) => ({
@@ -106,7 +141,12 @@ export default function RegisterPanel({ onRegistered }) {
       }
 
       const eligibleStudent = eligibleSnap.data();
-      applyEligibleDefaults(eligibleStudent);
+
+      if (!detailsMatchUploadedRecord(eligibleStudent)) {
+        openModal(detailsMismatchModal);
+        setLoading(false);
+        return;
+      }
 
       if (!isPaidStudent(eligibleStudent)) {
         openModal({
@@ -119,6 +159,8 @@ export default function RegisterPanel({ onRegistered }) {
         setLoading(false);
         return;
       }
+
+      applyEligibleDefaults(eligibleStudent);
 
       if (eligibleStudent.certificateId) {
         openModal({
@@ -290,6 +332,7 @@ export default function RegisterPanel({ onRegistered }) {
     {
       label: "Institution Name",
       placeholder: "Enter institution name",
+      wide: true,
       field: (
         <input
           className="cert-inp"
@@ -310,7 +353,7 @@ export default function RegisterPanel({ onRegistered }) {
 
       <div className="cert-form-grid">
         {fields.map((item) => (
-          <div className="cert-field" key={item.label}>
+          <div className={`cert-field${item.wide ? " cert-field-wide" : ""}`} key={item.label}>
             <label>{item.label}</label>
             {item.placeholder
               ? React.cloneElement(item.field, { placeholder: item.placeholder })
@@ -343,7 +386,7 @@ export default function RegisterPanel({ onRegistered }) {
               pattern="\\d{2}-\\d{2}"
               maxLength={5}
               value={form.startMonthDay || ""}
-              onChange={(e) => set("startMonthDay", e.target.value.replace(/[^\d-]/g, "").slice(0, 5))}
+              onChange={(e) => set("startMonthDay", formatMonthDayInput(e.target.value))}
             />
           </div>
           <div className="cert-date-cell">
@@ -356,7 +399,7 @@ export default function RegisterPanel({ onRegistered }) {
               pattern="\\d{2}-\\d{2}"
               maxLength={5}
               value={form.endMonthDay || ""}
-              onChange={(e) => set("endMonthDay", e.target.value.replace(/[^\d-]/g, "").slice(0, 5))}
+              onChange={(e) => set("endMonthDay", formatMonthDayInput(e.target.value))}
             />
           </div>
         </div>

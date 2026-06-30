@@ -5,6 +5,7 @@ import { collection, addDoc } from "firebase/firestore";
 import { db } from "../firebase";
 import { Helmet } from "react-helmet-async";
 import RobotPreviewFrame from "../components/RobotPreviewFrame";
+import AnimatedCount from "../components/AnimatedCount";
 import { buildInternshipTechnologies, INTERNSHIP_DURATIONS } from "../data/internshipCurriculum.js";
 import { useBodyScrollLock, validateRequiredFields } from "../utils/ui";
 /* ─── Page-scoped styles (no global overrides) ─── */
@@ -4072,7 +4073,7 @@ export default function ProgramsPage() {
                 { n: "100%", l: "Hands-On Delivery" },
               ].map((s) => (
                 <div className="prog-stat" key={s.l}>
-                  <div className="prog-stat-n">{s.n}</div>
+                  <div className="prog-stat-n"><AnimatedCount value={s.n} /></div>
                   <div className="prog-stat-l">{s.l}</div>
                 </div>
               ))}

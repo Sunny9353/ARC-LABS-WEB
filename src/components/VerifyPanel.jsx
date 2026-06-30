@@ -2,8 +2,12 @@ import { useState } from "react";
 import { db } from "../firebase";
 import { doc, getDoc } from "firebase/firestore";
 
-import CertificateDisplay from "./CertificateDisplay";
 import { downloadCertificatePdf } from "../utils/generateCertificate.js";
+import {
+  getTech,
+  getDurationLabel,
+  getTrainingHours,
+} from "../utils/certificationHelpers.js";
 import {
   ELIGIBLE_STUDENTS_COLLECTION,
   ELIGIBLE_REGISTRATIONS_COLLECTION,
@@ -17,6 +21,7 @@ export default function VerifyPanel({ onSuccess }) {
   const [error, setError] = useState("");
   const [toast, setToast] = useState("");
   const [downloading, setDownloading] = useState(false);
+  const [showResultModal, setShowResultModal] = useState(false);
 
   const doVerify = async (id) => {
     const sid = (id || q).trim().toUpperCase();
@@ -25,6 +30,7 @@ export default function VerifyPanel({ onSuccess }) {
     setLoading(true);
     setError("");
     setResult(null);
+    setShowResultModal(false);
 
     try {
       const cert = await getCertificateByCertificateId(sid);
@@ -32,6 +38,7 @@ export default function VerifyPanel({ onSuccess }) {
 
       if (finalData) {
         setResult(finalData);
+        setShowResultModal(true);
         onSuccess && onSuccess(finalData);
       } else {
         setError(
@@ -98,55 +105,101 @@ export default function VerifyPanel({ onSuccess }) {
 
       {error && <div className="verr">{error}</div>}
 
-      {result && (
-        <div style={{ animation: "fadein .4s ease" }}>
-          <div className="vsuccess-badge">
-            <span className="vsb-icon">OK</span>
-            <div className="vsb-text">
-              <strong>Certificate Verified - Authentic & Active</strong>
-              <span>
-                Issued by ARC LABS - Certificate ID:{" "}
-                <span
-                  style={{
-                    fontFamily: "var(--font-body)",
-                    letterSpacing: ".05em",
-                    color: "var(--accent)",
-                  }}
-                >
-                  {result.certId}
-                </span>
-              </span>
-            </div>
-          </div>
-
-          <CertificateDisplay cert={result} />
-
-          <div className="cert-acts" style={{ marginTop: "1rem" }}>
-            <button
-              className="btn-act primary"
-              onClick={downloadVerifiedCertificate}
-              disabled={downloading}
-            >
-              {downloading ? "Preparing..." : "Download Certificate"}
-            </button>
-
-            <button className="btn-act ghost" onClick={copy}>
-              Copy Certificate ID
-            </button>
-
-            <a
-              className="btn-act ghost"
-              href={`https://wa.me/?text=My ARC LABS Certificate: ${result.certId} - Verify at arclabs.in/verify`}
-              target="_blank"
-              rel="noreferrer"
-            >
-              Share
-            </a>
-          </div>
-        </div>
+      {result && showResultModal && (
+        <VerifiedCertificateModal
+          cert={result}
+          downloading={downloading}
+          onClose={() => setShowResultModal(false)}
+          onCopy={copy}
+          onDownload={downloadVerifiedCertificate}
+        />
       )}
 
       {toast && <div className="toast">{toast}</div>}
+    </div>
+  );
+}
+
+function VerifiedCertificateModal({ cert, downloading, onClose, onCopy, onDownload }) {
+  const tech = getTech(cert.technology || "");
+  const rows = [
+    { label: "Student Name", value: cert.fullName || "N/A" },
+    { label: "Roll/Reg No", value: cert.rollNo || cert.rollKey || "-" },
+    { label: "Workshop / Session", value: cert.workshopCode || cert.workshopKey || "-" },
+    { label: "Institution", value: cert.institution || "-" },
+    { label: "Technology", value: cert.technology || "-" },
+    {
+      label: "Duration",
+      value: `${cert.durationDays || 0} Days (${getTrainingHours(cert.durationDays || 0)})`,
+    },
+  ];
+
+  return (
+    <div className="verify-result-backdrop" role="dialog" aria-modal="true" aria-labelledby="verify-result-title">
+      <div className="verify-result-modal">
+        <button className="verify-result-close" type="button" onClick={onClose} aria-label="Close verified certificate details">
+          &#x2715;
+        </button>
+
+        <div className="verify-result-brand">
+          <img src="/images/brand/arc-labs-logo-transparent.png" alt="ARC LABS" />
+        </div>
+
+        <div className="verify-result-status">
+          <span className="verify-result-ok">OK</span>
+          <div>
+            <strong>Certificate Verified - Authentic & Active</strong>
+            <span>Issued by ARC LABS - Certificate ID: <b>{cert.certId}</b></span>
+          </div>
+        </div>
+
+        <div className="verify-result-head">
+          <h2 id="verify-result-title">{cert.fullName || "N/A"}</h2>
+          <p>{getDurationLabel(cert.durationDays || 0)} in {tech.label}</p>
+        </div>
+
+        <div className="verify-result-table">
+          {rows.map((row) => (
+            <div className="verify-result-row" key={row.label}>
+              <div className="verify-result-label">{row.label}</div>
+              <div className="verify-result-value">{row.value}</div>
+            </div>
+          ))}
+        </div>
+
+        {(cert.skills || []).length > 0 && (
+          <div className="verify-result-skills">
+            <div className="verify-result-skills-label">Skills</div>
+            <div className="dc-chips">
+              {cert.skills.map((skill) => (
+                <span key={skill} className="dc-chip">{skill}</span>
+              ))}
+            </div>
+          </div>
+        )}
+
+        <div className="verify-result-actions">
+          <button className="btn-act ghost" type="button" onClick={onCopy}>
+            Copy Certificate ID
+          </button>
+          <a
+            className="btn-act ghost"
+            href={`https://wa.me/?text=My ARC LABS Certificate: ${cert.certId} - Verify at arclabs.in/verify`}
+            target="_blank"
+            rel="noreferrer"
+          >
+            Share
+          </a>
+          <button
+            className="btn-act primary verify-result-download"
+            type="button"
+            onClick={onDownload}
+            disabled={downloading}
+          >
+            {downloading ? "Preparing..." : "Download Certificate"}
+          </button>
+        </div>
+      </div>
     </div>
   );
 }

@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useBodyScrollLock } from "../utils/ui";
+import AnimatedCount from "../components/AnimatedCount";
 import {
   Cpu,
   Database,
@@ -2627,19 +2628,19 @@ export default function IndustrialIoTSolutions() {
             {/* Metrics sub-band */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-16 pt-12 border-t border-zinc-900/80 max-w-5xl mx-auto text-center">
               <div>
-                <div className="text-3xl font-sans font-bold text-white">50+</div>
+                <div className="text-3xl font-sans font-bold text-white"><AnimatedCount value="50+" /></div>
                 <div className="text-[10px] text-zinc-500 uppercase tracking-widest mt-1">IoT Deployments</div>
               </div>
               <div>
-                <div className="text-3xl font-sans font-bold text-white">100+</div>
+                <div className="text-3xl font-sans font-bold text-white"><AnimatedCount value="100+" /></div>
                 <div className="text-[10px] text-zinc-500 uppercase tracking-widest mt-1">Systems Designed</div>
               </div>
               <div>
-                <div className="text-3xl font-sans font-bold text-white">20+</div>
+                <div className="text-3xl font-sans font-bold text-white"><AnimatedCount value="20+" /></div>
                 <div className="text-[10px] text-zinc-500 uppercase tracking-widest mt-1">Enterprise Partners</div>
               </div>
               <div>
-                <div className="text-3xl font-sans font-bold text-white">99.98%</div>
+                <div className="text-3xl font-sans font-bold text-white"><AnimatedCount value="99.98%" /></div>
                 <div className="text-[10px] text-zinc-500 uppercase tracking-widest mt-1">Data Transmission SLA</div>
               </div>
             </div>

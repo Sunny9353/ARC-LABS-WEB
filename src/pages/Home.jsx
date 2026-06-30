@@ -157,13 +157,19 @@ function Hero() {
   const [shouldPlayIntro] = useState(() => {
     if (typeof window === "undefined") return true;
     const navEntry = performance.getEntriesByType?.("navigation")?.[0];
+    const documentStartedOnHome = window.__ARC_DOCUMENT_START_PATH__ === "/";
     const isHomeDocumentReload =
-      navEntry?.type === "reload" && window.__ARC_DOCUMENT_START_PATH__ === "/";
+      navEntry?.type === "reload" && documentStartedOnHome;
     const hasSeenIntro = sessionStorage.getItem("arcHomeIntroSeen") === "true";
-    return isHomeDocumentReload || !hasSeenIntro;
+    return documentStartedOnHome && (isHomeDocumentReload || !hasSeenIntro);
   });
   const [heroReady, setHeroReady] = useState(!shouldPlayIntro);
   const handleSplineReady = () => setSplineLoaded(true);
+
+  useEffect(() => {
+    if (!shouldPlayIntro || typeof window === "undefined") return;
+    sessionStorage.setItem("arcHomeIntroSeen", "true");
+  }, [shouldPlayIntro]);
 
   useEffect(() => {
     const canRenderSpline =
@@ -186,7 +192,6 @@ function Hero() {
     const waitForSceneDuration = canRenderHeroScene ? 6500 : 1450;
     const revealTimer = window.setTimeout(() => {
       setHeroReady(true);
-      sessionStorage.setItem("arcHomeIntroSeen", "true");
     }, splineLoaded ? cinematicDuration : waitForSceneDuration);
 
     return () => window.clearTimeout(revealTimer);
