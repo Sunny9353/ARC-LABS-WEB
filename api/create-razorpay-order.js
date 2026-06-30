@@ -65,7 +65,7 @@ module.exports = async function handler(req, res) {
     return;
   }
 
-  const keyId = process.env.RAZORPAY_KEY_ID;
+  const keyId = process.env.RAZORPAY_KEY_ID || process.env.REACT_APP_RAZORPAY_KEY_ID;
   const keySecret = process.env.RAZORPAY_KEY_SECRET;
 
   if (!keyId || !keySecret) {

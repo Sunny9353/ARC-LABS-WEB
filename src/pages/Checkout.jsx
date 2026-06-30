@@ -4,7 +4,7 @@ import { createPortal } from "react-dom";
 import { Helmet } from "react-helmet-async";
 import "../styles/Checkout.css";
 import { PRODUCTS } from "../data/products";
-import { addDoc, collection } from "firebase/firestore";
+import { doc, setDoc } from "firebase/firestore";
 import { db } from "../firebase";
 import jsPDF from "jspdf";
 import { useBodyScrollLock, validateRequiredFields } from "../utils/ui";
@@ -119,8 +119,17 @@ function ReceiptDialog({ receipt, onClose }) {
   );
 }
 
+function checkoutApiBaseUrl() {
+  const isLocalhost =
+    typeof window !== "undefined" &&
+    ["localhost", "127.0.0.1"].includes(window.location.hostname);
+  const defaultApiBaseUrl = isLocalhost ? "http://localhost:3001" : "";
+  return (process.env.REACT_APP_API_BASE_URL || defaultApiBaseUrl).replace(/\/$/, "");
+}
+
 async function createRazorpayOrder({ price, product, form }) {
-  const response = await fetch("/api/create-razorpay-order", {
+  const apiBaseUrl = checkoutApiBaseUrl();
+  const response = await fetch(`${apiBaseUrl}/api/create-razorpay-order`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
@@ -150,6 +159,24 @@ async function createRazorpayOrder({ price, product, form }) {
     throw new Error("Razorpay order was created without an order ID.");
   }
   return payload;
+}
+
+async function verifyRazorpayPayment(response) {
+  const apiBaseUrl = checkoutApiBaseUrl();
+  const verifyResponse = await fetch(`${apiBaseUrl}/api/verify-razorpay-payment`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      razorpay_order_id: response.razorpay_order_id,
+      razorpay_payment_id: response.razorpay_payment_id,
+      razorpay_signature: response.razorpay_signature,
+    }),
+  });
+
+  const payload = await verifyResponse.json().catch(() => ({}));
+  if (!verifyResponse.ok || !payload.verified) {
+    throw new Error(payload.error || "Payment verification failed.");
+  }
 }
 
 export default function Checkout() {
@@ -209,8 +236,12 @@ export default function Checkout() {
 
     try {
       const razorpayOrder = await createRazorpayOrder({ price, product, form });
+      const razorpayKeyId = razorpayOrder.keyId || process.env.REACT_APP_RAZORPAY_KEY_ID;
+      if (!razorpayKeyId) {
+        throw new Error("Razorpay key ID is missing.");
+      }
       const options = {
-        key: razorpayOrder.keyId || process.env.REACT_APP_RAZORPAY_KEY_ID,
+        key: razorpayKeyId,
         amount: razorpayOrder.amount,
         currency: razorpayOrder.currency || "INR",
         order_id: razorpayOrder.id,
@@ -236,7 +267,9 @@ export default function Checkout() {
         theme: { color: "#00DC82" },
         handler: async (response) => {
           try {
-            await addDoc(collection(db, "orders"), {
+            await verifyRazorpayPayment(response);
+            const paymentId = response.razorpay_payment_id;
+            await setDoc(doc(db, "orders", paymentId), {
               customerName: form.name,
               customerEmail: form.email,
               customerPhone: form.phone,
@@ -248,16 +281,16 @@ export default function Checkout() {
               productId: product.id,
               productName: product.name,
               productPrice: price,
-              paymentId: response.razorpay_payment_id,
+              paymentId,
               razorpayOrderId: response.razorpay_order_id || razorpayOrder.id,
               razorpaySignature: response.razorpay_signature || "",
               createdAt: new Date(),
               status: "Paid",
-            });
+            }, { merge: true });
 
             setReceipt({
               receiptNo: `ARC-${Date.now().toString().slice(-8)}`,
-              paymentId: response.razorpay_payment_id,
+              paymentId,
               razorpayOrderId: response.razorpay_order_id || razorpayOrder.id,
               productName: product.name,
               amount: price,
@@ -293,35 +326,6 @@ export default function Checkout() {
       rzp.on("payment.failed", async (response) => {
         setLoading(false);
         const error = response?.error || {};
-        try {
-          await addDoc(collection(db, "orders"), {
-            customerName: form.name,
-            customerEmail: form.email,
-            customerPhone: form.phone,
-            customerCountry: form.country,
-            customerAddress: form.address,
-            customerCity: form.city,
-            customerRegion: form.region,
-            customerZip: form.zip,
-            productId: product.id,
-            productName: product.name,
-            productPrice: price,
-            paymentId: error.metadata?.payment_id || "",
-            razorpayOrderId: error.metadata?.order_id || "",
-            paymentError: {
-              code: error.code || "",
-              description: error.description || "",
-              source: error.source || "",
-              step: error.step || "",
-              reason: error.reason || "",
-              metadata: error.metadata || {},
-            },
-            createdAt: new Date(),
-            status: "Failed",
-          });
-        } catch (err) {
-          console.warn("Could not save failed payment notification", err);
-        }
         setNotice({
           type: "danger",
           title: "Payment failed",

@@ -37,7 +37,9 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "node scripts/start-local.js",
+    "start:react": "react-scripts start",
+    "start:api": "node scripts/local-api-server.js",
     "build": "cross-env CI=false DISABLE_ESLINT_PLUGIN=true react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
