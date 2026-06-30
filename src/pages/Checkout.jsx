@@ -4,7 +4,7 @@ import { createPortal } from "react-dom";
 import { Helmet } from "react-helmet-async";
 import "../styles/Checkout.css";
 import { PRODUCTS } from "../data/products";
-import { doc, setDoc } from "firebase/firestore";
+import { addDoc, collection, doc, setDoc } from "firebase/firestore";
 import { db } from "../firebase";
 import jsPDF from "jspdf";
 import { useBodyScrollLock, validateRequiredFields } from "../utils/ui";
@@ -179,10 +179,39 @@ async function verifyRazorpayPayment(response) {
   }
 }
 
+async function recordFailedPayment({ form, product, productId, price, error }) {
+  await addDoc(collection(db, "orders"), {
+    customerName: form.name,
+    customerEmail: form.email,
+    customerPhone: form.phone,
+    customerCountry: form.country,
+    customerAddress: form.address,
+    customerCity: form.city,
+    customerRegion: form.region,
+    customerZip: form.zip,
+    productId: product.id || productId,
+    productName: product.name,
+    productPrice: price,
+    paymentId: error.metadata?.payment_id || "",
+    razorpayOrderId: error.metadata?.order_id || "",
+    paymentError: {
+      code: error.code || "",
+      description: error.description || "",
+      source: error.source || "",
+      step: error.step || "",
+      reason: error.reason || "",
+      metadata: error.metadata || {},
+    },
+    createdAt: new Date(),
+    status: "Failed",
+  });
+}
+
 export default function Checkout() {
   const query = new URLSearchParams(useLocation().search);
   const navigate = useNavigate();
   const formRef = useRef(null);
+  const checkoutOutcomeRef = useRef(null);
 
   const productId = query.get("product");
   const price = query.get("price");
@@ -232,6 +261,7 @@ export default function Checkout() {
       return;
     }
     setLoading(true);
+    checkoutOutcomeRef.current = null;
 
     try {
       const razorpayOrder = await createRazorpayOrder({ price, product, form });
@@ -265,6 +295,7 @@ export default function Checkout() {
         },
         theme: { color: "#00DC82" },
         handler: async (response) => {
+          checkoutOutcomeRef.current = "success";
           try {
             await verifyRazorpayPayment(response);
             const paymentId = response.razorpay_payment_id;
@@ -311,6 +342,7 @@ export default function Checkout() {
         },
         modal: {
           ondismiss: () => {
+            if (checkoutOutcomeRef.current) return;
             setLoading(false);
             setNotice({
               type: "danger",
@@ -323,8 +355,10 @@ export default function Checkout() {
 
       const rzp = new window.Razorpay(options);
       rzp.on("payment.failed", async (response) => {
+        checkoutOutcomeRef.current = "failed";
         setLoading(false);
         const error = response?.error || {};
+        recordFailedPayment({ form, product, productId, price, error }).catch(() => {});
         setNotice({
           type: "danger",
           title: "Payment failed",

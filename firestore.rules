@@ -23,6 +23,13 @@ service cloud.firestore {
         );
     }
 
+    function isFailedOrderWrite() {
+      return request.resource.data.status == "Failed"
+        && request.resource.data.razorpayOrderId is string
+        && request.resource.data.paymentError is map
+        && request.resource.data.paymentError.description is string;
+    }
+
     // Public verification, tightly controlled creation from eligible registrations.
     match /certificates/{certId} {
       allow read: if true;
@@ -50,7 +57,7 @@ service cloud.firestore {
     }
 
     match /orders/{orderId} {
-      allow create: if isPaidOrderWrite();
+      allow create: if isPaidOrderWrite() || isFailedOrderWrite();
       allow read: if isAdmin();
       allow update: if isAdmin()
         || (
