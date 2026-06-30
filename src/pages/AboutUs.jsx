@@ -9,7 +9,7 @@ import "swiper/css/effect-coverflow";
 const TEAM = [
   {
     name: "Vamshidar Reddy",
-    role: "Founder",
+    role: "Co-Founder & CMO",
     image:
       "https://static.wixstatic.com/media/8d617c_d5af19944ebd4084a06c537b648ab1d7~mv2.png/v1/crop/x_0%2Cy_0%2Cw_1024%2Ch_849/fill/w_806%2Ch_668%2Cal_c%2Cq_92%2Cusm_0.66_1.00_0.01%2Cenc_avif%2Cquality_auto/Gemini_Generated_Image_i6pvcgi6pvcgi6pv.png",
     imagePosition: "50% 18%",
@@ -27,7 +27,7 @@ const TEAM = [
   },
   {
     name: "Apurupa Laxmi",
-    role: "Co-Founder",
+    role: "Co-Founder & COO",
     image:
       "https://static.wixstatic.com/media/8d617c_bc7ca3e783da43ddb1c5891a0703d330~mv2.png/v1/crop/x_0%2Cy_182%2Cw_832%2Ch_689/fill/w_806%2Ch_668%2Cal_c%2Cq_92%2Cusm_0.66_1.00_0.01%2Cenc_avif%2Cquality_auto/Generated%20Image%20October%2024%2C%202025%20-%204_02PM.png",
     imagePosition: "50% 18%",

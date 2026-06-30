@@ -60,13 +60,6 @@ service cloud.firestore {
       allow delete: if false;
     }
 
-    match /paymentFailureDebug/{eventId} {
-      allow create: if request.resource.data.createdAt is timestamp
-        && request.resource.data.sourceIp is string
-        && request.resource.data.syntheticIdentity is bool;
-      allow read, update, delete: if isAdmin();
-    }
-
     match /invoices/{invoiceId} {
       allow read: if isAdmin();
       allow write: if false;
