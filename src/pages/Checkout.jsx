@@ -119,6 +119,39 @@ function ReceiptDialog({ receipt, onClose }) {
   );
 }
 
+async function createRazorpayOrder({ price, product, form }) {
+  const response = await fetch("/api/create-razorpay-order", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      amount: Number(price),
+      currency: "INR",
+      receipt: `arc_${Date.now()}`,
+      notes: {
+        customer_name: form.name,
+        customer_email: form.email,
+        customer_phone: form.phone,
+        customer_country: form.country,
+        customer_address: form.address,
+        customer_city: form.city,
+        customer_region: form.region,
+        customer_zip: form.zip,
+        product_id: product.id,
+        product_name: product.name,
+      },
+    }),
+  });
+
+  const payload = await response.json().catch(() => ({}));
+  if (!response.ok) {
+    throw new Error(payload.error || "Could not create Razorpay order.");
+  }
+  if (!payload.id) {
+    throw new Error("Razorpay order was created without an order ID.");
+  }
+  return payload;
+}
+
 export default function Checkout() {
   const query = new URLSearchParams(useLocation().search);
   const navigate = useNavigate();
@@ -161,7 +194,7 @@ export default function Checkout() {
 
   const updateField = (key, value) => setForm((prev) => ({ ...prev, [key]: value }));
 
-  const handlePayment = () => {
+  const handlePayment = async () => {
     if (!formRef.current || !validateRequiredFields(formRef.current)) return;
     if (!price || !product) {
       setNotice({ type: "danger", title: "Kit unavailable", message: "Please go back and choose a valid product again." });
@@ -175,11 +208,12 @@ export default function Checkout() {
     setLoading(true);
 
     try {
-      const amountInPaisa = Math.round(Number(price) * 100);
+      const razorpayOrder = await createRazorpayOrder({ price, product, form });
       const options = {
-        key: "rzp_live_RpqmHVVJcg5JMQ",
-        amount: amountInPaisa,
-        currency: "INR",
+        key: razorpayOrder.keyId || process.env.REACT_APP_RAZORPAY_KEY_ID,
+        amount: razorpayOrder.amount,
+        currency: razorpayOrder.currency || "INR",
+        order_id: razorpayOrder.id,
         name: "ARC LABS",
         description: `Purchase: ${product.name}`,
         notes: {
@@ -215,6 +249,8 @@ export default function Checkout() {
               productName: product.name,
               productPrice: price,
               paymentId: response.razorpay_payment_id,
+              razorpayOrderId: response.razorpay_order_id || razorpayOrder.id,
+              razorpaySignature: response.razorpay_signature || "",
               createdAt: new Date(),
               status: "Paid",
             });
@@ -222,6 +258,7 @@ export default function Checkout() {
             setReceipt({
               receiptNo: `ARC-${Date.now().toString().slice(-8)}`,
               paymentId: response.razorpay_payment_id,
+              razorpayOrderId: response.razorpay_order_id || razorpayOrder.id,
               productName: product.name,
               amount: price,
               customerName: form.name,
@@ -294,7 +331,7 @@ export default function Checkout() {
       rzp.open();
     } catch (err) {
       setLoading(false);
-      setNotice({ type: "danger", title: "Payment error", message: err.message });
+      setNotice({ type: "danger", title: "Payment setup failed", message: err.message });
     }
   };
 
