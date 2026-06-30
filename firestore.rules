@@ -12,6 +12,17 @@ service cloud.firestore {
         );
     }
 
+    function isPaidOrderWrite() {
+      return request.resource.data.paymentId is string
+        && request.resource.data.razorpayOrderId is string
+        && (
+          request.resource.data.status == "Paid"
+          || request.resource.data.status == "paid"
+          || request.resource.data.status == "captured"
+          || request.resource.data.status == "success"
+        );
+    }
+
     // Public verification, tightly controlled creation from eligible registrations.
     match /certificates/{certId} {
       allow read: if true;
@@ -39,9 +50,21 @@ service cloud.firestore {
     }
 
     match /orders/{orderId} {
-      allow create: if true;
-      allow read, update: if isAdmin();
+      allow create: if isPaidOrderWrite();
+      allow read: if isAdmin();
+      allow update: if isAdmin()
+        || (
+          isPaidOrderWrite()
+          && resource.data.paymentId == request.resource.data.paymentId
+        );
       allow delete: if false;
+    }
+
+    match /paymentFailureDebug/{eventId} {
+      allow create: if request.resource.data.createdAt is timestamp
+        && request.resource.data.sourceIp is string
+        && request.resource.data.syntheticIdentity is bool;
+      allow read, update, delete: if isAdmin();
     }
 
     match /invoices/{invoiceId} {

@@ -179,6 +179,38 @@ async function verifyRazorpayPayment(response) {
   }
 }
 
+function isSyntheticCheckoutIdentity(form) {
+  const name = String(form.name || "").trim().toLowerCase();
+  const email = String(form.email || "").trim().toLowerCase();
+  const phone = String(form.phone || "").replace(/[^\d]/g, "");
+  const emailDomain = email.split("@")[1] || "";
+
+  return (
+    /\b(test|demo|sample|dummy)\b/.test(name) ||
+    /^(test|demo|sample|dummy)([.+_-]|$)/.test(email) ||
+    ["example.com", "example.in", "mailinator.com"].includes(emailDomain) ||
+    /^(0{10}|1{10}|9{10}|1234567890)$/.test(phone)
+  );
+}
+
+async function recordFailedPaymentDebug({ form, product, productId, price, error }) {
+  const apiBaseUrl = checkoutApiBaseUrl();
+  await fetch(`${apiBaseUrl}/api/report-payment-failure`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      form,
+      product: {
+        id: product.id || productId,
+        name: product.name,
+      },
+      price,
+      error,
+      razorpayOrderId: error.metadata?.order_id || "",
+    }),
+  });
+}
+
 export default function Checkout() {
   const query = new URLSearchParams(useLocation().search);
   const navigate = useNavigate();
@@ -229,6 +261,28 @@ export default function Checkout() {
     }
     if (!razorpayLoaded || !window.Razorpay) {
       setNotice({ type: "info", title: "Payment is loading", message: "The secure payment system is still getting ready. Try again in a moment." });
+      return;
+    }
+    if (isSyntheticCheckoutIdentity(form)) {
+      recordFailedPaymentDebug({
+        form,
+        product,
+        productId,
+        price,
+        error: {
+          code: "synthetic_checkout_blocked",
+          description: "Synthetic checkout identity blocked before Razorpay order creation.",
+          source: "checkout",
+          step: "preflight",
+          reason: "synthetic_identity",
+          metadata: {},
+        },
+      }).catch(() => {});
+      setNotice({
+        type: "danger",
+        title: "Use real customer details",
+        message: "Payment testing details are not sent to Razorpay or recorded in admin. Enter real customer details to continue.",
+      });
       return;
     }
 
@@ -326,6 +380,7 @@ export default function Checkout() {
       rzp.on("payment.failed", async (response) => {
         setLoading(false);
         const error = response?.error || {};
+        recordFailedPaymentDebug({ form, product, productId, price, error }).catch(() => {});
         setNotice({
           type: "danger",
           title: "Payment failed",
