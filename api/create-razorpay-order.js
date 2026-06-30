@@ -1,4 +1,5 @@
 const https = require("https");
+const { getRazorpayConfig } = require("./razorpay-config");
 
 function json(res, status, body) {
   res.statusCode = status;
@@ -65,11 +66,18 @@ module.exports = async function handler(req, res) {
     return;
   }
 
-  const keyId = process.env.RAZORPAY_KEY_ID || process.env.REACT_APP_RAZORPAY_KEY_ID;
-  const keySecret = process.env.RAZORPAY_KEY_SECRET;
+  const { keyId, keySecret, missingKeyId, missingKeySecret, keyIdNames, keySecretNames } = getRazorpayConfig();
 
   if (!keyId || !keySecret) {
-    json(res, 500, { error: "Razorpay keys are not configured on the server." });
+    json(res, 500, {
+      error: "Razorpay keys are not configured on the server.",
+      missingKeyId,
+      missingKeySecret,
+      expectedServerEnv: {
+        keyId: keyIdNames,
+        keySecret: keySecretNames,
+      },
+    });
     return;
   }
 

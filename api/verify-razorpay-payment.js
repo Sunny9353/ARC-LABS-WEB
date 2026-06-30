@@ -1,4 +1,5 @@
 const crypto = require("crypto");
+const { getRazorpayConfig } = require("./razorpay-config");
 
 function json(res, status, body) {
   res.statusCode = status;
@@ -12,9 +13,15 @@ module.exports = async function handler(req, res) {
     return;
   }
 
-  const keySecret = process.env.RAZORPAY_KEY_SECRET;
+  const { keySecret, missingKeySecret, keySecretNames } = getRazorpayConfig();
   if (!keySecret) {
-    json(res, 500, { error: "Razorpay payment verification is not configured on the server." });
+    json(res, 500, {
+      error: "Razorpay payment verification is not configured on the server.",
+      missingKeySecret,
+      expectedServerEnv: {
+        keySecret: keySecretNames,
+      },
+    });
     return;
   }
 
