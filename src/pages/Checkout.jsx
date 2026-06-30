@@ -253,12 +253,42 @@ export default function Checkout() {
       };
 
       const rzp = new window.Razorpay(options);
-      rzp.on("payment.failed", (response) => {
+      rzp.on("payment.failed", async (response) => {
         setLoading(false);
+        const error = response?.error || {};
+        try {
+          await addDoc(collection(db, "orders"), {
+            customerName: form.name,
+            customerEmail: form.email,
+            customerPhone: form.phone,
+            customerCountry: form.country,
+            customerAddress: form.address,
+            customerCity: form.city,
+            customerRegion: form.region,
+            customerZip: form.zip,
+            productId: product.id,
+            productName: product.name,
+            productPrice: price,
+            paymentId: error.metadata?.payment_id || "",
+            razorpayOrderId: error.metadata?.order_id || "",
+            paymentError: {
+              code: error.code || "",
+              description: error.description || "",
+              source: error.source || "",
+              step: error.step || "",
+              reason: error.reason || "",
+              metadata: error.metadata || {},
+            },
+            createdAt: new Date(),
+            status: "Failed",
+          });
+        } catch (err) {
+          console.warn("Could not save failed payment notification", err);
+        }
         setNotice({
           type: "danger",
           title: "Payment failed",
-          message: response?.error?.reason || "The payment provider could not complete this transaction.",
+          message: error.description || error.reason || "The payment provider could not complete this transaction.",
         });
       });
       rzp.open();

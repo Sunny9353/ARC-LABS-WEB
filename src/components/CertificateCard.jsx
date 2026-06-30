@@ -1,7 +1,8 @@
 import {
   getTechObj,
   getDurLabel,
-  getHours,
+  getCertificateDurationText,
+  isInternshipCertificate,
   fmtDate,
 } from "../utils/certificationHelpers.js";
 
@@ -9,6 +10,8 @@ export default function CertCard({ cert }) {
   if (!cert) return null; // ✅ safety
 
   const tech = getTechObj(cert.technology || "");
+  const isInternship = isInternshipCertificate(cert);
+  const durationLabel = isInternship ? "Internship" : getDurLabel(cert.durationDays || 0);
 
   return (
     <div className="dcert">
@@ -39,7 +42,7 @@ export default function CertCard({ cert }) {
           <div className="dc-completed">
             has successfully completed the{" "}
             <strong>
-              {getDurLabel(cert.durationDays || 0)} in {tech.label}
+              {durationLabel} in {tech.label}
             </strong>
           </div>
         </div>
@@ -51,7 +54,7 @@ export default function CertCard({ cert }) {
             {tech.icon} {tech.label}
           </div>
           <div className="dc-prog-sub">
-            {getDurLabel(cert.durationDays || 0)}
+            {durationLabel}
           </div>
         </div>
 
@@ -76,7 +79,7 @@ export default function CertCard({ cert }) {
             { k: "Technology", v: cert.technology || "-" },
             {
               k: "Duration",
-              v: `${cert.durationDays || 0} Days (${getHours(cert.durationDays || 0)})`,
+              v: getCertificateDurationText(cert),
             },
             { k: "Certificate Type", v: cert.performance || "-" },
             { k: "Trainer", v: cert.trainer || "ARC LABS Trainer" },

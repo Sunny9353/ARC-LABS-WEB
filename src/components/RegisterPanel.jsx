@@ -10,6 +10,10 @@ import {
 import {
   DURATION_OPTIONS,
 } from "../data/certificationConstants.js";
+import {
+  SESSION_CODE_GROUPS,
+  isInternshipSessionCode,
+} from "../data/sessionCodes.js";
 
 import {
   ELIGIBLE_REGISTRATIONS_COLLECTION,
@@ -30,15 +34,33 @@ export default function RegisterPanel({ onRegistered }) {
   const currentYear = String(new Date().getFullYear());
 
   const set = (key, value) => setForm((prev) => ({ ...prev, [key]: value }));
-  const toMonthDay = (value) => String(value || "").slice(5, 10);
-  const toCurrentYearDate = (value) => (value ? `${currentYear}-${value}` : "");
+  const toMonthDay = (value) => String(value || "").slice(5, 10).replace("-", "/");
+  const toCurrentYearDate = (value) => (value ? `${currentYear}-${String(value).replace("/", "-")}` : "");
   const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const openModal = (data) => setModal(data);
   const closeModal = () => setModal(null);
   const formatMonthDayInput = (value) => {
     const digits = String(value || "").replace(/\D/g, "").slice(0, 4);
     if (digits.length <= 2) return digits;
-    return `${digits.slice(0, 2)}-${digits.slice(2)}`;
+    return `${digits.slice(0, 2)}/${digits.slice(2)}`;
+  };
+  const getMonthDayError = (value) => {
+    const text = String(value || "");
+    if (text.length < 2) return "";
+
+    const [monthText = "", dayText = ""] = text.split("/");
+    const month = Number(monthText);
+    if (monthText.length === 2 && (month < 1 || month > 12)) {
+      return "Month must be 01 to 12";
+    }
+
+    if (dayText.length < 2) return "";
+    const day = Number(dayText);
+    if (day < 1 || day > 31) return "Date must be 01 to 31";
+
+    const maxDay = new Date(Number(currentYear), month, 0).getDate();
+    if (day > maxDay) return `Date must be 01 to ${maxDay}`;
+    return "";
   };
   const normalizeComparable = (value) =>
     String(value || "")
@@ -53,6 +75,8 @@ export default function RegisterPanel({ onRegistered }) {
     message: "Some details do not match the uploaded student record.",
     note: "Kindly check the details provided, or contact your Dept / Mentor for help.",
   };
+  const startDateError = getMonthDayError(form.startMonthDay);
+  const endDateError = getMonthDayError(form.endMonthDay);
 
   const detailsMatchUploadedRecord = (student) => {
     const checks = [
@@ -97,6 +121,17 @@ export default function RegisterPanel({ onRegistered }) {
   const submit = async () => {
     const rollKey = normalizeRollNumber(form.rollNo);
     const workshopKey = normalizeWorkshopCode(form.workshopCode);
+
+    if (startDateError || endDateError) {
+      openModal({
+        type: "failed",
+        eyebrow: "Check dates",
+        title: "Registration Failed",
+        message: "Please enter valid From and To dates in MM/DD format.",
+        note: "Month should be 01-12 and date should match the selected month.",
+      });
+      return;
+    }
 
     if (!rollKey) {
       openModal({
@@ -189,7 +224,16 @@ export default function RegisterPanel({ onRegistered }) {
       }
 
       const certId = generateCertId();
-      const durationDays = parseInt(form.durationDays || eligibleStudent.durationDays || 0, 10);
+      const selectedDuration = String(form.durationDays || eligibleStudent.durationDays || "");
+      const selectedWorkshopCode = form.workshopCode || eligibleStudent.workshopCode || "";
+      const isInternship =
+        selectedDuration.toLowerCase() === "internship" ||
+        isInternshipSessionCode(selectedWorkshopCode) ||
+        String(eligibleStudent.certificateType || "").toLowerCase() === "internship";
+      const durationDays = isInternship
+        ? "internship"
+        : parseInt(selectedDuration || 0, 10);
+      const skillsDuration = isInternship ? 5 : durationDays;
       const technology = form.technology || eligibleStudent.technology || "";
       const startDate = toCurrentYearDate(form.startMonthDay) || form.startDate || eligibleStudent.startDate || eligibleStudent.trainingDate || "";
       const endDate = toCurrentYearDate(form.endMonthDay) || form.endDate || eligibleStudent.endDate || "";
@@ -204,10 +248,11 @@ export default function RegisterPanel({ onRegistered }) {
         certId,
         technology,
         durationDays,
+        certificateType: isInternship ? "Internship" : (form.certificateType || eligibleStudent.certificateType || "Workshop"),
         startDate,
         endDate,
         year: currentYear,
-        skills: getSkillsForCert(technology, durationDays),
+        skills: getSkillsForCert(technology, skillsDuration),
         issueDate: new Date().toISOString().split("T")[0],
         eligibleStudentId: eligibilityId,
       };
@@ -269,13 +314,23 @@ export default function RegisterPanel({ onRegistered }) {
     },
     {
       label: "Workshop / Session Code",
-      placeholder: "Example: CMRTC-IOT-JUN2026",
       field: (
-        <input
+        <select
           className="cert-inp"
           value={form.workshopCode || ""}
-          onChange={(e) => set("workshopCode", e.target.value.toUpperCase())}
-        />
+          onChange={(e) => set("workshopCode", e.target.value)}
+        >
+          <option value="">Select WorkShop code</option>
+          {SESSION_CODE_GROUPS.map((group) => (
+            <optgroup key={group.label} label={group.label}>
+              {group.options.map((code) => (
+                <option key={code} value={code}>
+                  {code}
+                </option>
+              ))}
+            </optgroup>
+          ))}
+        </select>
       ),
     },
     {
@@ -381,26 +436,28 @@ export default function RegisterPanel({ onRegistered }) {
             <input
               type="text"
               inputMode="numeric"
-              className="cert-inp"
-              placeholder="MM-DD"
-              pattern="\\d{2}-\\d{2}"
+              className={`cert-inp${startDateError ? " cert-date-invalid" : ""}`}
+              placeholder="MM/DD"
+              pattern="\\d{2}/\\d{2}"
               maxLength={5}
               value={form.startMonthDay || ""}
               onChange={(e) => set("startMonthDay", formatMonthDayInput(e.target.value))}
             />
+            {startDateError && <div className="cert-date-error">{startDateError}</div>}
           </div>
           <div className="cert-date-cell">
             <label>To</label>
             <input
               type="text"
               inputMode="numeric"
-              className="cert-inp"
-              placeholder="MM-DD"
-              pattern="\\d{2}-\\d{2}"
+              className={`cert-inp${endDateError ? " cert-date-invalid" : ""}`}
+              placeholder="MM/DD"
+              pattern="\\d{2}/\\d{2}"
               maxLength={5}
               value={form.endMonthDay || ""}
               onChange={(e) => set("endMonthDay", formatMonthDayInput(e.target.value))}
             />
+            {endDateError && <div className="cert-date-error">{endDateError}</div>}
           </div>
         </div>
       </div>

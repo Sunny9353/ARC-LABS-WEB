@@ -45,6 +45,7 @@
 .admin-login-card input,
 .admin-toolbar input,
 .cert-admin-form input,
+.cert-admin-form select,
 .admin-table select {
   width: 100%;
   border: 1px solid #3f3f46;
@@ -53,6 +54,34 @@
   color: #fafafa;
   padding: 11px 12px;
   outline: none;
+}
+
+.cert-admin-form select,
+.admin-table select {
+  color-scheme: dark;
+  appearance: none;
+  background:
+    linear-gradient(45deg, transparent 50%, #a1a1aa 50%) calc(100% - 18px) 50% / 6px 6px no-repeat,
+    linear-gradient(135deg, #a1a1aa 50%, transparent 50%) calc(100% - 13px) 50% / 6px 6px no-repeat,
+    #18181b;
+  padding-right: 38px;
+}
+
+.cert-admin-form select option,
+.cert-admin-form select optgroup,
+.admin-table select option {
+  background: #18181b;
+  color: #fafafa;
+}
+
+.cert-admin-form select option:disabled {
+  color: #71717a;
+}
+
+.cert-admin-form select:focus,
+.admin-table select:focus {
+  border-color: #00dc82;
+  box-shadow: 0 0 0 3px rgba(0, 220, 130, 0.12);
 }
 
 .admin-login-card input::placeholder {
@@ -1082,23 +1111,265 @@
   color: #06110d;
 }
 
-.lead-grid {
+.enquiry-inbox {
+  min-height: 660px;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-template-columns: minmax(300px, 390px) minmax(0, 1fr);
+  border: 1px solid rgba(255,255,255,0.09);
+  border-radius: 8px;
+  overflow: hidden;
+  background: rgba(24,24,27,0.86);
+}
+
+.enquiry-list {
+  min-width: 0;
+  border-right: 1px solid rgba(255,255,255,0.08);
+  background: rgba(9,9,11,0.28);
+  overflow-y: auto;
+}
+
+.enquiry-row {
+  width: 100%;
+  min-height: 76px;
+  display: grid;
+  grid-template-columns: 10px minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: center;
+  padding: 13px 14px;
+  border: 0;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+  background: transparent;
+  color: #d4d4d8;
+  text-align: left;
+  cursor: pointer;
+}
+
+.enquiry-row:hover,
+.enquiry-row.active {
+  background: rgba(0,220,130,0.075);
+}
+
+.enquiry-row.unread strong {
+  color: #fafafa;
+  font-weight: 900;
+}
+
+.enquiry-row span:nth-child(2) {
+  min-width: 0;
+  display: grid;
+  gap: 4px;
+}
+
+.enquiry-row strong,
+.enquiry-row small,
+.enquiry-row time {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.enquiry-row small,
+.enquiry-row time {
+  color: #a1a1aa;
+  font-size: 0.72rem;
+}
+
+.enquiry-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #60a5fa;
+}
+
+.enquiry-dot.success { background: #00dc82; }
+.enquiry-dot.warning { background: #f59e0b; }
+.enquiry-dot.danger { background: #ef4444; }
+.enquiry-dot.info { background: #60a5fa; }
+
+.enquiry-detail {
+  min-width: 0;
+  display: grid;
+  align-content: start;
+  gap: 18px;
+  padding: 22px;
+}
+
+.enquiry-detail-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 18px;
+}
+
+.enquiry-detail-head span {
+  color: #00dc82;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.enquiry-detail-head h2 {
+  margin: 5px 0 6px;
+  font-size: 1.35rem;
+  line-height: 1.2;
+}
+
+.enquiry-detail-head p {
+  color: #a1a1aa;
+  line-height: 1.55;
+}
+
+.enquiry-meta {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.enquiry-meta div {
+  min-width: 0;
+  display: grid;
+  gap: 5px;
+  padding: 12px;
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 8px;
+  background: rgba(9,9,11,0.3);
+}
+
+.enquiry-meta span {
+  color: #71717a;
+  font-size: 0.68rem;
+  text-transform: uppercase;
+}
+
+.enquiry-meta strong {
+  min-width: 0;
+  color: #e4e4e7;
+  font-size: 0.82rem;
+  overflow-wrap: anywhere;
+}
+
+.enquiry-message {
+  display: grid;
+  gap: 9px;
+  padding: 18px;
+  border-radius: 8px;
+  background: rgba(9,9,11,0.32);
+}
+
+.enquiry-message p {
+  margin: 0;
+  color: #d4d4d8;
+  line-height: 1.65;
+}
+
+.enquiry-message strong {
+  color: #fafafa;
+}
+
+.enquiry-contact-btn {
+  justify-self: start;
+}
+
+.invoice-link {
+  width: fit-content;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 38px;
+  padding: 0 12px;
+  border-radius: 8px;
+  background: #00dc82;
+  color: #06110d;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.contact-popover-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background: rgba(0,0,0,0.58);
+}
+
+.contact-popover {
+  width: min(470px, 100%);
+  display: grid;
+  gap: 18px;
+  padding: 18px;
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 8px;
+  background: #18181b;
+  box-shadow: 0 30px 90px rgba(0,0,0,0.5);
+}
+
+.contact-popover-head {
+  display: flex;
+  justify-content: space-between;
   gap: 14px;
 }
 
-.lead-card {
-  display: grid;
-  gap: 12px;
-  padding: 16px;
+.contact-popover-head span {
+  color: #a1a1aa;
+  font-size: 0.72rem;
 }
 
-.lead-card h3 { font-size: 1rem; margin: 0; }
-.lead-card p { color: #a1a1aa; font-size: 0.84rem; line-height: 1.6; }
-.lead-card dl { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-.lead-card dt { color: #71717a; font-size: 0.68rem; text-transform: uppercase; }
-.lead-card dd { color: #e4e4e7; font-size: 0.8rem; overflow-wrap: anywhere; }
+.contact-popover-head strong {
+  display: block;
+  margin-top: 3px;
+}
+
+.contact-popover-head button {
+  height: 34px;
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 8px;
+  background: #27272a;
+  color: #d4d4d8;
+}
+
+.contact-actions {
+  display: grid;
+  gap: 10px;
+}
+
+.contact-actions a,
+.contact-call-disabled {
+  min-width: 0;
+  display: grid;
+  grid-template-columns: 24px minmax(0, 1fr);
+  align-items: center;
+  gap: 10px;
+  min-height: 48px;
+  padding: 10px 12px;
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 8px;
+  background: rgba(9,9,11,0.35);
+  color: #f4f4f5;
+  text-decoration: none;
+}
+
+.contact-actions span span,
+.contact-actions a span {
+  overflow-wrap: anywhere;
+}
+
+.contact-actions a:hover {
+  border-color: rgba(0,220,130,0.28);
+  background: rgba(0,220,130,0.08);
+}
+
+.contact-actions a.disabled {
+  pointer-events: none;
+  opacity: 0.45;
+}
+
+.contact-call-disabled {
+  color: #a1a1aa;
+  cursor: not-allowed;
+}
 
 .cert-admin-form {
   display: grid;
@@ -1166,6 +1437,14 @@
   .payment-health-grid { grid-template-columns: 1fr; }
   .india-map-shell { min-height: 430px; }
   .state-zoom-card { grid-template-columns: 1fr; }
+  .enquiry-inbox { grid-template-columns: 1fr; }
+  .enquiry-list {
+    max-height: 320px;
+    border-right: 0;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+  .enquiry-meta { grid-template-columns: 1fr; }
+  .enquiry-detail-head { flex-direction: column; }
   .recent-table-head { display: none; }
   .recent-table-row {
     grid-template-columns: 1fr;

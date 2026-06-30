@@ -105,7 +105,7 @@ function verifyWebhookSignature(body, signature, secret) {
 }
 
 /**
- * Generate next sequential invoice number: ARCLABS/FY/NNNN
+ * Generate next sequential invoice number: INV-n
  * Uses Firestore transaction for atomicity.
  */
 async function getNextInvoiceNumber() {
@@ -114,24 +114,17 @@ async function getNextInvoiceNumber() {
   const invoiceNum = await db.runTransaction(async (tx) => {
     const snap = await tx.get(counterRef);
     let current = 0;
-    let fy = getCurrentFY();
-
     if (snap.exists) {
       const data = snap.data();
-      // Reset counter if new financial year
-      if (data.fy === fy) {
-        current = data.seq || 0;
-      }
+      current = data.seq || 0;
     }
 
     const next = current + 1;
-    tx.set(counterRef, { seq: next, fy, updatedAt: admin.firestore.FieldValue.serverTimestamp() });
+    tx.set(counterRef, { seq: next, updatedAt: admin.firestore.FieldValue.serverTimestamp() });
     return next;
   });
 
-  const fy = getCurrentFY();
-  const padded = String(invoiceNum).padStart(4, "0");
-  return `ARCLABS/${fy}/${padded}`;
+  return `INV-${invoiceNum}`;
 }
 
 /**
@@ -152,9 +145,10 @@ function getCurrentFY() {
  * Based on buyer state vs ARC LABS state (Telangana = 36)
  */
 function calculateGST(amount, buyerStateCode, companyStateCode) {
-  const taxableAmount = amount; // Price is inclusive or exclusive depends on your model
+  const totalWithTax = Math.round(Number(amount || 0) * 100) / 100;
   const gstRate = 0.18; // 18% GST for education services (SAC 999293)
-  const taxAmount = Math.round(taxableAmount * gstRate * 100) / 100;
+  const taxableAmount = Math.round((totalWithTax / (1 + gstRate)) * 100) / 100;
+  const taxAmount = Math.round((totalWithTax - taxableAmount) * 100) / 100;
 
   if (buyerStateCode === companyStateCode) {
     // Intra-state: CGST 9% + SGST 9%
@@ -165,7 +159,7 @@ function calculateGST(amount, buyerStateCode, companyStateCode) {
       igst: 0,
       totalTax: taxAmount,
       taxableAmount,
-      totalWithTax: Math.round((taxableAmount + taxAmount) * 100) / 100,
+      totalWithTax,
     };
   }
   // Inter-state: IGST 18%
@@ -176,7 +170,7 @@ function calculateGST(amount, buyerStateCode, companyStateCode) {
     igst: taxAmount,
     totalTax: taxAmount,
     taxableAmount,
-    totalWithTax: Math.round((taxableAmount + taxAmount) * 100) / 100,
+    totalWithTax,
   };
 }
 
@@ -263,7 +257,11 @@ exports.razorpayWebhook = functions.https.onRequest(async (req, res) => {
         name: notes.customer_name || payment.email || "Customer",
         email: notes.customer_email || payment.email,
         phone: notes.customer_phone || payment.contact,
+        address: notes.customer_address || "",
         city: notes.customer_city || "",
+        region: notes.customer_region || "",
+        zip: notes.customer_zip || "",
+        country: notes.customer_country || "India",
         stateCode: buyerStateCode,
       },
 

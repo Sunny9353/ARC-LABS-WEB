@@ -4,6 +4,7 @@ import {
   PIN_MAP,
   PERFORMANCE_GRADES,
 } from "../data/certificationConstants.js";
+import { isInternshipSessionCode } from "../data/sessionCodes.js";
 
 /* ═══════════════════════════════════════ HELPERS ═══════════════════════════════════════ */
 
@@ -44,7 +45,8 @@ export function fmtDate(d) {
 // 🧠 SKILLS BASED ON TECH & DAYS
 export function getSkills(tech, days) {
   const base = SKILLS_MAP[tech] || [];
-  return days >= 5 ? base : base.slice(0, days + 2);
+  const count = Number(days);
+  return count >= 5 ? base : base.slice(0, (count || 0) + 2);
 }
 
 // 🧩 GET TECHNOLOGY OBJECT
@@ -54,18 +56,39 @@ export function getTechObj(id) {
 
 // 📘 DURATION LABEL
 export function getDurLabel(days) {
-  if (days === 2) return "2-Day Workshop";
-  if (days === 3) return "3-Day Intensive";
-  if (days === 5) return "5-Day Bootcamp";
-  return `${days}-Day Program`;
+  if (isInternshipDuration(days)) return "Internship";
+  const count = Number(days);
+  if (count === 2) return "2-Day Workshop";
+  if (count === 3) return "3-Day Intensive";
+  if (count === 5) return "5-Day Bootcamp";
+  return `${count || days}-Day Program`;
 }
 
 // ⏱ HOURS CALCULATION
 export function getHours(days) {
-  if (days === 2) return "14 hrs";
-  if (days === 3) return "21 hrs";
-  if (days === 5) return "35 hrs";
-  return `${days * 7} hrs`;
+  if (isInternshipDuration(days)) return "Internship";
+  const count = Number(days);
+  if (count === 2) return "14 hrs";
+  if (count === 3) return "21 hrs";
+  if (count === 5) return "35 hrs";
+  return `${(count || 0) * 7} hrs`;
+}
+
+export function isInternshipCertificate(cert) {
+  return (
+    isInternshipDuration(cert?.durationDays) ||
+    String(cert?.certificateType || "").trim().toLowerCase() === "internship" ||
+    isInternshipSessionCode(cert?.workshopCode || cert?.workshopKey)
+  );
+}
+
+export function getCertificateDurationText(cert) {
+  if (isInternshipCertificate(cert)) return "Internship";
+  return `${cert?.durationDays || 0} Days (${getHours(cert?.durationDays || 0)})`;
+}
+
+function isInternshipDuration(value) {
+  return String(value || "").trim().toLowerCase() === "internship";
 }
 
 /**

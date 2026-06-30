@@ -34,29 +34,12 @@ export default function Footer() {
       <div className="footer-grid">
         {/* Brand */}
         <div>
-          <Link
-            to="/"
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "10px",
-              textDecoration: "none",
-              color: "var(--text)",
-              fontFamily: "var(--font-heading)",
-              fontWeight: 800,
-              fontSize: "1.1rem",
-            }}
-          >
-            <span
-              style={{
-                width: 8,
-                height: 8,
-                background: "var(--accent)",
-                borderRadius: "50%",
-                display: "inline-block",
-              }}
+          <Link to="/" className="footer-brand-link" aria-label="ARC LABS home">
+            <img
+              className="footer-brand-logo"
+              src="/images/brand/arc-labs-logo-transparent.png"
+              alt="ARC LABS"
             />
-            ARC LABS
           </Link>
           <p className="footer-brand-desc">
             India's practical AI, IoT & Robotics lab system for schools and

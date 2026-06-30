@@ -1,13 +1,15 @@
 import {
   getTech,
   getDurationLabel,
-  getTrainingHours,
+  getCertificateDurationText,
+  isInternshipCertificate,
 } from "../utils/certificationHelpers.js";
 
 export default function CertificateDisplay({ cert }) {
   if (!cert) return null; // ✅ safety
 
   const tech = getTech(cert.technology || "");
+  const isInternship = isInternshipCertificate(cert);
 
   return (
     <div className="digital-cert">
@@ -32,7 +34,7 @@ export default function CertificateDisplay({ cert }) {
         <div className="dc-center">
           <div className="dc-name">{cert.fullName || "N/A"}</div>
           <div>
-            {getDurationLabel(cert.durationDays || 0)} in {tech.label}
+            {isInternship ? "Internship" : getDurationLabel(cert.durationDays || 0)} in {tech.label}
           </div>
         </div>
 
@@ -46,7 +48,7 @@ export default function CertificateDisplay({ cert }) {
             { key: "Technology", val: cert.technology || "-" },
             {
               key: "Duration",
-              val: `${cert.durationDays || 0} Days (${getTrainingHours(cert.durationDays || 0)})`,
+              val: getCertificateDurationText(cert),
             },
           ].map((d) => (
             <div key={d.key}>

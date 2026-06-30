@@ -1,5 +1,6 @@
 import { jsPDF } from "jspdf";
 import { getTech, fmtDate } from "./certificationHelpers.js";
+import { isInternshipSessionCode } from "../data/sessionCodes.js";
 
 const TEMPLATE_URL = "/images/certificates/mit-pune-certificate-template.png";
 const INK = [12, 12, 12];
@@ -43,6 +44,10 @@ export async function buildCertificateDoc(cert) {
 function normalizeCertificateData(cert) {
   const tech = getTech(cert.technology || "");
   const durationDays = cleanDays(cert.durationDays);
+  const isInternship =
+    String(cert.certificateType || "").trim().toLowerCase() === "internship" ||
+    String(cert.durationDays || "").trim().toLowerCase() === "internship" ||
+    isInternshipSessionCode(cert.workshopCode || cert.workshopKey);
   const programName =
     clean(cert.programName) ||
     clean(cert.workshopName) ||
@@ -59,6 +64,7 @@ function normalizeCertificateData(cert) {
     rollNo: clean(cert.rollNo) || clean(cert.rollKey) || "-",
     fullName: clean(cert.fullName) || "Participant Name",
     durationDays,
+    programPrefix: isInternship ? "Internship Program on " : `${durationDays}-Day Hands-on Workshop on `,
     programName,
     departmentName,
     collegeName,
@@ -90,7 +96,7 @@ function drawCertificateBody(doc, data) {
   y += lineHeight;
 
   drawRichCenteredLine(doc, cx, y, [
-    { text: `${data.durationDays}-Day Hands-on Workshop on ` },
+    { text: data.programPrefix },
     { text: data.programName, bold: true },
   ], maxWidth, fontSize);
   y += lineHeight;

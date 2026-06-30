@@ -6,7 +6,8 @@ import { downloadCertificatePdf } from "../utils/generateCertificate.js";
 import {
   getTech,
   getDurationLabel,
-  getTrainingHours,
+  getCertificateDurationText,
+  isInternshipCertificate,
 } from "../utils/certificationHelpers.js";
 import {
   ELIGIBLE_STUDENTS_COLLECTION,
@@ -122,6 +123,7 @@ export default function VerifyPanel({ onSuccess }) {
 
 function VerifiedCertificateModal({ cert, downloading, onClose, onCopy, onDownload }) {
   const tech = getTech(cert.technology || "");
+  const isInternship = isInternshipCertificate(cert);
   const rows = [
     { label: "Student Name", value: cert.fullName || "N/A" },
     { label: "Roll/Reg No", value: cert.rollNo || cert.rollKey || "-" },
@@ -130,7 +132,7 @@ function VerifiedCertificateModal({ cert, downloading, onClose, onCopy, onDownlo
     { label: "Technology", value: cert.technology || "-" },
     {
       label: "Duration",
-      value: `${cert.durationDays || 0} Days (${getTrainingHours(cert.durationDays || 0)})`,
+      value: getCertificateDurationText(cert),
     },
   ];
 
@@ -155,7 +157,7 @@ function VerifiedCertificateModal({ cert, downloading, onClose, onCopy, onDownlo
 
         <div className="verify-result-head">
           <h2 id="verify-result-title">{cert.fullName || "N/A"}</h2>
-          <p>{getDurationLabel(cert.durationDays || 0)} in {tech.label}</p>
+          <p>{isInternship ? "Internship" : getDurationLabel(cert.durationDays || 0)} in {tech.label}</p>
         </div>
 
         <div className="verify-result-table">

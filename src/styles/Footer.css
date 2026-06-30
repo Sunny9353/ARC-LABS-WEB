@@ -17,6 +17,19 @@
   margin-bottom: 3.5rem;
 }
 
+.footer-brand-link {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+.footer-brand-logo {
+  width: 118px;
+  height: auto;
+  object-fit: contain;
+  display: block;
+}
+
 .footer-brand-desc {
   font-size: 0.875rem;
   color: var(--text-3);

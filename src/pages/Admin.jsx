@@ -8,13 +8,16 @@ import {
   CheckCircle2,
   CircleDollarSign,
   ClipboardList,
+  Download,
   Eye,
   FileUp,
   Lock,
   LogOut,
   Mail,
+  MessageCircle,
   Map,
   PackageCheck,
+  Phone,
   Search,
   ShieldCheck,
   TrendingUp,
@@ -42,6 +45,7 @@ import {
   mapStudentRow,
   normalizeWorkshopCode,
 } from "../utils/certificateEligibility";
+import { SESSION_CODE_GROUPS } from "../data/sessionCodes";
 import "../styles/Admin.css";
 
 const ADMIN_EMAILS = (process.env.REACT_APP_ADMIN_EMAILS || "techarclab@gmail.com,techarclabs@gmail.com")
@@ -482,40 +486,288 @@ function Orders({ data, adminEmail }) {
 }
 
 function Leads({ data }) {
+  const items = useMemo(() => buildInboxItems(data), [data]);
   const [filter, setFilter] = useState("all");
-  const leads = data.leads.filter((lead) => filter === "all" || lead.leadType === filter);
-  const types = ["all", ...new Set(data.leads.map((lead) => lead.leadType).filter(Boolean))];
+  const [selectedKey, setSelectedKey] = useState("");
+  const [contactLead, setContactLead] = useState(null);
+  const filteredItems = items.filter((item) => filter === "all" || item.bucket === filter);
+  const selectedItem = filteredItems.find((item) => item.key === selectedKey) || filteredItems[0];
+  const types = [
+    { id: "all", label: "Inbox" },
+    { id: "unread", label: "Unread" },
+    { id: "read", label: "Read" },
+    { id: "contacted", label: "Contacted" },
+    { id: "payment_success", label: "Payment Success" },
+    { id: "payment_failed", label: "Payment Failed" },
+  ].filter((type) => type.id === "all" || items.some((item) => item.bucket === type.id));
+
+  useEffect(() => {
+    if (!selectedItem || selectedItem.kind !== "lead" || selectedItem.raw.adminStatus) return;
+    updateLeadStatus(selectedItem.raw, { adminStatus: "read", readAt: new Date() }).catch(() => {});
+  }, [selectedItem?.key]);
+
+  const openContact = (lead) => {
+    setContactLead(lead);
+  };
+
+  const markContacted = (lead, channel) => {
+    updateLeadStatus(lead, { adminStatus: "contacted", contactedVia: channel, contactedAt: new Date() }).catch(() => {});
+  };
 
   return (
     <div className="admin-stack">
       <div className="admin-tabs">
-        {types.map((type) => <button key={type} className={filter === type ? "active" : ""} onClick={() => setFilter(type)}>{type}</button>)}
+        {types.map((type) => <button key={type.id} className={filter === type.id ? "active" : ""} onClick={() => setFilter(type.id)}>{type.label}</button>)}
       </div>
-      <div className="lead-grid">
-        {leads.map((lead) => (
-          <article className="lead-card" key={`${lead._collection}-${lead.id}`}>
-            <div className="lead-card-head">
-              <span>{lead.leadType}</span>
-              <Status text={lead.adminStatus || "new"} />
-            </div>
-            <h3>{lead.name || lead.fullName || lead.company || lead.org || lead.institution || "Enquiry"}</h3>
-            <p>{lead.message || lead.requirements || lead.note || lead.workshopTitle || "No message provided."}</p>
-            <dl>
-              <div><dt>Email</dt><dd>{lead.email || "N/A"}</dd></div>
-              <div><dt>Phone</dt><dd>{lead.phone || "N/A"}</dd></div>
-              <div><dt>Region</dt><dd>{lead.city || lead.state || lead.geography || "N/A"}</dd></div>
-              <div><dt>Received</dt><dd>{formatDateTime(lead.createdAt)}</dd></div>
-            </dl>
-            <div className="lead-actions">
-              {["read", "contacted", "qualified", "closed"].map((status) => (
-                <button key={status} onClick={() => updateLeadStatus(lead, { adminStatus: status })}>{status}</button>
-              ))}
-            </div>
-          </article>
-        ))}
+      <div className="enquiry-inbox">
+        <div className="enquiry-list" role="list">
+          {filteredItems.map((item) => (
+            <button
+              type="button"
+              className={`enquiry-row ${selectedItem?.key === item.key ? "active" : ""} ${item.unread ? "unread" : ""}`}
+              key={item.key}
+              onClick={() => setSelectedKey(item.key)}
+            >
+              <span className={`enquiry-dot ${item.tone}`} />
+              <span>
+                <strong>{item.title}</strong>
+                <small>{item.subject}</small>
+              </span>
+              <time>{formatDateTime(item.date)}</time>
+            </button>
+          ))}
+          {!filteredItems.length && <div className="recent-empty">No enquiries in this view.</div>}
+        </div>
+
+        <section className="enquiry-detail">
+          {selectedItem ? (
+            <>
+              <div className="enquiry-detail-head">
+                <div>
+                  <span>{selectedItem.typeLabel}</span>
+                  <h2>{selectedItem.title}</h2>
+                  <p>{selectedItem.subject}</p>
+                </div>
+                <Status text={selectedItem.statusLabel} />
+              </div>
+
+              <div className="enquiry-meta">
+                {selectedItem.meta.map(([label, value]) => (
+                  <div key={label}><span>{label}</span><strong>{value || "N/A"}</strong></div>
+                ))}
+              </div>
+
+              {selectedItem.kind === "lead" ? (
+                <>
+                  <div className="enquiry-message">
+                    {formatLeadDetails(selectedItem.raw).map(([label, value]) => (
+                      <p key={label}><strong>{label}:</strong> {value || "N/A"}</p>
+                    ))}
+                  </div>
+                  <button type="button" className="admin-primary enquiry-contact-btn" onClick={() => openContact(selectedItem.raw)}>
+                    Contact User
+                  </button>
+                </>
+              ) : (
+                <PaymentDetail item={selectedItem} />
+              )}
+            </>
+          ) : (
+            <div className="recent-empty">Select an enquiry to read it.</div>
+          )}
+        </section>
+      </div>
+      {contactLead && (
+        <ContactPopover
+          lead={contactLead}
+          onClose={() => setContactLead(null)}
+          onContact={markContacted}
+        />
+      )}
+    </div>
+  );
+}
+
+function PaymentDetail({ item }) {
+  return (
+    <div className="enquiry-message">
+      {item.details.map(([label, value]) => (
+        <p key={label}><strong>{label}:</strong> {value || "N/A"}</p>
+      ))}
+      {item.raw.invoiceUrl || item.raw.invoicePath ? (
+        <a className="invoice-link" href={item.raw.invoiceUrl || item.raw.invoicePath} target="_blank" rel="noreferrer">
+          <Download size={16} /> Open invoice document
+        </a>
+      ) : item.bucket === "payment_success" ? (
+        <p><strong>Invoice:</strong> Generation pending. The link appears here after the webhook stores the PDF.</p>
+      ) : null}
+    </div>
+  );
+}
+
+function ContactPopover({ lead, onClose, onContact }) {
+  const email = lead.email || lead.customerEmail;
+  const phone = lead.phone || lead.mobile || lead.whatsapp || lead.customerPhone;
+  const cleanPhone = String(phone || "").replace(/[^\d]/g, "");
+  const emailHref = email ? `mailto:${email}?subject=${encodeURIComponent(`ARC LABS enquiry - ${lead.leadType || "Website"}`)}` : undefined;
+  const whatsappHref = cleanPhone ? `https://wa.me/${cleanPhone.length === 10 ? `91${cleanPhone}` : cleanPhone}` : undefined;
+
+  return (
+    <div className="contact-popover-backdrop" onClick={(event) => event.target === event.currentTarget && onClose()}>
+      <div className="contact-popover">
+        <div className="contact-popover-head">
+          <div>
+            <span>Contact details</span>
+            <strong>{lead.name || lead.fullName || lead.company || lead.org || "Enquiry"}</strong>
+          </div>
+          <button type="button" onClick={onClose}>Close</button>
+        </div>
+        <div className="contact-actions">
+          <a href={emailHref} onClick={() => email && onContact(lead, "email")} className={!email ? "disabled" : ""}>
+            <Mail size={18} /><span>{email || "No email provided"}</span>
+          </a>
+          <a href={whatsappHref} target="_blank" rel="noreferrer" onClick={() => phone && onContact(lead, "whatsapp")} className={!phone ? "disabled" : ""}>
+            <MessageCircle size={18} /><span>{phone || "No WhatsApp number provided"}</span>
+          </a>
+          <span className="contact-call-disabled">
+            <Phone size={18} /><span>{phone || "No phone provided"}</span>
+          </span>
+        </div>
       </div>
     </div>
   );
+}
+
+function buildInboxItems(data) {
+  const leadItems = data.leads.map((lead) => {
+    const status = lead.adminStatus || "new";
+    return {
+      key: `lead-${lead._collection}-${lead.id}`,
+      kind: "lead",
+      raw: lead,
+      bucket: status === "contacted" ? "contacted" : status === "read" ? "read" : "unread",
+      unread: !lead.adminStatus || lead.adminStatus === "new",
+      tone: status === "contacted" ? "success" : "info",
+      title: lead.name || lead.fullName || lead.company || lead.org || lead.institution || "Website enquiry",
+      subject: leadSubject(lead),
+      typeLabel: lead.leadType || "Enquiry",
+      statusLabel: status === "new" ? "unread" : status,
+      date: lead.createdAt || lead.updatedAt,
+      meta: [
+        ["From", lead.email || "N/A"],
+        ["Phone", lead.phone || lead.mobile || lead.whatsapp || "N/A"],
+        ["Region", lead.city || lead.state || lead.geography || lead.country || "N/A"],
+        ["Received", formatDateTime(lead.createdAt)],
+      ],
+    };
+  });
+
+  const paymentItems = data.orders.map((order) => {
+    const paid = isPaid(order);
+    const status = String(order.status || "").toLowerCase();
+    const failed = !paid && /fail|failed|error|declined/.test(status + JSON.stringify(order.paymentError || order.razorpayError || ""));
+    return {
+      key: `payment-${order.id}`,
+      kind: "payment",
+      raw: order,
+      bucket: paid ? "payment_success" : failed ? "payment_failed" : "unread",
+      unread: false,
+      tone: paid ? "success" : failed ? "danger" : "warning",
+      title: paid ? "Payment successful" : failed ? "Payment failed" : "Payment pending",
+      subject: `${order.product?.name || order.productName || order.productId || "Product"} - ${money(paidAmount(order))}`,
+      typeLabel: "Payment notification",
+      statusLabel: paid ? "success" : failed ? "failed" : order.status || "pending",
+      date: order.createdAt || order.paidAt || order.updatedAt,
+      meta: [
+        ["Customer", order.customer?.name || order.customerName || "Customer"],
+        ["Email", order.customer?.email || order.customerEmail || "N/A"],
+        ["Payment ID", order.paymentId || order.id],
+        ["Invoice", order.invoiceNumber || "Pending"],
+      ],
+      details: paymentDetails(order, paid, failed),
+    };
+  });
+
+  return [...leadItems, ...paymentItems].sort((a, b) => dateMs(b.date) - dateMs(a.date));
+}
+
+function leadSubject(lead) {
+  if (/program/i.test(lead.leadType || "")) {
+    return `${lead.programName || lead.workshopTitle || "Program curriculum"}${lead.duration ? ` - ${lead.duration} day` : ""}`;
+  }
+  if (/lab/i.test(lead.leadType || "")) {
+    return lead.packageName || lead.requirements || lead.institution || "Lab proposal request";
+  }
+  if (/csr/i.test(lead.leadType || "")) {
+    return lead.company || lead.focusArea || lead.message || "CSR partnership enquiry";
+  }
+  return lead.message || lead.requirements || lead.note || "General website enquiry";
+}
+
+function formatLeadDetails(lead) {
+  const base = [
+    ["Name", lead.name || lead.fullName || lead.contactName],
+    ["Email", lead.email],
+    ["Phone", lead.phone || lead.mobile || lead.whatsapp],
+  ];
+  if (/program/i.test(lead.leadType || "")) {
+    return [
+      ...base,
+      ["Organization", lead.org || lead.institution || lead.company],
+      ["Role", lead.role],
+      ["Program", lead.programName || lead.programAbbr],
+      ["Workshop", lead.workshopTitle],
+      ["Duration", [lead.duration, lead.durationLabel].filter(Boolean).join(" ")],
+      ["Total hours", lead.totalHours],
+      ["Message", lead.message],
+    ];
+  }
+  if (/lab/i.test(lead.leadType || "")) {
+    return [
+      ...base,
+      ["Institution", lead.institution || lead.org],
+      ["Package", lead.packageName || lead.labPackage],
+      ["Location", [lead.city, lead.state, lead.country].filter(Boolean).join(", ")],
+      ["Requirements", lead.requirements || lead.message],
+      ["Budget", lead.budget],
+      ["Timeline", lead.timeline],
+    ];
+  }
+  if (/csr/i.test(lead.leadType || "")) {
+    return [
+      ...base,
+      ["Company", lead.company || lead.org],
+      ["Focus area", lead.focusArea || lead.csrFocus],
+      ["Geography", lead.geography || [lead.city, lead.state].filter(Boolean).join(", ")],
+      ["Beneficiaries", lead.beneficiaries],
+      ["Message", lead.message || lead.requirements],
+    ];
+  }
+  return [
+    ...base,
+    ["Location", [lead.city, lead.state, lead.country].filter(Boolean).join(", ")],
+    ["Message", lead.message || lead.requirements || lead.note],
+  ];
+}
+
+function paymentDetails(order, paid, failed) {
+  const error = order.paymentError || order.razorpayError || order.error || {};
+  const failureReason =
+    error.description ||
+    error.reason ||
+    error.message ||
+    order.failureReason ||
+    order.failureMessage ||
+    "Razorpay has not returned a detailed failure reason for this transaction yet.";
+  return [
+    ["Product", order.product?.name || order.productName || order.productId],
+    ["Amount", money(paidAmount(order))],
+    ["Payment status", paid ? "Payment captured successfully" : failed ? "Payment failed" : order.status || "Pending"],
+    ["Razorpay message", paid ? "Payment captured by Razorpay." : failureReason],
+    ["Customer", order.customer?.name || order.customerName],
+    ["Email", order.customer?.email || order.customerEmail],
+    ["Phone", order.customer?.phone || order.customerPhone],
+  ];
 }
 
 function Certificates({ data, adminEmail }) {
@@ -557,7 +809,16 @@ function Certificates({ data, adminEmail }) {
       <div className="admin-grid two">
         <Panel title="Upload Eligible Students" icon={FileUp}>
           <div className="cert-admin-form">
-            <input value={workshopCode} onChange={(e) => setWorkshopCode(e.target.value.toUpperCase())} placeholder="Workshop / session code" />
+            <select value={workshopCode} onChange={(e) => setWorkshopCode(e.target.value)}>
+              <option value="">Select WorkShop code</option>
+              {SESSION_CODE_GROUPS.map((group) => (
+                <optgroup key={group.label} label={group.label}>
+                  {group.options.map((code) => (
+                    <option key={code} value={code}>{code}</option>
+                  ))}
+                </optgroup>
+              ))}
+            </select>
             <input type="file" accept=".csv,.xlsx,.xls" onChange={handleFile} disabled={!workshopKey} />
             <button className="admin-primary" onClick={upload} disabled={!rows.length || !workshopKey}>Upload Records</button>
             {status && <p>{status}</p>}

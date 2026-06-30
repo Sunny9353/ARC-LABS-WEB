@@ -14,6 +14,7 @@ export const DURATIONS = [
   { val: "2", label: "2 Days", sub: "Workshop · 14 hrs" },
   { val: "3", label: "3 Days", sub: "Intensive · 21 hrs" },
   { val: "5", label: "5 Days", sub: "Bootcamp · 35 hrs" },
+  { val: "internship", label: "Internship", sub: "Internship Certificate" },
 ];
 
 // Aliases for RegisterPanel compatibility
