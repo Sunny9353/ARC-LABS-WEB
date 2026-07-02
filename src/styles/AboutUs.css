@@ -456,6 +456,133 @@
   }
 }
 
+/* Final team portrait cleanup: transparent portraits sit on the page, details keep the card shade. */
+.about-team-card {
+  overflow: visible !important;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  display: flex !important;
+  flex-direction: column !important;
+  min-height: 760px;
+}
+
+.about-team-card::before {
+  display: none !important;
+}
+
+.about-team-card:hover {
+  box-shadow: none !important;
+  border-color: transparent !important;
+}
+
+.about-team-image,
+:root[data-theme="light"] .about-team-image {
+  height: 500px !important;
+  min-height: 500px !important;
+  display: flex !important;
+  align-items: flex-end !important;
+  justify-content: center !important;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  overflow: visible !important;
+}
+
+.about-team-image img,
+:root[data-theme="light"] .about-team-image img {
+  width: auto !important;
+  height: 96% !important;
+  max-width: 94% !important;
+  object-fit: contain !important;
+  object-position: center bottom !important;
+  filter: grayscale(1) contrast(1.08) brightness(1) !important;
+  mix-blend-mode: normal !important;
+  transform: none !important;
+}
+
+.about-team-card:hover .about-team-image img {
+  transform: translateY(-4px) !important;
+  filter: grayscale(1) contrast(1.12) brightness(1.03) !important;
+}
+
+.about-team-body,
+:root[data-theme="light"] .about-team-body {
+  min-height: 270px;
+  margin-top: 0;
+  padding: clamp(24px, 3vw, 34px) !important;
+  border-radius: 0 0 18px 18px;
+  background: linear-gradient(180deg, rgba(24,24,27,0.96), rgba(9,9,11,0.99)) !important;
+  border: 1px solid rgba(255,255,255,0.06) !important;
+  border-top: 0 !important;
+  box-shadow: 0 24px 70px rgba(0,0,0,0.2);
+}
+
+:root[data-theme="light"] .about-team-body {
+  background: rgba(255,255,255,0.92) !important;
+  border-color: rgba(228,228,231,0.92) !important;
+  box-shadow: 0 22px 60px rgba(9,9,11,0.08);
+}
+
+@media (max-width: 1100px) {
+  .about-team-card {
+    min-height: auto;
+  }
+
+  .about-team-image,
+  :root[data-theme="light"] .about-team-image {
+    height: 430px !important;
+    min-height: 430px !important;
+  }
+}
+
+@media (max-width: 720px) {
+  .about-team-image,
+  :root[data-theme="light"] .about-team-image {
+    height: 360px !important;
+    min-height: 360px !important;
+  }
+
+  .about-team-body,
+  :root[data-theme="light"] .about-team-body {
+    min-height: auto;
+    border-radius: 0 0 14px 14px;
+  }
+}
+
+/* Founder cutouts: keep the uploaded transparent portraits on the page theme without artificial glare. */
+.about-team-card,
+:root[data-theme="light"] .about-team-card {
+  border-color: transparent !important;
+}
+
+.about-team-card::before,
+:root[data-theme="light"] .about-team-card::before {
+  display: none !important;
+}
+
+.about-team-image,
+:root[data-theme="light"] .about-team-image {
+  background: var(--surface) !important;
+}
+
+.about-team-image img,
+:root[data-theme="light"] .about-team-image img {
+  mix-blend-mode: normal !important;
+  filter: grayscale(1) contrast(1.05) brightness(1) !important;
+}
+
+.about-team-card:hover {
+  border-color: transparent !important;
+  box-shadow: 0 24px 80px rgba(0,0,0,0.18) !important;
+}
+
+/* One-line client captions in the requested Institution, Place - Workshop format. */
+.about-quote figcaption {
+  white-space: normal;
+  line-height: 1.45;
+}
+
 /* Absolute final About gallery override for production/Vercel. */
 .about-clients { overflow: hidden !important; }
 .about-clients .about-gallery {

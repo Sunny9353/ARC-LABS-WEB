@@ -1,9 +1,10 @@
-import { useState, useRef } from "react";
+import { useEffect, useState, useRef } from "react";
 import { createPortal } from "react-dom";
 import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { DottedSurface } from "../components/ui/dotted-surface";
 import { useBodyScrollLock } from "../utils/ui";
+import { COMPARE_TEMPLATE, normalizeProduct, subscribeProducts } from "../services/productsData";
 
 /* ─── SCOPED STYLES ────────────────────────────────────────────────── */
 const pageStyles = `
@@ -39,7 +40,7 @@ const pageStyles = `
 .pc-image{width:100%;height:100%;object-fit:contain;object-position:center;position:relative;z-index:1;padding:14px}
 .pc-badge-wrap{position:absolute;top:14px;left:14px;display:flex;gap:6px;z-index:2}
 .pc-badge{font-family:var(--font-body);font-size:.62rem;font-weight:800;padding:5px 11px;border-radius:6px;letter-spacing:.06em;border:1px solid var(--pc-color,var(--accent));background:var(--pc-color,var(--accent));color:#04110f;box-shadow:0 12px 26px color-mix(in srgb,var(--pc-color,var(--accent)) 28%,transparent)}
-.pc-best{position:absolute;top:14px;right:14px;z-index:2;background:var(--accent-dim);color:var(--accent);border:1px solid rgba(0,220,130,.34);font-family:var(--font-body);font-size:.6rem;font-weight:800;padding:4px 10px;border-radius:5px;letter-spacing:.06em;box-shadow:0 10px 24px rgba(0,220,130,.13)}
+.pc-best{position:absolute;right:14px;bottom:14px;z-index:3;background:var(--best-color,var(--amber));color:#09090b;border:1px solid color-mix(in srgb,var(--best-color,var(--amber)) 75%,#fff);font-family:var(--font-body);font-size:.6rem;font-weight:900;padding:5px 11px;border-radius:5px;letter-spacing:.06em;box-shadow:0 10px 24px color-mix(in srgb,var(--best-color,var(--amber)) 28%,transparent)}
 .pc-fade{position:absolute;bottom:0;left:0;right:0;height:60px;background:linear-gradient(transparent,var(--surface));z-index:1}
 
 .pc-body{padding:22px 22px 0;display:flex;flex-direction:column;flex:1}
@@ -75,6 +76,7 @@ const pageStyles = `
 .kit-stage::before{content:'';position:absolute;left:12%;right:12%;bottom:40px;height:26px;background:radial-gradient(ellipse,rgba(0,0,0,.48),transparent 68%);filter:blur(4px);opacity:.65}
 .kit-caption{position:absolute;left:36px;top:28px;font-family:var(--font-heading);font-weight:800;font-size:1rem;letter-spacing:-.01em;color:var(--text);z-index:3}
 .kit-caption span{display:block;margin-top:4px;font-family:var(--font-body);font-size:.72rem;font-weight:500;color:var(--text-3);letter-spacing:0}
+.kit-best{position:absolute;right:36px;bottom:26px;z-index:4;background:var(--best-color,var(--amber));color:#09090b;border-radius:6px;padding:7px 13px;font-size:.68rem;font-weight:900;letter-spacing:.07em;text-transform:uppercase;box-shadow:0 14px 34px color-mix(in srgb,var(--best-color,var(--amber)) 30%,transparent)}
 .kit-gallery{width:min(820px,94vw);display:grid;grid-template-columns:74px minmax(0,1fr);gap:18px;align-items:center;position:relative;z-index:2;margin-bottom:18px}
 .kit-thumbs{display:flex;flex-direction:column;gap:10px;align-items:stretch;justify-content:flex-start;align-self:stretch;padding-top:28px}
 .kit-thumb{width:66px;height:66px;border:1px solid var(--border-2);border-radius:8px;background:#fff;padding:5px;cursor:pointer;transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease}
@@ -219,7 +221,7 @@ const pageStyles = `
 `;
 
 /* ─── PRODUCT DATA ──────────────────────────────────────────────── */
-const PRODUCTS = [
+export const PRODUCT_CATALOG = [
   {
     id: "essential",
     tier: "TIER 01 · essential",
@@ -316,7 +318,7 @@ const PRODUCTS = [
       { src: "/images/products/gallery/experience-kit-1.jpg", alt: "ARC LABS IoT Experience Kit board top view" },
       { src: "/images/products/gallery/experience-kit-2.jpg", alt: "ARC LABS IoT Experience Kit close-up view" },
     ],
-    badge: "BEST SELLER",
+    badge: "INTERMEDIATE",
     badgeBg: "var(--accent-dim)",
     badgeColor: "var(--accent)",
     isBest: true,
@@ -648,6 +650,76 @@ function isCompareDash(value) {
   return value === "—" || value === "â€”";
 }
 
+function compareValue(product, row) {
+  const raw = product.compare?.[row.label];
+  if (raw === true) return "✓";
+  if (raw === false) return "—";
+  if (raw !== undefined && raw !== null && raw !== "") return raw;
+  const legacyKey = product.id === "experience" ? "exp" : product.id === "essential" ? "essential" : product.id;
+  const legacy = row[legacyKey];
+  if (isCompareTick(legacy)) return "✓";
+  if (isCompareDash(legacy)) return "—";
+  return legacy || "—";
+}
+
+function compareCell(value) {
+  if (isCompareTick(value) || value === "✓") return <span className="fct-yes">✓</span>;
+  if (isCompareDash(value) || value === "—") return <span className="fct-no">—</span>;
+  return <span className="fct-val">{value}</span>;
+}
+
+function compareRowsForProducts(products) {
+  const templateLabels = new Set(COMPARE_TEMPLATE.map((row) => row.label || row.section));
+  const legacyRows = COMPARE_ROWS
+    .filter((row) => row.section || row.label)
+    .filter((row) => !row.label || !templateLabels.has(row.label));
+  return [...COMPARE_TEMPLATE, ...legacyRows];
+}
+
+function ProductCompareTable({ products, selectedOnly = false }) {
+  const visibleProducts = selectedOnly ? products.slice(0, 1) : products;
+  const rows = compareRowsForProducts(visibleProducts);
+  const colSpan = visibleProducts.length + 1;
+  return (
+    <div className="compare-table-scroll" style={{ overflowX: visibleProducts.length > 4 ? "auto" : "visible" }}>
+      <table className="fct">
+        <thead>
+          <tr>
+            <th style={{ minWidth: "210px" }}>Feature</th>
+            {visibleProducts.map((product) => (
+              <th key={product.id}>
+                {product.short || product.name}
+                <br />
+                <span style={{ fontSize: ".65rem", fontWeight: 400, color: "var(--text-3)" }}>
+                  ₹{Number(product.price || 0).toLocaleString("en-IN")}
+                </span>
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {rows.map((row, i) => {
+            if (row.section || row.cat) {
+              return <tr className="fct-cat" key={`${row.section || row.cat}-${i}`}><td colSpan={colSpan}>{row.section || row.cat}</td></tr>;
+            }
+            return (
+              <tr key={`${row.label}-${i}`} className={row.priceRow ? "price-row-fct" : ""}>
+                <td>{row.label}</td>
+                {visibleProducts.map((product) => (
+                  <td key={`${product.id}-${row.label}`}>
+                    {compareCell(row.label === "Price" ? `₹${Number(product.price || 0).toLocaleString("en-IN")}` : compareValue(product, row))}
+                    {row.label === "Best For" && product.isBest && <span className="fct-best" style={{ marginLeft: 6, background: product.bestSellerColor || "var(--amber)" }}>BEST</span>}
+                  </td>
+                ))}
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
 function DetailDrawer({ product, anchorY, onClose }) {
   useBodyScrollLock(true);
   const [tab, setTab] = useState("specs");
@@ -697,6 +769,7 @@ function DetailDrawer({ product, anchorY, onClose }) {
         <div className="kit-caption">
           {product.short} assembly
         </div>
+        {product.isBest && <div className="kit-best" style={{ "--best-color": product.bestSellerColor || "var(--amber)" }}>Best Seller</div>}
         <div className="kit-gallery">
           {galleryImages.length > 1 && (
             <div className="kit-thumbs" aria-label={`${product.name} images`}>
@@ -939,6 +1012,7 @@ function ProductCard({ product, isSelected, onSelect }) {
         {product.image ? (
           <img className="pc-image" src={product.image} alt={product.name} loading="lazy" />
         ) : null}
+        {product.isBest && <span className="pc-best" style={{ "--best-color": product.bestSellerColor || "var(--amber)" }}>Best Seller</span>}
         <div className="pc-fade" />
       </div>
 
@@ -989,6 +1063,7 @@ function ProductCard({ product, isSelected, onSelect }) {
 
 /* ─── MAIN PAGE ──────────────────────────────────────────────────── */
 export default function ProductsPage() {
+  const [products, setProducts] = useState(() => PRODUCT_CATALOG.map(normalizeProduct));
   const [selected, setSelected] = useState(null);
   const [detailAnchorY, setDetailAnchorY] = useState(140);
   const [filter, setFilter] = useState("all");
@@ -1002,14 +1077,16 @@ export default function ProductsPage() {
     setSelected(null);
   };
 
-  const filtered = filter === "all" ? PRODUCTS
-    : filter === "essential" ? PRODUCTS.filter((p) => p.id === "essential")
-    : filter === "beginner" ? PRODUCTS.filter((p) => p.id === "lite")
-    : filter === "flagship" ? PRODUCTS.filter((p) => p.id === "experience")
-    : PRODUCTS.filter((p) => p.id === "pro");
+  useEffect(() => subscribeProducts(setProducts, PRODUCT_CATALOG), []);
+
+  const filtered = filter === "all" ? products
+    : filter === "essential" ? products.filter((p) => p.id === "essential")
+    : filter === "beginner" ? products.filter((p) => p.id === "lite")
+    : filter === "flagship" ? products.filter((p) => p.id === "experience")
+    : products.filter((p) => p.id === "pro");
 
   const selectedId = selected;
-  const selectedProduct = PRODUCTS.find((p) => p.id === selectedId);
+  const selectedProduct = products.find((p) => p.id === selectedId);
 
   const FILTERS = [
     { id: "all", label: "All Kits" },

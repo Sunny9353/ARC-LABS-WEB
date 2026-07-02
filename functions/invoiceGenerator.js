@@ -73,9 +73,11 @@ async function generateInvoicePdf(data) {
     const customer = data.customer || {};
     const product = data.product || {};
     const gst = data.gst || {};
+    const deliveryCharge = Number(data.deliveryCharge || data.shippingCharge || data.delivery?.price || 0);
     const total = Number(gst.totalWithTax || data.amount || 0);
-    const taxable = Number(gst.taxableAmount || total / 1.18);
-    const tax = Number(gst.totalTax || total - taxable);
+    const productTotal = Math.max(0, total - deliveryCharge);
+    const taxable = Number(gst.taxableAmount || productTotal / 1.18);
+    const tax = Number(gst.totalTax || productTotal - taxable);
     const shipDate = data.shipDate ? formatDate(data.shipDate) : "Pending ShipRocket API";
     const stateLine = customer.stateCode ? `${customer.stateCode}-${getStateName(customer.stateCode)}` : "N/A";
     const shipping = [
@@ -133,18 +135,27 @@ async function generateInvoicePdf(data) {
 
     doc.font("Helvetica").fontSize(8).fillColor("#111827");
     doc.text("1", 54, 323, { width: 24 });
-    doc.font("Helvetica-Bold").text(product.name || "ARC LABS Product", 80, 323, { width: 185 });
-    doc.font("Helvetica").text(formatCurrency(taxable), 278, 323, { width: 70, align: "right" });
+    doc.font("Helvetica-Bold").text(`${product.name || "ARC LABS Product"} (inclusive of all taxes and GST)`, 80, 323, { width: 185 });
+    doc.font("Helvetica").text(formatCurrency(productTotal), 278, 323, { width: 70, align: "right" });
     doc.text("1", 361, 323, { width: 28, align: "right" });
-    doc.text(formatCurrency(taxable), 402, 323, { width: 68, align: "right" });
-    doc.text(`${formatCurrency(tax)} (18%)`, 482, 323, { width: 59, align: "right" });
+    doc.text(formatCurrency(productTotal), 402, 323, { width: 68, align: "right" });
+    doc.text("Included", 482, 323, { width: 59, align: "right" });
+
+    if (deliveryCharge > 0) {
+      doc.text("2", 54, 343, { width: 24 });
+      doc.font("Helvetica-Bold").text("Delivery charges", 80, 343, { width: 185 });
+      doc.font("Helvetica").text(formatCurrency(deliveryCharge), 278, 343, { width: 70, align: "right" });
+      doc.text("1", 361, 343, { width: 28, align: "right" });
+      doc.text(formatCurrency(deliveryCharge), 402, 343, { width: 68, align: "right" });
+      doc.text("-", 482, 343, { width: 59, align: "right" });
+    }
 
     drawLine(doc, 365, "#9ca3af");
     doc.font("Helvetica-Bold").fontSize(8).fillColor("#111827")
-      .text("Taxable Amount", 382, 377, { width: 80, align: "right" })
-      .text(`Rs.${formatCurrency(taxable)}`, 466, 377, { width: 75, align: "right" })
-      .text(gst.type === "intra" ? "CGST 9% + SGST 9%" : "IGST 18.0%", 382, 392, { width: 80, align: "right" })
-      .text(`Rs.${formatCurrency(tax)}`, 466, 392, { width: 75, align: "right" });
+      .text("Product subtotal", 382, 377, { width: 80, align: "right" })
+      .text(`Rs.${formatCurrency(productTotal)}`, 466, 377, { width: 75, align: "right" })
+      .text("Delivery charges", 382, 392, { width: 80, align: "right" })
+      .text(`Rs.${formatCurrency(deliveryCharge)}`, 466, 392, { width: 75, align: "right" });
 
     doc.fontSize(14).text("Total", 382, 414, { width: 80, align: "right" })
       .text(`Rs.${formatCurrency(total)}`, 452, 414, { width: 89, align: "right" });

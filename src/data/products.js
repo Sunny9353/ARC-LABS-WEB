@@ -193,7 +193,7 @@ export const PRODUCTS = [
     glow: "0,245,160",
     emoji: "⚡",
     image: "/images/products/experience-kit.jpg",
-    badge: "BEST SELLER",
+    badge: "INTERMEDIATE",
     badgeBg: "rgba(0,245,160,0.12)",
     badgeColor: "#00F5A0",
     isBest: true,

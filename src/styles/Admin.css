@@ -44,8 +44,12 @@
 
 .admin-login-card input,
 .admin-toolbar input,
+.admin-toolbar select,
 .cert-admin-form input,
 .cert-admin-form select,
+.product-editor input,
+.product-editor textarea,
+.product-editor select,
 .admin-table select {
   width: 100%;
   border: 1px solid #3f3f46;
@@ -57,6 +61,8 @@
 }
 
 .cert-admin-form select,
+.admin-toolbar select,
+.product-editor select,
 .admin-table select {
   color-scheme: dark;
   appearance: none;
@@ -69,6 +75,7 @@
 
 .cert-admin-form select option,
 .cert-admin-form select optgroup,
+.product-editor select option,
 .admin-table select option {
   background: #18181b;
   color: #fafafa;
@@ -79,6 +86,9 @@
 }
 
 .cert-admin-form select:focus,
+.product-editor input:focus,
+.product-editor textarea:focus,
+.product-editor select:focus,
 .admin-table select:focus {
   border-color: #00dc82;
   box-shadow: 0 0 0 3px rgba(0, 220, 130, 0.12);
@@ -1060,6 +1070,104 @@
 
 .admin-table td span { display: block; margin-top: 2px; }
 
+.product-select-toolbar select {
+  border: 0;
+  min-height: 42px;
+}
+
+.product-editor {
+  display: grid;
+  gap: 14px;
+}
+
+.product-form-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.product-form-grid.two {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.product-field {
+  display: grid;
+  gap: 7px;
+}
+
+.product-field > span {
+  color: #a1a1aa;
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.product-editor textarea {
+  min-height: 96px;
+  resize: vertical;
+  line-height: 1.5;
+}
+
+.product-editor .product-form-grid textarea {
+  min-height: 150px;
+  font-family: Consolas, "Courier New", monospace;
+  font-size: 0.78rem;
+}
+
+.admin-check {
+  min-height: 42px;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  color: #d4d4d8;
+}
+
+.admin-check input {
+  width: auto;
+}
+
+.product-editor-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.product-editor-actions span {
+  color: #a1a1aa;
+  font-size: 0.84rem;
+}
+
+.order-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 260px;
+}
+
+.order-actions select {
+  min-width: 132px;
+}
+
+.table-contact-btn {
+  min-height: 34px;
+  padding: 0 11px;
+  font-size: 0.76rem;
+  white-space: nowrap;
+}
+
+.table-icon-link {
+  width: 34px;
+  height: 34px;
+  display: inline-grid;
+  place-items: center;
+  border-radius: 8px;
+  color: #00dc82;
+  border: 1px solid rgba(0, 220, 130, 0.28);
+  background: rgba(0, 220, 130, 0.08);
+}
+
 .admin-status {
   display: inline-flex;
   border-radius: 999px;
@@ -1408,6 +1516,190 @@
 
 .security-list svg { color: #00dc82; flex: 0 0 auto; margin-top: 3px; }
 .session-card { display: grid; gap: 10px; }
+
+.product-inner-tabs { margin: 14px 0 18px; flex-wrap: wrap; }
+.product-field small { color: #71717a; font-size: .68rem; line-height: 1.4; }
+.product-field input[type="color"] { min-height: 44px; padding: 4px; }
+.admin-upload-box {
+  min-height: 54px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  border: 1px dashed rgba(0,220,130,.35);
+  border-radius: 8px;
+  background: rgba(0,220,130,.06);
+  color: #00dc82;
+  cursor: pointer;
+  font-weight: 800;
+}
+.admin-upload-box input { display: none; }
+.admin-product-preview {
+  width: min(260px, 100%);
+  max-height: 170px;
+  object-fit: contain;
+  background: #fff;
+  border-radius: 8px;
+  margin: 10px 0 16px;
+}
+.admin-gallery-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 10px 0 18px;
+}
+.admin-gallery-list div {
+  position: relative;
+  width: 92px;
+  height: 70px;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #fff;
+  border: 1px solid rgba(255,255,255,.1);
+}
+.admin-gallery-list img { width: 100%; height: 100%; object-fit: contain; }
+.admin-gallery-list button,
+.admin-usecase-card button {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  width: 24px;
+  height: 24px;
+  display: grid;
+  place-items: center;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(239,68,68,.9);
+  color: #fff;
+}
+.product-edit-card {
+  display: grid;
+  gap: 12px;
+  padding: 16px;
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 8px;
+  background: rgba(24,24,27,.74);
+}
+.product-edit-card.compact { align-content: start; }
+.product-edit-card-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+.product-edit-card-head h4 { margin: 0; font-size: .86rem; }
+.icon-only-add {
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border: 0;
+  border-radius: 8px;
+  background: rgba(0,220,130,.12);
+  color: #00dc82;
+}
+.chip-editor-input input,
+.include-inputs input,
+.usecase-draft input,
+.usecase-draft textarea,
+.admin-compare-row input {
+  width: 100%;
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: 8px;
+  background: #18181b;
+  color: #fff;
+  padding: 10px 12px;
+}
+.admin-chip-list { display: flex; flex-wrap: wrap; gap: 8px; }
+.admin-skill-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 10px;
+  border-radius: 999px;
+  background: rgba(0,220,130,.1);
+  color: #dfffee;
+  font-size: .76rem;
+}
+.admin-skill-chip button {
+  border: 0;
+  background: transparent;
+  color: #00dc82;
+  display: grid;
+  place-items: center;
+}
+.product-include-grid,
+.usecase-admin-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 14px;
+}
+.include-inputs { display: grid; gap: 10px; }
+.empty-add-card {
+  min-height: 170px;
+  border: 1px dashed rgba(0,220,130,.42);
+  border-radius: 8px;
+  background: rgba(0,220,130,.06);
+  color: #00dc82;
+  font-weight: 900;
+}
+.admin-usecase-card { min-height: 156px; }
+.usecase-draft textarea { min-height: 90px; resize: vertical; }
+.admin-compare-editor {
+  display: grid;
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 8px;
+  overflow: hidden;
+}
+.admin-compare-section {
+  padding: 11px 14px;
+  background: rgba(0,220,130,.08);
+  color: #00dc82;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  font-size: .72rem;
+}
+.admin-compare-row {
+  display: grid;
+  grid-template-columns: minmax(180px, 1fr) minmax(120px, auto);
+  gap: 12px;
+  align-items: center;
+  padding: 10px 14px;
+  border-top: 1px solid rgba(255,255,255,.06);
+}
+.admin-compare-actions { display: flex; gap: 8px; justify-content: flex-end; }
+.admin-compare-actions button {
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 8px;
+  background: #27272a;
+  color: #a1a1aa;
+}
+.admin-compare-actions button.active.yes { background: rgba(0,220,130,.16); color: #00dc82; border-color: rgba(0,220,130,.42); }
+.admin-compare-actions button.active.no { background: rgba(239,68,68,.14); color: #ef4444; border-color: rgba(239,68,68,.35); }
+.admin-confirm-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1200;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: rgba(0,0,0,.66);
+}
+.admin-confirm-card {
+  width: min(440px, 100%);
+  display: grid;
+  gap: 14px;
+  padding: 22px;
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 10px;
+  background: #18181b;
+}
+.admin-confirm-card div { display: flex; justify-content: flex-end; gap: 10px; }
 
 @media (max-width: 1100px) {
   .admin-grid.three { grid-template-columns: 1fr; }

@@ -46,6 +46,7 @@ import {
   normalizeWorkshopCode,
 } from "../utils/certificateEligibility";
 import { SESSION_CODE_GROUPS } from "../data/sessionCodes";
+import ProductsAdmin from "./admin/ProductsTab";
 import "../styles/Admin.css";
 
 const ADMIN_EMAILS = (process.env.REACT_APP_ADMIN_EMAILS || "techarclab@gmail.com,techarclabs@gmail.com")
@@ -64,7 +65,9 @@ const NAV = [
   { id: "overview", label: "Overview", icon: BarChart3 },
   { id: "traffic", label: "Traffic", icon: Users },
   { id: "orders", label: "Orders", icon: PackageCheck },
+  { id: "products", label: "Products", icon: ClipboardList },
   { id: "leads", label: "Enquiries", icon: Mail },
+  { id: "cancelled", label: "Canceled Payments", icon: ClipboardList },
   { id: "certificates", label: "Certificates", icon: FileUp },
   { id: "security", label: "Security", icon: ShieldCheck },
 ];
@@ -176,6 +179,10 @@ function useAdminData(enabled) {
     leads: [],
     certificates: [],
     eligibleRegistrations: [],
+    paymentEvents: [],
+    cancelledPayments: [],
+    checkoutSessions: [],
+    products: [],
   });
 
   useEffect(() => {
@@ -305,9 +312,11 @@ export default function AdminPage() {
               onPeriodChange={setTrafficPeriod}
             />
           )}
-          {tab === "orders" && <Orders data={data} adminEmail={activeUser.email} />}
-          {tab === "leads" && <Leads data={data} />}
-          {tab === "certificates" && <Certificates data={data} adminEmail={activeUser.email} />}
+            {tab === "orders" && <Orders data={data} adminEmail={activeUser.email} />}
+            {tab === "products" && <ProductsAdmin data={data} adminEmail={activeUser.email} />}
+            {tab === "leads" && <Leads data={data} />}
+            {tab === "cancelled" && <CancelledPayments data={data} />}
+            {tab === "certificates" && <Certificates data={data} adminEmail={activeUser.email} />}
           {tab === "security" && <Security user={activeUser} />}
         </main>
       </div>
@@ -445,7 +454,12 @@ function Traffic({ metrics, period, onPeriodChange }) {
 
 function Orders({ data, adminEmail }) {
   const [search, setSearch] = useState("");
+  const [contactLead, setContactLead] = useState(null);
   const orders = data.orders.filter((order) => JSON.stringify(order).toLowerCase().includes(search.toLowerCase()));
+
+  const markContacted = (lead, channel) => {
+    updateLeadStatus(lead, { adminStatus: "contacted", contactedVia: channel, contactedAt: new Date() }).catch(() => {});
+  };
 
   return (
     <div className="admin-stack">
@@ -468,19 +482,88 @@ function Orders({ data, adminEmail }) {
                 <td><Status text={order.status || "paid"} /></td>
                 <td><Status text={order.fulfillmentStatus || "pending"} /></td>
                 <td>
-                  <select value={order.fulfillmentStatus || "pending"} onChange={(e) => updateOrderStatus(order, e.target.value, adminEmail)}>
-                    <option value="pending">Pending</option>
-                    <option value="accepted">Accept Order</option>
-                    <option value="packed">Packed</option>
-                    <option value="shipped">Shipped</option>
-                    <option value="delivered">Delivered</option>
-                  </select>
+                  <div className="order-actions">
+                    <select value={order.fulfillmentStatus || "pending"} onChange={(e) => updateOrderStatus(order, e.target.value, adminEmail)}>
+                      <option value="pending">Pending</option>
+                      <option value="accepted">Accept Order</option>
+                      <option value="packed">Packed</option>
+                      <option value="shipped">Shipped</option>
+                      <option value="delivered">Delivered</option>
+                    </select>
+                    {(order.invoiceUrl || order.invoicePath) && (
+                      <a className="table-icon-link" href={order.invoiceUrl || order.invoicePath} target="_blank" rel="noreferrer" title="Open invoice">
+                        <Download size={16} />
+                      </a>
+                    )}
+                    <button type="button" className="admin-primary table-contact-btn" onClick={() => setContactLead(order)}>
+                      Contact
+                    </button>
+                  </div>
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
+      {contactLead && (
+        <ContactPopover
+          lead={contactLead}
+          onClose={() => setContactLead(null)}
+          onContact={markContacted}
+        />
+      )}
+    </div>
+  );
+}
+
+function CancelledPayments({ data }) {
+  const [search, setSearch] = useState("");
+  const [contactLead, setContactLead] = useState(null);
+  const payments = (data.cancelledPayments || []).filter((item) => JSON.stringify(item).toLowerCase().includes(search.toLowerCase()));
+
+  const markContacted = (lead, channel) => {
+    updateLeadStatus(lead, { adminStatus: "contacted", contactedVia: channel, contactedAt: new Date() }).catch(() => {});
+  };
+
+  return (
+    <div className="admin-stack">
+      <div className="admin-toolbar">
+        <Search size={17} />
+        <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search cancelled payments" />
+      </div>
+      <div className="admin-table-wrap">
+        <table className="admin-table">
+          <thead>
+            <tr><th>Attempt</th><th>Customer</th><th>Product</th><th>Amount</th><th>Reason</th><th>Action</th></tr>
+          </thead>
+          <tbody>
+            {payments.map((item) => (
+              <tr key={item.id}>
+                <td><strong>{item.razorpayOrderId || item.id}</strong><span>{formatDateTime(item.createdAt)}</span></td>
+                <td>{item.customerName || "Customer"}<span>{item.customerEmail || ""}</span></td>
+                <td>{item.productName || item.productId || "Product"}</td>
+                <td>{money(paidAmount(item))}</td>
+                <td><Status text={item.reason || "cancelled"} /></td>
+                <td>
+                  <button type="button" className="admin-primary table-contact-btn" onClick={() => setContactLead(item)}>
+                    Contact
+                  </button>
+                </td>
+              </tr>
+            ))}
+            {!payments.length && (
+              <tr><td colSpan="6"><span>No cancelled payments recorded yet.</span></td></tr>
+            )}
+          </tbody>
+        </table>
+      </div>
+      {contactLead && (
+        <ContactPopover
+          lead={contactLead}
+          onClose={() => setContactLead(null)}
+          onContact={markContacted}
+        />
+      )}
     </div>
   );
 }
@@ -606,8 +689,8 @@ function PaymentDetail({ item }) {
 }
 
 function ContactPopover({ lead, onClose, onContact }) {
-  const email = lead.email || lead.customerEmail;
-  const phone = lead.phone || lead.mobile || lead.whatsapp || lead.customerPhone;
+  const email = lead.email || lead.customerEmail || lead.customer?.email;
+  const phone = lead.phone || lead.mobile || lead.whatsapp || lead.customerPhone || lead.customer?.phone;
   const cleanPhone = String(phone || "").replace(/[^\d]/g, "");
   const emailHref = email ? `mailto:${email}?subject=${encodeURIComponent(`ARC LABS enquiry - ${lead.leadType || "Website"}`)}` : undefined;
   const whatsappHref = cleanPhone ? `https://wa.me/${cleanPhone.length === 10 ? `91${cleanPhone}` : cleanPhone}` : undefined;
@@ -618,7 +701,7 @@ function ContactPopover({ lead, onClose, onContact }) {
         <div className="contact-popover-head">
           <div>
             <span>Contact details</span>
-            <strong>{lead.name || lead.fullName || lead.company || lead.org || "Enquiry"}</strong>
+            <strong>{lead.name || lead.fullName || lead.company || lead.org || lead.customerName || lead.customer?.name || "Enquiry"}</strong>
           </div>
           <button type="button" onClick={onClose}>Close</button>
         </div>
@@ -662,27 +745,26 @@ function buildInboxItems(data) {
     };
   });
 
-  const paymentItems = data.orders.map((order) => {
-    const paid = isPaid(order);
-    const status = String(order.status || "").toLowerCase();
-    const failed = !paid && /fail|failed|error|declined/.test(status + JSON.stringify(order.paymentError || order.razorpayError || ""));
+  const paymentItems = (data.paymentEvents || []).filter((event) => event.type === "payment_failed").map((order) => {
+    const paid = false;
+    const failed = true;
     return {
       key: `payment-${order.id}`,
       kind: "payment",
       raw: order,
-      bucket: paid ? "payment_success" : failed ? "payment_failed" : "unread",
+      bucket: "payment_failed",
       unread: false,
-      tone: paid ? "success" : failed ? "danger" : "warning",
-      title: paid ? "Payment successful" : failed ? "Payment failed" : "Payment pending",
+      tone: "danger",
+      title: "Payment failed",
       subject: `${order.product?.name || order.productName || order.productId || "Product"} - ${money(paidAmount(order))}`,
       typeLabel: "Payment notification",
-      statusLabel: paid ? "success" : failed ? "failed" : order.status || "pending",
+      statusLabel: "failed",
       date: order.createdAt || order.paidAt || order.updatedAt,
       meta: [
         ["Customer", order.customer?.name || order.customerName || "Customer"],
         ["Email", order.customer?.email || order.customerEmail || "N/A"],
-        ["Payment ID", order.paymentId || order.id],
-        ["Invoice", order.invoiceNumber || "Pending"],
+        ["Payment ID", order.paymentId || "Not captured"],
+        ["Razorpay Order", order.razorpayOrderId || "N/A"],
       ],
       details: paymentDetails(order, paid, failed),
     };
@@ -1274,14 +1356,17 @@ function computeMetrics(data, period = "lifetime") {
   const publicEvents = data.analyticsEvents.filter(isPublicEvent);
   const periodEvents = publicEvents.filter((event) => withinPeriod(event.createdAt || event.clientCreatedAt, period));
   const paidOrders = data.orders.filter((order) => isPaid(order) && withinPeriod(order.createdAt || order.paidAt, period));
+  const paymentEvents = (data.paymentEvents || []).filter((event) => withinPeriod(event.createdAt || event.clientCreatedAt, period));
+  const cancelledRecords = (data.cancelledPayments || []).filter((event) => withinPeriod(event.createdAt || event.clientCreatedAt, period));
+  const checkoutSessions = (data.checkoutSessions || []).filter((session) => withinPeriod(session.createdAt || session.updatedAt || session.clientCreatedAt, period));
   const periodLeads = data.leads.filter((lead) => withinPeriod(lead.createdAt, period));
   const revenueTotal = paidOrders.reduce((sum, order) => sum + paidAmount(order), 0);
   const revenueSeries = makeSeries(paidOrders, period, (order) => order.createdAt || order.paidAt, paidAmount);
   const { rows: revenueTrendRows, products: revenueProducts } = makeRevenueTrendRows(paidOrders, period);
   const successSeries = makeSeries(paidOrders, period, (order) => order.createdAt || order.paidAt);
-  const failedEvents = periodEvents.filter((event) => /fail|failed/i.test(event.label || event.type || ""));
-  const cancelledEvents = periodEvents.filter((event) => /cancel|cancelled/i.test(event.label || event.type || ""));
-  const abandonedEvents = periodEvents.filter((event) => /abandon|checkout|product/i.test(event.label || event.path || ""));
+  const failedEvents = checkoutSessions.filter((session) => /failed/i.test(session.normalizedStatus || session.status || ""));
+  const cancelledEvents = checkoutSessions.filter((session) => /cancelled|canceled/i.test(session.normalizedStatus || session.status || ""));
+  const abandonedEvents = checkoutSessions.filter((session) => /abandoned/i.test(session.normalizedStatus || session.status || ""));
   const failedSeries = makeSeries(failedEvents, period, (event) => event.createdAt || event.clientCreatedAt);
   const cancelledSeries = makeSeries(cancelledEvents, period, (event) => event.createdAt || event.clientCreatedAt);
   const abandonedSeries = makeSeries(abandonedEvents, period, (event) => event.createdAt || event.clientCreatedAt);
@@ -1318,10 +1403,8 @@ function computeMetrics(data, period = "lifetime") {
     10
   );
   const sessions = new Set(periodEvents.map((event) => event.sessionId).filter(Boolean));
-  const cancelledPayments = periodEvents.filter((event) => /cancel/i.test(event.label || event.type || "")).length;
-  const failedPayments = periodEvents.filter((event) => /fail/i.test(event.label || event.type || "")).length;
-  const productViews = periodEvents.filter((event) => event.path === "/products" || /product/i.test(event.label || "")).length;
-  const checkoutStarts = periodEvents.filter((event) => event.path === "/checkout" || /payment|checkout/i.test(event.label || "")).length;
+  const cancelledPayments = cancelledEvents.length;
+  const failedPayments = failedEvents.length;
 
   return {
     period,
@@ -1345,7 +1428,7 @@ function computeMetrics(data, period = "lifetime") {
     topInteractions,
     cancelledPayments,
     failedPayments,
-    abandonedProducts: Math.max(0, productViews - checkoutStarts),
+    abandonedProducts: abandonedEvents.length,
     pendingDeliveries: paidOrders.filter((order) => (order.fulfillmentStatus || "pending") !== "delivered").length,
     leadCount: periodLeads.length,
     uniqueSessions: sessions.size,

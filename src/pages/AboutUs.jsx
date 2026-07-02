@@ -11,7 +11,7 @@ const TEAM = [
     name: "Vamshidar Reddy",
     role: "Co-Founder & CMO",
     image:
-      "https://static.wixstatic.com/media/8d617c_d5af19944ebd4084a06c537b648ab1d7~mv2.png/v1/crop/x_0%2Cy_0%2Cw_1024%2Ch_849/fill/w_806%2Ch_668%2Cal_c%2Cq_92%2Cusm_0.66_1.00_0.01%2Cenc_avif%2Cquality_auto/Gemini_Generated_Image_i6pvcgi6pvcgi6pv.png",
+      "https://static.wixstatic.com/media/8d617c_591d308abb6443ba8cf3bafcaba91563~mv2.png",
     imagePosition: "50% 18%",
     bio:
       "Drives innovation in tech education, empowering students to explore and excel in the evolving world of technology.",
@@ -20,7 +20,7 @@ const TEAM = [
     name: "Anvesh Reddy",
     role: "Founder & CEO",
     image:
-      "https://static.wixstatic.com/media/8d617c_f1066df64f3947f09ce362eb2d760371~mv2.png/v1/crop/x_0%2Cy_0%2Cw_625%2Ch_518/fill/w_806%2Ch_668%2Cal_c%2Cq_92%2Cusm_0.66_1.00_0.01%2Cenc_avif%2Cquality_auto/Capture_PNG.png",
+      "https://static.wixstatic.com/media/8d617c_bac64c9a58404aeb8a59eeb554137d4c~mv2.png",
     imagePosition: "50% 16%",
     bio:
       "Leads innovation in IoT and IoE with expertise in robotics, embedded systems, and Python.",
@@ -29,7 +29,7 @@ const TEAM = [
     name: "Apurupa Laxmi",
     role: "Co-Founder & COO",
     image:
-      "https://static.wixstatic.com/media/8d617c_bc7ca3e783da43ddb1c5891a0703d330~mv2.png/v1/crop/x_0%2Cy_182%2Cw_832%2Ch_689/fill/w_806%2Ch_668%2Cal_c%2Cq_92%2Cusm_0.66_1.00_0.01%2Cenc_avif%2Cquality_auto/Generated%20Image%20October%2024%2C%202025%20-%204_02PM.png",
+      "https://static.wixstatic.com/media/8d617c_8e21b92b440b40ee8303122247c58701~mv2.png",
     imagePosition: "50% 18%",
     bio:
       "Leads strategic marketing initiatives with expertise in brand growth, digital campaigns, and data-driven decisions.",
@@ -66,7 +66,7 @@ const CLIENTS = [
 ].map((client) => ({
   ...client,
   image: `/images/aboutus/${client.file}`,
-  caption: `${client.institution}, ${client.location}, ${client.workshop}`,
+  caption: `${client.institution}, ${client.location} - ${client.workshop}`,
   description: `Arc Labs partnered with ${client.institution} for a hands-on ${client.workshop.toLowerCase()} in ${client.location}. The session focused on practical learning, guided implementation, and industry-ready project exposure for participants.`,
 }));
 

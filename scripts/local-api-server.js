@@ -3,6 +3,7 @@ const fs = require("fs");
 const path = require("path");
 const createRazorpayOrder = require("../api/create-razorpay-order");
 const verifyRazorpayPayment = require("../api/verify-razorpay-payment");
+const shiprocketRates = require("../api/shiprocket-rates");
 
 function loadEnvFile(fileName) {
   const envPath = path.resolve(__dirname, "..", fileName);
@@ -44,6 +45,7 @@ const server = http.createServer((req, res) => {
   const routes = {
     "/api/create-razorpay-order": createRazorpayOrder,
     "/api/verify-razorpay-payment": verifyRazorpayPayment,
+    "/api/shiprocket-rates": shiprocketRates,
   };
   const handler = routes[req.url];
 

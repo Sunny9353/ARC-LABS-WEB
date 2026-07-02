@@ -235,6 +235,8 @@ exports.razorpayWebhook = functions.https.onRequest(async (req, res) => {
 
     // Build order document
     const amountInRupees = payment.amount / 100;
+    const deliveryCharge = Number(notes.delivery_charge || 0);
+    const productPrice = Number(notes.product_price || Math.max(0, amountInRupees - deliveryCharge));
     const companyStateCode = config.company?.state_code || "36";
 
     // Try to determine buyer state from notes or default
@@ -249,6 +251,12 @@ exports.razorpayWebhook = functions.https.onRequest(async (req, res) => {
       invoiceNumber,
       status: "paid",
       amount: amountInRupees,
+      productPrice,
+      deliveryCharge,
+      deliveryOption: {
+        courierName: notes.delivery_partner || "",
+        deliveryDays: notes.delivery_days || "",
+      },
       currency: payment.currency || "INR",
       method: payment.method,
 
@@ -295,6 +303,7 @@ exports.razorpayWebhook = functions.https.onRequest(async (req, res) => {
       customer: order.customer,
       product: order.product,
       amount: order.amount,
+      deliveryCharge: order.deliveryCharge,
       gst: order.gst,
       paymentId,
       paymentMethod: order.method,

@@ -42,12 +42,32 @@ export function subscribeAdminData(callback) {
     leads: [],
     certificates: [],
     eligibleRegistrations: [],
+    paymentEvents: [],
+    cancelledPayments: [],
+    checkoutSessions: [],
+    products: [],
   };
 
   const emit = () => callback({ ...state });
   const unsubs = [
     subscribeCollection("orders", (items) => {
       state.orders = items;
+      emit();
+    }),
+    subscribeCollection("paymentEvents", (items) => {
+      state.paymentEvents = items;
+      emit();
+    }),
+    subscribeCollection("cancelledPayments", (items) => {
+      state.cancelledPayments = items;
+      emit();
+    }),
+    subscribeCollection("checkoutSessions", (items) => {
+      state.checkoutSessions = items;
+      emit();
+    }, 800),
+    subscribeCollection("products", (items) => {
+      state.products = items;
       emit();
     }),
     subscribeCollection("analyticsEvents", (items) => {

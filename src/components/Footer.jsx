@@ -37,7 +37,7 @@ export default function Footer() {
           <Link to="/" className="footer-brand-link" aria-label="ARC LABS home">
             <img
               className="footer-brand-logo"
-              src="/images/brand/arc-labs-logo-transparent.png"
+              src="/images/brand/arc-labs-logo.png"
               alt="ARC LABS"
             />
           </Link>
